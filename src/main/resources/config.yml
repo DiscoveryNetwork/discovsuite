@@ -1,0 +1,31 @@
+disable-join-quit-messages: true
+enable-water-teleport: false
+enable-cauldron-bins: false
+server-name: ServerName
+
+scoreboard-settings:
+  interval: 100
+  max-length: 26
+  title: '&3@DiscovNetwork'
+scoreboard-content: # Please note that double values will not work.
+  1:
+    - '&m{fill}'
+  2:
+    - '&dYour rank'
+  3:
+    - '%vault_prefix%'
+  4:
+    - '  '
+  5:
+    - '&dServer'
+  6:
+    - '&7&oServerName'
+  7:
+    - ' '
+  8:
+    - '&d&o%bungee_total% &r&5players Online!'
+    - '&d&o%server_online% &r&5players on ServerName!'
+  9:
+    - '&f&m{fill}'
+  10:
+    - '&3discov.network'

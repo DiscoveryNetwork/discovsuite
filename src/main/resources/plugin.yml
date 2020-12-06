@@ -1,0 +1,29 @@
+main: nl.parrotlync.discovsuite.DiscovSuite
+name: DiscovSuite
+version: 0.1
+description: Contains various modules and functionalities for Discovery Network servers
+depend: [PlaceholderAPI]
+author: ParrotLync
+commands:
+  fly:
+    description: Toggle flight
+    usage: /fly [player]
+  speed:
+    description: Set your walking/flying speed
+    usage: /speed <walk/fly> <speed>
+permissions:
+  discovsuite.fly:
+    default: op
+    description: Permission to toggle flight
+  discovsuite.fly.onjoin:
+    default: op
+    description: Enables flight on join
+  discovsuite.fly.others:
+    default: op
+    description: Permission to toggle flight for other players
+  discovsuite.wtp.override:
+    default: op
+    description: Override for water teleport
+  discovsuite.speed:
+    default: op
+    description: Permission to change player speed
