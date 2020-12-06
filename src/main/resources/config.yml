@@ -4,7 +4,7 @@ enable-cauldron-bins: false
 server-name: ServerName
 
 scoreboard-settings:
-  interval: 100
+  interval: 80
   max-length: 26
   title: '&3@DiscovNetwork'
 scoreboard-content: # Please note that double values will not work.

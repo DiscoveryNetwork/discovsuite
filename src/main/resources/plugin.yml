@@ -1,6 +1,6 @@
 main: nl.parrotlync.discovsuite.DiscovSuite
 name: DiscovSuite
-version: 0.1
+version: 1.0
 description: Contains various modules and functionalities for Discovery Network servers
 depend: [PlaceholderAPI]
 author: ParrotLync
@@ -27,3 +27,6 @@ permissions:
   discovsuite.speed:
     default: op
     description: Permission to change player speed
+  discovsuite.vanish:
+    default: op
+    description: Permission to vanish
