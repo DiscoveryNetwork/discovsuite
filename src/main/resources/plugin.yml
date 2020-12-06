@@ -11,6 +11,10 @@ commands:
   speed:
     description: Set your walking/flying speed
     usage: /speed <walk/fly> <speed>
+  clearinventory:
+    description: Clear your inventory
+    usage: /clearinventory
+    aliases: [ci]
 permissions:
   discovsuite.fly:
     default: op
@@ -30,3 +34,6 @@ permissions:
   discovsuite.vanish:
     default: op
     description: Permission to vanish
+  discovsuite.clearinventory:
+    default: op
+    description: Permission to clear inventory

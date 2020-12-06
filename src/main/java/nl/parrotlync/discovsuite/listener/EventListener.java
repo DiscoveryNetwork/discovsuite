@@ -9,6 +9,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.util.Vector;
@@ -42,18 +43,32 @@ public class EventListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler
+    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+        if (event.getPlayer().hasPermission("discovsuite.punch")) {
+            if (event.getRightClicked() instanceof Player) {
+                Player target = (Player) event.getRightClicked();
+                launch(target);
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
         if (event.getDamager().hasPermission("discovsuite.punch") && event.getDamager() instanceof Player) {
             if (event.getEntity() instanceof Player) {
-                Player player = (Player) event.getEntity();
-                if (player.hasPermission("discovsuite.punchable")) {
-                    Date now = new Date();
-                    if (cooldownMap.get(event.getDamager().getUniqueId()) == null || now.compareTo(cooldownMap.get(event.getDamager().getUniqueId())) > 0) {
-                        cooldownMap.put(event.getDamager().getUniqueId(), DateUtils.addSeconds(now, 5));
-                        player.setVelocity(new Vector(0, 1, 0));
-                    }
-                }
+                Player target = (Player) event.getEntity();
+                launch(target);
+            }
+        }
+    }
+
+    private void launch(Player target) {
+        if (target.hasPermission("discovsuite.punchable")) {
+            Date now = new Date();
+            if (cooldownMap.get(target.getUniqueId()) == null || now.compareTo(cooldownMap.get(target.getUniqueId())) > 0) {
+                cooldownMap.put(target.getUniqueId(), DateUtils.addSeconds(now, 5));
+                target.setVelocity(new Vector(0, 1, 0));
             }
         }
     }

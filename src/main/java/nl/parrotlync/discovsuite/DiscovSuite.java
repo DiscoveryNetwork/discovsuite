@@ -1,5 +1,6 @@
 package nl.parrotlync.discovsuite;
 
+import nl.parrotlync.discovsuite.command.ClearInventoryCommand;
 import nl.parrotlync.discovsuite.command.FlyCommand;
 import nl.parrotlync.discovsuite.command.SpeedCommand;
 import nl.parrotlync.discovsuite.listener.CauldronListener;
@@ -59,11 +60,15 @@ public class DiscovSuite extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new EventListener(), this);
         getCommand("fly").setExecutor(new FlyCommand());
         getCommand("speed").setExecutor(new SpeedCommand());
+        getCommand("clearinventory").setExecutor(new ClearInventoryCommand());
         getLogger().info("DiscovSuite is now enabled!");
     }
 
     @Override
     public void onDisable() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            boardManager.remove(player);
+        }
         getLogger().info("DiscovSuite is now disabled!");
     }
 

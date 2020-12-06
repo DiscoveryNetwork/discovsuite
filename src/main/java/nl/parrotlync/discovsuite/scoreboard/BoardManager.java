@@ -25,6 +25,7 @@ public class BoardManager {
     }
 
     public void remove(Player player) {
+        player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
         boards.remove(player.getUniqueId());
     }
 
