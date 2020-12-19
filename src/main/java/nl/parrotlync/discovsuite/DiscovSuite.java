@@ -13,14 +13,17 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class DiscovSuite extends JavaPlugin {
     private static DiscovSuite instance;
+    private List<String> disabledWorlds;
     private BoardManager boardManager;
 
     public DiscovSuite() {
+        this.disabledWorlds = new ArrayList<>();
         instance = this;
     }
 
@@ -57,6 +60,9 @@ public class DiscovSuite extends JavaPlugin {
             boardManager.init(player);
         }
 
+        // Punch disabled worlds
+        this.disabledWorlds = getConfig().getStringList("punch-disabled-worlds");
+
         getServer().getPluginManager().registerEvents(new EventListener(), this);
         getCommand("fly").setExecutor(new FlyCommand());
         getCommand("speed").setExecutor(new SpeedCommand());
@@ -74,6 +80,14 @@ public class DiscovSuite extends JavaPlugin {
 
     public BoardManager getBoardManager() {
         return boardManager;
+    }
+
+    public List<String> getDisabledWorlds() {
+        if (disabledWorlds != null) {
+            return disabledWorlds;
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     public static DiscovSuite getInstance() {

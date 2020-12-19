@@ -64,11 +64,13 @@ public class EventListener implements Listener {
     }
 
     private void launch(Player target) {
-        if (target.hasPermission("discovsuite.punchable")) {
-            Date now = new Date();
-            if (cooldownMap.get(target.getUniqueId()) == null || now.compareTo(cooldownMap.get(target.getUniqueId())) > 0) {
-                cooldownMap.put(target.getUniqueId(), DateUtils.addSeconds(now, 5));
-                target.setVelocity(new Vector(0, 1, 0));
+        if (!DiscovSuite.getInstance().getDisabledWorlds().contains(target.getWorld().getName().toLowerCase())) {
+            if (target.hasPermission("discovsuite.punchable")) {
+                Date now = new Date();
+                if (cooldownMap.get(target.getUniqueId()) == null || now.compareTo(cooldownMap.get(target.getUniqueId())) > 0) {
+                    cooldownMap.put(target.getUniqueId(), DateUtils.addSeconds(now, 5));
+                    target.setVelocity(new Vector(0, 1, 0));
+                }
             }
         }
     }
