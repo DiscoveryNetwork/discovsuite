@@ -2,6 +2,7 @@ package nl.parrotlync.discovsuite;
 
 import nl.parrotlync.discovsuite.command.ClearInventoryCommand;
 import nl.parrotlync.discovsuite.command.FlyCommand;
+import nl.parrotlync.discovsuite.command.PackCommand;
 import nl.parrotlync.discovsuite.command.SpeedCommand;
 import nl.parrotlync.discovsuite.listener.CauldronListener;
 import nl.parrotlync.discovsuite.listener.EventListener;
@@ -67,6 +68,7 @@ public class DiscovSuite extends JavaPlugin {
         getCommand("fly").setExecutor(new FlyCommand());
         getCommand("speed").setExecutor(new SpeedCommand());
         getCommand("clearinventory").setExecutor(new ClearInventoryCommand());
+        getCommand("pack").setExecutor(new PackCommand());
         getLogger().info("DiscovSuite is now enabled!");
     }
 
@@ -88,6 +90,13 @@ public class DiscovSuite extends JavaPlugin {
         } else {
             return new ArrayList<>();
         }
+    }
+
+    public String getResourcePackURL() {
+        if (!getConfig().getString("pack.url").isEmpty()) {
+            return getConfig().getString("pack.url");
+        }
+        return null;
     }
 
     public static DiscovSuite getInstance() {

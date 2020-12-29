@@ -2,6 +2,10 @@ disable-join-quit-messages: true
 enable-water-teleport: false
 enable-cauldron-bins: false
 
+pack:
+  url: ""
+  force-on-join: true
+
 scoreboard-settings:
   interval: 80
   max-length: 26

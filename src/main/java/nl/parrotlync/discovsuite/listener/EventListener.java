@@ -2,6 +2,7 @@ package nl.parrotlync.discovsuite.listener;
 
 import nl.parrotlync.discovsuite.DiscovSuite;
 import org.apache.commons.lang.time.DateUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,7 +28,10 @@ public class EventListener implements Listener {
         if (event.getPlayer().hasPermission("discovsuite.fly.onjoin")) {
             event.getPlayer().setAllowFlight(true);
         }
-
+        
+        if (DiscovSuite.getInstance().getResourcePackURL() != null && DiscovSuite.getInstance().getConfig().getBoolean("pack.force-on-join")) {
+            event.getPlayer().setResourcePack(DiscovSuite.getInstance().getResourcePackURL());
+        }
     }
 
     @EventHandler
