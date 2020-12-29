@@ -15,6 +15,9 @@ commands:
     description: Clear your inventory
     usage: /clearinventory
     aliases: [ci]
+  pack:
+    description: Download the resource pack
+    usage: /pack
 permissions:
   discovsuite.fly:
     default: op
@@ -37,3 +40,5 @@ permissions:
   discovsuite.clearinventory:
     default: op
     description: Permission to clear inventory
+  discovsuite.resourcepack.bypass:
+    description: Bypass resourcepack on join
