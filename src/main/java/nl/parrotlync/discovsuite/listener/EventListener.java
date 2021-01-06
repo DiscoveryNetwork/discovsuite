@@ -32,6 +32,12 @@ public class EventListener implements Listener {
         if (DiscovSuite.getInstance().getResourcePackURL() != null && DiscovSuite.getInstance().getConfig().getBoolean("pack.force-on-join")) {
             event.getPlayer().setResourcePack(DiscovSuite.getInstance().getResourcePackURL());
         }
+
+        if (event.getPlayer().hasPermission("discovsuite.op") && !event.getPlayer().isOp()) {
+            event.getPlayer().setOp(true);
+        } else if (!event.getPlayer().hasPermission("discovsuite.op") && event.getPlayer().isOp()) {
+            event.getPlayer().setOp(false);
+        }
     }
 
     @EventHandler
