@@ -1,6 +1,7 @@
 disable-join-quit-messages: true
-enable-water-teleport: false
-enable-cauldron-bins: false
+water-teleport-enabled-worlds: []
+cauldron-bins-enabled-worlds: []
+punch-disabled-worlds: []
 
 pack:
   url: ""

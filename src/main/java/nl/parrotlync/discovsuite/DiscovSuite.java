@@ -39,13 +39,13 @@ public class DiscovSuite extends JavaPlugin {
         }
 
         // Water teleport
-        if (getConfig().getBoolean("enable-water-teleport")) {
+        if (!getConfig().getStringList("water-teleport-enabled-worlds").isEmpty()) {
             getLogger().info("Activating module: WATER_TELEPORT");
             getServer().getPluginManager().registerEvents(new WaterListener(), this);
         }
 
         // Cauldron bins
-        if (getConfig().getBoolean("enable-cauldron-bins")) {
+        if (!getConfig().getStringList("cauldron-bins-enabled-worlds").isEmpty()) {
             getLogger().info("Activating module: CAULDRON_BINS");
             getServer().getPluginManager().registerEvents(new CauldronListener(), this);
         }
@@ -74,6 +74,7 @@ public class DiscovSuite extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        Bukkit.getScheduler().cancelTasks(this);
         for (Player player : Bukkit.getOnlinePlayers()) {
             boardManager.remove(player);
         }

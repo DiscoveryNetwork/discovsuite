@@ -1,5 +1,7 @@
 package nl.parrotlync.discovsuite.listener;
 
+import nl.parrotlync.discovsuite.DiscovSuite;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -17,7 +19,20 @@ public class WaterListener implements Listener {
         Location location = player.getLocation();
         if (location.getBlock().getType() == Material.STATIONARY_WATER || location.getBlock().getType() == Material.WATER) {
             World world = player.getWorld();
-            player.teleport(world.getSpawnLocation());
+            if (isEnabledWorld(world)) {
+                player.teleport(world.getSpawnLocation());
+            }
         }
+    }
+
+    private boolean isEnabledWorld(World world) {
+        for (String enabledWorld : DiscovSuite.getInstance().getConfig().getStringList("water-teleport-enabled-worlds")) {
+            if (Bukkit.getWorld(enabledWorld) != null) {
+                if (world.getName().equalsIgnoreCase(enabledWorld)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
