@@ -1,15 +1,12 @@
-package nl.parrotlync.discovsuite.listener;
+package nl.parrotlync.discovsuite.spigot.listener;
 
-import nl.parrotlync.discovsuite.DiscovSuite;
+import nl.parrotlync.discovsuite.spigot.DiscovSuite;
 import org.apache.commons.lang.time.DateUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -25,12 +22,8 @@ public class EventListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         DiscovSuite.getInstance().getBoardManager().init(event.getPlayer());
-        if (event.getPlayer().hasPermission("discovsuite.fly.onjoin")) {
+        if (event.getPlayer().hasPermission("discovsuite.onjoin.fly")) {
             event.getPlayer().setAllowFlight(true);
-        }
-        
-        if (DiscovSuite.getInstance().getResourcePackURL() != null && DiscovSuite.getInstance().getConfig().getBoolean("pack.force-on-join")) {
-            event.getPlayer().setResourcePack(DiscovSuite.getInstance().getResourcePackURL());
         }
 
         if (event.getPlayer().hasPermission("discovsuite.op") && !event.getPlayer().isOp()) {
@@ -58,16 +51,6 @@ public class EventListener implements Listener {
         if (event.getPlayer().hasPermission("discovsuite.punch")) {
             if (event.getRightClicked() instanceof Player) {
                 Player target = (Player) event.getRightClicked();
-                launch(target);
-            }
-        }
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
-        if (event.getDamager().hasPermission("discovsuite.punch") && event.getDamager() instanceof Player) {
-            if (event.getEntity() instanceof Player) {
-                Player target = (Player) event.getEntity();
                 launch(target);
             }
         }

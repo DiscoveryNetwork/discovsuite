@@ -1,46 +1,5 @@
-main: nl.parrotlync.discovsuite.DiscovSuite
+main: nl.parrotlync.discovsuite.spigot.DiscovSuite
 name: DiscovSuite
-version: 1.1
-description: Contains various modules and functionalities for Discovery Network servers
-depend: [PlaceholderAPI]
+version: 2.0
+description: Suite with default functionality for the Discovery Network
 author: ParrotLync
-commands:
-  fly:
-    description: Toggle flight
-    usage: /fly [player]
-  speed:
-    description: Set your walking/flying speed
-    usage: /speed <walk/fly> <speed>
-  clearinventory:
-    description: Clear your inventory
-    usage: /clearinventory
-    aliases: [ci]
-  pack:
-    description: Download the resource pack
-    usage: /pack
-permissions:
-  discovsuite.fly:
-    default: op
-    description: Permission to toggle flight
-  discovsuite.fly.onjoin:
-    default: op
-    description: Enables flight on join
-  discovsuite.fly.others:
-    default: op
-    description: Permission to toggle flight for other players
-  discovsuite.wtp.override:
-    default: op
-    description: Override for water teleport
-  discovsuite.speed:
-    default: op
-    description: Permission to change player speed
-  discovsuite.vanish:
-    default: op
-    description: Permission to vanish
-  discovsuite.clearinventory:
-    default: op
-    description: Permission to clear inventory
-  discovsuite.resourcepack.bypass:
-    description: Bypass resourcepack on join
-  discovsuite.op:
-    description: Automatically set user as operator

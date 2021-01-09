@@ -1,6 +1,6 @@
-package nl.parrotlync.discovsuite.scoreboard;
+package nl.parrotlync.discovsuite.spigot.scoreboard;
 
-import nl.parrotlync.discovsuite.DiscovSuite;
+import nl.parrotlync.discovsuite.spigot.DiscovSuite;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

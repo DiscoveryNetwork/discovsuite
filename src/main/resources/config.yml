@@ -1,14 +1,26 @@
+messages:
+  no-permission: "&cYou don't have permission to do that"
+  player-only: "&cYou need to be a player to execute that command!"
+  missing-arguments: "&cThe following arguments are missing: %s"
+  inventory-clear: "&aYour inventory has been cleared!"
+  flight-enabled: "&7Flight enabled!"
+  flight-disabled: "&7Flight disabled!"
+  fly-speed-change: "§7Set flying speed to §3%s"
+  walk-speed-change: "§7Set walking speed to §3%s"
+
+database:
+  host: ""
+  username: ""
+  password: ""
+  database: ""
+
 disable-join-quit-messages: true
 water-teleport-enabled-worlds: []
 cauldron-bins-enabled-worlds: []
 punch-disabled-worlds: []
 
-pack:
-  url: ""
-  force-on-join: true
-
 scoreboard-settings:
-  interval: 80
+  interval: 50
   max-length: 26
   title: '&3@DiscovNetwork'
 scoreboard-content: # Please note that double values will not work.

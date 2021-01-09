@@ -1,0 +1,37 @@
+messages:
+  no-permission: "&cYou don't have permission to do that"
+  player-only: "&cYou need to be a player to execute that command!"
+  protocol-accepted: "&aThank you for accepting! &7&oPlease be aware there may be bugs in the version you are using."
+  protocol-accept-first: "&cPlease change your version or type &b/accept &cfirst!"
+  data-fetch-error: "&cSomething went wrong while attempting to fetch data."
+  player-not-found: "&cThat player was not found"
+
+database:
+  host: ""
+  username: ""
+  password: ""
+  database: ""
+
+accepted-protocol-versions:
+  - 328
+  - 329
+  - 330
+  - 331
+  - 332
+  - 333
+  - 334
+  - 335
+  - 336
+  - 337
+  - 338
+  - 339
+  - 340
+
+protocol-warning:
+  - "            §c§l§n- - - = WARNING = - - -"
+  - ""
+  - "You are using an §eunsupported version! §fWe recommend the use of §b1.12 §ffor the least buggy experience."
+  - ""
+  - "§7If you wish to continue using this unsupported version, please type §a§n§o/accept"
+  - ""
+  - "            §c§l- - - = = [+] = = - - -"

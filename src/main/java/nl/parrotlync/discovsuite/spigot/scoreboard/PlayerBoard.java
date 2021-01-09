@@ -1,7 +1,7 @@
-package nl.parrotlync.discovsuite.scoreboard;
+package nl.parrotlync.discovsuite.spigot.scoreboard;
 
 import me.clip.placeholderapi.PlaceholderAPI;
-import nl.parrotlync.discovsuite.DiscovSuite;
+import nl.parrotlync.discovsuite.spigot.DiscovSuite;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
