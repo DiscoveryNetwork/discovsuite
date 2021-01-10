@@ -44,11 +44,11 @@ public class ChatListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPostLogin(PostLoginEvent event) {
-        if (!event.getPlayer().hasPermission("discovsuite.chat.staff")) {
-            String playerJoin = DiscovSuite.getInstance().getConfig().getString("formats.player-join");
-            playerJoin = ChatColor.translateAlternateColorCodes('&', PlaceholderUtil.parse(event.getPlayer(), playerJoin));
-            ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(playerJoin));
-        } else {
+        String playerJoin = DiscovSuite.getInstance().getConfig().getString("formats.player-join");
+        playerJoin = ChatColor.translateAlternateColorCodes('&', PlaceholderUtil.parse(event.getPlayer(), playerJoin));
+        ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(playerJoin));
+
+        if (event.getPlayer().hasPermission("discovsuite.chat.staff")) {
             String staffJoin = DiscovSuite.getInstance().getConfig().getString("formats.staff-join");
             staffJoin = ChatColor.translateAlternateColorCodes('&', PlaceholderUtil.parse(event.getPlayer(), staffJoin));
             for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {

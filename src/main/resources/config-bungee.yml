@@ -21,7 +21,7 @@ formats:
   swear-warning-hover: "&cClick to warn &e%NAME%"
   player-join: "&f[&a+&f] &7%NAME%"
   staff-join: "&f[&cStaff&f] &7%NAME% has joined"
-  player-leave: "&f&c-&f] &7%NAME%"
+  player-leave: "&f[&c-&f] &7%NAME%"
   staff-leave: "&f[&cStaff&f] &7%NAME% has left"
   player-first-join: "&aPlease welcome &d%NAME%! &b&oIt's their &6&lfirst &r&b&otime on the network!"
 
