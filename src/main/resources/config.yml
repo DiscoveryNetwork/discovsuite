@@ -1,12 +1,27 @@
+server-name: DiscovServer
+
 messages:
-  no-permission: "&cYou don't have permission to do that"
+  no-permission: "&cYou don't have permission for this command"
   player-only: "&cYou need to be a player to execute that command!"
-  missing-arguments: "&cThe following arguments are missing: %s"
-  inventory-clear: "&aYour inventory has been cleared!"
-  flight-enabled: "&7Flight enabled!"
-  flight-disabled: "&7Flight disabled!"
-  fly-speed-change: "§7Set flying speed to §3%s"
-  walk-speed-change: "§7Set walking speed to §3%s"
+  missing-arguments: "&cThe following arguments are missing: &7%s"
+  inventory-clear: "&eYour inventory has been cleared"
+  flight-enabled: "&aYou can fly! You can &ofly! &r&aYou can &lfly!"
+  flight-disabled: "&cFlight has been disabled"
+  fly-speed-change: "&aFlying speed set to: &b%s"
+  walk-speed-change: "&aWalking speed set to: &b%s"
+  chat-channel-changed: "&aYou are now talking in: &b%s"
+  message-has-banned-words: "&f[&3DiscovChat&f] &cPlease keep your language clean and safe!"
+  add-banned-word: "&b%s &ahas been added to the swear filter!"
+  add-excluded-word: "&b%s &ahas been added as an excluded word!"
+  nickname-changed: "&aYour nickname is now: &b%s"
+
+formats:
+  chat-global: "&f[&d%SERVER%&f] %DISPLAYNAME% &f> %SUFFIX%"
+  chat-staff: "&f[&cStaff&f] %DISPLAYNAME%&7: &b"
+  chat-local: "&8[&c%SERVER%Chat&8] &7%NAME%&f: "
+  chat-management: "&f[&cManagement&f] %DISPLAYNAME%&7: &3"
+  staff-alert: "&f[&6StaffAlert&f] &c&l[!]&r &6%NAME% &7on &6%SERVER%&7: &c"
+  broadcast: "&f[&a%{}%&f] &b"
 
 database:
   host: ""
@@ -22,26 +37,26 @@ punch-disabled-worlds: []
 scoreboard-settings:
   interval: 50
   max-length: 26
-  title: '&3@DiscovNetwork'
+  title: '&dDiscovNetwork'
 scoreboard-content: # Please note that double values will not work.
   1:
     - '&m{fill}'
   2:
-    - '&dYour rank'
+    - '&dYour rank:'
   3:
     - '%vault_prefix%'
   4:
     - '  '
   5:
-    - '&dServer'
+    - '&dCurrent Server:'
   6:
-    - '&7&oServerName'
+    - '&f{server}'
   7:
     - ' '
   8:
-    - '&d&o%bungee_total% &r&5players Online!'
-    - '&d&o%server_online% &r&5players on ServerName!'
+    - '&a&o%bungee_total% &r&bplayers Online!'
+    - '&a&o%server_online% &r&bplayers on {server}!'
   9:
     - '&f&m{fill}'
   10:
-    - '&3discov.network'
+    - '&bdiscov.network'

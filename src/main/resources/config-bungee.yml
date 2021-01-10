@@ -1,10 +1,29 @@
 messages:
-  no-permission: "&cYou don't have permission to do that"
+  no-permission: "&cYou don't have permission for this command"
   player-only: "&cYou need to be a player to execute that command!"
+  player-not-online: "&cThat player is not online!"
   protocol-accepted: "&aThank you for accepting! &7&oPlease be aware there may be bugs in the version you are using."
   protocol-accept-first: "&cPlease change your version or type &b/accept &cfirst!"
   data-fetch-error: "&cSomething went wrong while attempting to fetch data."
   player-not-found: "&cThat player was not found"
+  chat-blocked: "&cChat is currently muted. &e&oFind out why: &f&ohttps://www.discov.network/faq"
+  chat-muted: "[&3%{}%&f] &bChat has been muted"
+  chat-unmuted: "[&3%{}%&f] &bChat has been unmuted"
+  chat-cleared: "[&3%{}%&f] &bChat has been cleared"
+  default-swear-warning: "Please keep chat appropriate"
+  chat-mentioned: "&aYou have been mentioned in chat!"
+
+formats:
+  msg-send: "&7&l[&c&l!&7&l] &r| &dYou &f-> %DISPLAYNAME%&f: %MSG%"
+  msg-receive: "&7&l[&c&l!&7&l] &r| %DISPLAYNAME% &f-> &dYou&f: %MSG%"
+  msg-spy: "&f[&7Spy&f] &7%SENDER% &8-> &7%RECEIVER%&f: &8%MSG%"
+  swear-notice: "&a%NAME% &emay be swearing: &f%MSG%"
+  swear-warning-hover: "&cClick to warn &e%NAME%"
+  player-join: "&f[&a+&f] &7%NAME%"
+  staff-join: "&f[&cStaff&f] &7%NAME% has joined"
+  player-leave: "&f&c-&f] &7%NAME%"
+  staff-leave: "&f[&cStaff&f] &7%NAME% has left"
+  player-first-join: "&aPlease welcome &d%NAME%! &b&oIt's their &6&lfirst &r&b&otime on the network!"
 
 database:
   host: ""

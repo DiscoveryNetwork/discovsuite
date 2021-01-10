@@ -1,14 +1,16 @@
 package nl.parrotlync.discovsuite.bungeecord.listener;
 
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
+import net.md_5.bungee.event.EventHandler;
+import net.md_5.bungee.event.EventPriority;
 import nl.parrotlync.discovsuite.bungeecord.DiscovSuite;
+import nl.parrotlync.discovsuite.bungeecord.event.PlayerProtocolAcceptEvent;
 import nl.parrotlync.discovsuite.bungeecord.util.ChatUtil;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +33,17 @@ public class ProtocolListener implements Listener {
         ProxiedPlayer player = (ProxiedPlayer) event.getSender();
         if (!blockedPlayers.contains(player.getUniqueId())) { return; }
 
-        if (event.isProxyCommand() || !event.getMessage().equalsIgnoreCase("/accept")) {
+        if (!event.getMessage().equalsIgnoreCase("/accept")) {
             ChatUtil.sendConfigMessage(player, "protocol-accept-first");
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerProtocolAccept(PlayerProtocolAcceptEvent event) {
+        if (blockedPlayers.contains(event.getPlayer().getUniqueId())) {
+            blockedPlayers.remove(event.getPlayer().getUniqueId());
+            ChatUtil.sendConfigMessage(event.getPlayer(), "protocol-accepted");
         }
     }
 

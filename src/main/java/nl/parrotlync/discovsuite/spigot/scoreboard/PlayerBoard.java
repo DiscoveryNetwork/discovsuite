@@ -77,6 +77,7 @@ public class PlayerBoard implements Runnable {
     private String prep(String string) {
         string = PlaceholderAPI.setPlaceholders(this.player, string);
         string = string.replace("{fill}", String.format("%-" + (size - 2) + "s", ""));
+        string = string.replace("{server}", DiscovSuite.getInstance().getConfig().getString("server-name"));
         return ChatColor.translateAlternateColorCodes('&', string);
     }
 

@@ -1,31 +1,17 @@
 package nl.parrotlync.discovsuite.bungeecord.util;
 
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import nl.parrotlync.discovsuite.common.MySQLDatabaseConnector;
 import org.ocpsoft.prettytime.PrettyTime;
 
 import java.sql.*;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DatabaseUtil {
-    private final String host, username, password, database;
-    private Connection connection;
+public class DatabaseUtil extends MySQLDatabaseConnector {
 
     public DatabaseUtil(String host, String username, String password, String database) {
-        this.host = host;
-        this.username = username;
-        this.password = password;
-        this.database = database;
-    }
-
-    public void connect() throws SQLException, ClassNotFoundException {
-        if (connection != null && !connection.isClosed()) { return; }
-
-        synchronized (this) {
-            if (connection != null && !connection.isClosed()) { return; }
-            Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(String.format("jdbc:mysql://%s:%d/%s?autoReconnect=true&useSSL=false", host, 3306, database), username, password);
-        }
+        super(host, username, password, database);
     }
 
     public void createTables() throws SQLException, ClassNotFoundException {

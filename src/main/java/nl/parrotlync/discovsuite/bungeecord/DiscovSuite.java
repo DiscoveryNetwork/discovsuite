@@ -1,12 +1,19 @@
 package nl.parrotlync.discovsuite.bungeecord;
 
+import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.model.user.User;
+import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
-import nl.parrotlync.discovsuite.bungeecord.command.AcceptCommand;
+import nl.parrotlync.discovsuite.bungeecord.command.*;
+import nl.parrotlync.discovsuite.bungeecord.listener.ChatListener;
 import nl.parrotlync.discovsuite.bungeecord.listener.PlayerListener;
+import nl.parrotlync.discovsuite.bungeecord.listener.PluginMessageListener;
 import nl.parrotlync.discovsuite.bungeecord.listener.ProtocolListener;
+import nl.parrotlync.discovsuite.bungeecord.manager.ConversationManager;
 import nl.parrotlync.discovsuite.bungeecord.util.DatabaseUtil;
 
 import java.io.File;
@@ -19,17 +26,32 @@ import java.util.UUID;
 
 public class DiscovSuite extends Plugin {
     private static DiscovSuite instance;
+    public static boolean chatMuted = true;
     private final HashMap<UUID, Date> sessions;
+    private final ConversationManager conversationManager;
     private DatabaseUtil database;
 
     public DiscovSuite() {
         instance = this;
         sessions = new HashMap<>();
+        conversationManager = new ConversationManager();
     }
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
+
+        // Channels
+        getProxy().registerChannel("dsuite:chat");
+        getProxy().registerChannel("dsuite:staff");
+        getProxy().registerChannel("dsuite:mgchat");
+        getProxy().registerChannel("dsuite:mute");
+        getProxy().registerChannel("dsuite:clear");
+        getProxy().registerChannel("dsuite:broadcast");
+        getProxy().registerChannel("dsuite:notice");
+        getProxy().registerChannel("dsuite:filter");
+        getProxy().registerChannel("dsuite:mention");
+        getProxy().registerChannel("dsuite:dpname");
 
         // Database
         this.database = new DatabaseUtil(getConfig().getString("database.host"), getConfig().getString("database.username"),
@@ -38,6 +60,7 @@ public class DiscovSuite extends Plugin {
            try {
                database.connect();
                database.createTables();
+               getLogger().info("Database connection established!");
            } catch (Exception e) {
                getLogger().severe("Something went wrong while trying to establish a database connection!");
                e.printStackTrace();
@@ -47,12 +70,15 @@ public class DiscovSuite extends Plugin {
         // Listeners & Commands
         getProxy().getPluginManager().registerListener(this, new ProtocolListener());
         getProxy().getPluginManager().registerListener(this, new PlayerListener());
+        getProxy().getPluginManager().registerListener(this, new ChatListener());
+        getProxy().getPluginManager().registerListener(this, new PluginMessageListener());
         getProxy().getPluginManager().registerCommand(this, new AcceptCommand());
-    }
-
-    @Override
-    public void onDisable() {
-
+        getProxy().getPluginManager().registerCommand(this, new MessageCommand());
+        getProxy().getPluginManager().registerCommand(this, new ReplyCommand());
+        getProxy().getPluginManager().registerCommand(this, new OnlineTimeCommand());
+        getProxy().getPluginManager().registerCommand(this, new CheckTimeCommand());
+        getProxy().getPluginManager().registerCommand(this, new SeenCommand());
+        getLogger().info("DiscovSuite has started.");
     }
 
     public DatabaseUtil getDatabase() {
@@ -87,6 +113,17 @@ public class DiscovSuite extends Plugin {
             e.printStackTrace();
         }
         return new Configuration();
+    }
+
+    public User getLuckPermsUser(ProxiedPlayer player) {
+        if (ProxyServer.getInstance().getPluginManager().getPlugin("LuckPerms") != null) {
+            return LuckPermsProvider.get().getUserManager().getUser(player.getUniqueId());
+        }
+        return null;
+    }
+
+    public ConversationManager getConversationManager() {
+        return conversationManager;
     }
 
     public static DiscovSuite getInstance() {

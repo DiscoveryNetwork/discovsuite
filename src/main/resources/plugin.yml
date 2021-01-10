@@ -2,4 +2,56 @@ main: nl.parrotlync.discovsuite.spigot.DiscovSuite
 name: DiscovSuite
 version: 2.0
 description: Suite with default functionality for the Discovery Network
+softdepend: [PlaceholderAPI, LuckPerms]
 author: ParrotLync
+commands:
+  fly:
+    usage: /fly
+    description: Toggle flight
+  speed:
+    usage: /speed <speed>
+    description: Change flying/walking speed
+  clearinventory:
+    usage: /clearinventory
+    description: Clear your inventory
+    aliases: [ci]
+  staffchat:
+    usage: /staffchat [message]
+    description: Send a message in Staff chat
+    aliases: [sc]
+  managementchat:
+    usage: /managementchat [message]
+    description: Send a message in Management chat
+    aliases: [mc]
+  broadcast:
+    usage: /broadcast <message>
+    description: Broadcast a message to the entire network
+    aliases: [bc]
+  staffalert:
+    usage: /staffalert <message>
+    description: Send a staff alert to the entire network
+    aliases: [sa]
+  clearchat:
+    usage: /clearchat
+    description: Clear the chat
+    aliases: [cc]
+  mutechat:
+    usage: /mutechat
+    description: Mute the chat
+    aliases: [chatmute]
+  nick:
+    usage: /nick <nickname>
+    description: Change your nickname
+    aliases: [nickname]
+  chatfilter:
+    usage: /chatfilter <ban/exclude> <word>
+    description: Update the chat filter
+    aliases: [filter]
+  localchat:
+    usage: /localchat [message]
+    description: Send a message in local chat
+    aliases: [lc]
+  localbroadcast:
+    usage: /localbroadcast <message>
+    description: Broadcast a message on your server
+    aliases: [lbc]
