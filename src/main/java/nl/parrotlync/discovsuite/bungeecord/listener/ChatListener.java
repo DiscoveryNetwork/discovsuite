@@ -113,7 +113,7 @@ public class ChatListener implements Listener {
         spyMsg = spyMsg.replaceAll("%MSG%", event.getMessage());
         if (!event.getSender().hasPermission("discovsuite.chat.socialspy.bypass")) {
             for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
-                if (player != event.getReceiver() && player != event.getSender()) {
+                if (player != event.getReceiver() && player != event.getSender() && player.hasPermission("discovsuite.socialspy")) {
                     player.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', spyMsg)));
                 }
             }
