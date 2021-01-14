@@ -55,3 +55,85 @@ commands:
     usage: /localbroadcast <message>
     description: Broadcast a message on your server
     aliases: [lbc]
+permissions:
+  discovsuite.command.broadcast:
+    default: op
+    description: Permission to use the /broadcast command
+  discovsuite.command.clearchat:
+    default: op
+    description: Permission to use the /clearchat command
+  discovsuite.command.clearinventory:
+    default: op
+    description: Permission to use the /clearinventory command
+  discovsuite.command.chatfilter:
+    default: op
+    description: Permission to use the /chatfilter command
+  discovsuite.command.fly:
+    default: op
+    description: Permission to use the /fly command
+  discovsuite.command.fly.others:
+    default: op
+    description: Permission to use the /fly command for other players
+  discovsuite.command.localbroadcast:
+    default: op
+    description: Permission to use the /localbroadcast command
+  discovsuite.command.mutechat:
+    default: op
+    description: Permission to use the /mutechat command
+  discovsuite.command.nickname:
+    default: op
+    description: Permission to use the /nickname command
+  discovsuite.command.speed:
+    default: op
+    description: Permission to use the /speed command
+  discovsuite.command.staffalert:
+    default: op
+    description: Permission to use the /staffalert command
+  discovsuite.command.wake:
+    default: op
+    description: Permission to use the /wake command
+  discovsuite.chat.local:
+    default: op
+    description: Permission to use local chat
+  discovsuite.chat.staff:
+    default: op
+    description: Permission to use staff chat
+  discovsuite.chat.management:
+    description: Permission to use management chat
+  discovsuite.chat.socialspy.bypass:
+    description: Bypass social spy for messages sent by this player
+  discovsuite.chat.mute.bypass:
+    default: op
+    description: Permission to bypass chat mute
+  discovsuite.chat.clear.bypass:
+    default: op
+    description: Permission to bypass chat clear
+  discovsuite.chat.filter.notice:
+    default: op
+    description: Permission to receive notices of chat filter violations
+  discovsuite.chat.filter.bypass:
+    default: op
+    description: Permission to bypass chat filter restrictions
+  discovsuite.chat.color:
+    default: op
+    description: Permission to use color in chat
+  discovsuite.chat.placeholders:
+    default: op
+    description: Permission to use placeholders in chat
+  discovsuite.chat.broadcast.showsender:
+    default: op
+    description: Permission to see who sent a broadcast message
+  discovsuite.fly.onjoin:
+    default: op
+    description: Permission to auto-enable fly onjoin
+  discovsuite.op:
+    description: Permission to be auto-opped
+  discovsuite.punch:
+    default: op
+    description: Permission to punch punchable players
+  discovsuite.punchable:
+    default: op
+    description: Makes the player punchable
+  discovsuite.watertp.bypass:
+    default: op
+    description: Permission to bypass water teleport

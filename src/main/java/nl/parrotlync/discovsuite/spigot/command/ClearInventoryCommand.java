@@ -16,7 +16,7 @@ public class ClearInventoryCommand implements CommandExecutor {
         }
         
         Player player = (Player) sender;
-        if (!player.hasPermission("discovsuite.command.ci")) {
+        if (!player.hasPermission("discovsuite.command.clearinventory")) {
             ChatUtil.sendConfigMessage(sender, "no-permission");
             return true;
         }

@@ -19,7 +19,7 @@ public class ModuleListener implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        if (player.hasPermission("discovsuite.override.watertp")) { return; }
+        if (player.hasPermission("discovsuite.watertp.bypass")) { return; }
         Location location = player.getLocation();
         if (location.getBlock().getType() == Material.STATIONARY_WATER || location.getBlock().getType() == Material.WATER) {
             World world = player.getWorld();

@@ -2,7 +2,6 @@ package nl.parrotlync.discovsuite.spigot.command;
 
 import nl.parrotlync.discovsuite.spigot.DiscovSuite;
 import nl.parrotlync.discovsuite.spigot.util.ChatUtil;
-import nl.parrotlync.discovsuite.spigot.util.PluginMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -25,7 +24,7 @@ public class LocalBroadcastCommand implements CommandExecutor {
 
         String message = DiscovSuite.getInstance().getConfig().getString("formats.broadcast") + String.join(" ", args);
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            if (onlinePlayer.hasPermission("discovsuite.broadcast.showsender")) {
+            if (onlinePlayer.hasPermission("discovsuite.chat.broadcast.showsender")) {
                 onlinePlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', message.replace("%{}%", sender.getName())));
             } else {
                 onlinePlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', message.replace("%{}%", "Information")));

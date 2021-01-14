@@ -74,7 +74,7 @@ public class ChatListener implements Listener {
         playerLeave = ChatColor.translateAlternateColorCodes('&', PlaceholderUtil.parse(event.getPlayer(), playerLeave));
         ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(playerLeave));
 
-        if (event.getPlayer().hasPermission("discovsuite.chat.staff") && !DiscovSuite.chatMuted) {
+        if (event.getPlayer().hasPermission("discovsuite.chat.staff")) {
             boolean staffOnline = false;
             String staffLeave = DiscovSuite.getInstance().getConfig().getString("formats.staff-leave");
             staffLeave = ChatColor.translateAlternateColorCodes('&', PlaceholderUtil.parse(event.getPlayer(), staffLeave));
@@ -85,7 +85,7 @@ public class ChatListener implements Listener {
                 }
             }
 
-            if (!staffOnline) {
+            if (!staffOnline && !DiscovSuite.chatMuted) {
                 ProxyServer.getInstance().getLogger().info("No online staff detected. Muting chat...");
                 String message = DiscovSuite.getInstance().getConfig().getString("messages.chat-muted");
                 message = ChatColor.translateAlternateColorCodes('&', message);
@@ -111,9 +111,9 @@ public class ChatListener implements Listener {
         String spyMsg = spyFormat.replaceAll("%SENDER%", event.getSender().getName());
         spyMsg = spyMsg.replaceAll("%RECEIVER%", event.getReceiver().getName());
         spyMsg = spyMsg.replaceAll("%MSG%", event.getMessage());
-        if (!event.getSender().hasPermission("discovsuite.socialspy.bypass")) {
+        if (!event.getSender().hasPermission("discovsuite.chat.socialspy.bypass")) {
             for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
-                if (player != event.getReceiver() && player != event.getSender() && player.hasPermission("discovsuite.socialspy")) {
+                if (player != event.getReceiver() && player != event.getSender()) {
                     player.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', spyMsg)));
                 }
             }

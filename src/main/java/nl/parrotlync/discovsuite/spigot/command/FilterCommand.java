@@ -14,7 +14,7 @@ public class FilterCommand implements TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!sender.hasPermission("discovsuite.chat.filter.update")) {
+        if (!sender.hasPermission("discovsuite.command.chatfilter")) {
             ChatUtil.sendConfigMessage(sender, "no-permission");
             return true;
         }

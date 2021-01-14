@@ -51,7 +51,7 @@ public class PluginMessageListener implements Listener {
             ProxyServer.getInstance().getLogger().info("BROADCAST (" + player +") > " + message);
 
             for (ProxiedPlayer onlinePlayer : ProxyServer.getInstance().getPlayers()) {
-                if (onlinePlayer.hasPermission("discovsuite.broadcast.showsender")) {
+                if (onlinePlayer.hasPermission("discovsuite.chat.broadcast.showsender")) {
                     onlinePlayer.sendMessage(TextComponent.fromLegacyText(message.replace("%{}%", player)));
                 } else {
                     onlinePlayer.sendMessage(TextComponent.fromLegacyText(message.replace("%{}%", "Information")));

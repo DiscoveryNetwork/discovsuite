@@ -23,7 +23,7 @@ public class EventListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         DiscovSuite.getInstance().getNicknameManager().load(event.getPlayer());
         DiscovSuite.getInstance().getBoardManager().init(event.getPlayer());
-        if (event.getPlayer().hasPermission("discovsuite.onjoin.fly")) {
+        if (event.getPlayer().hasPermission("discovsuite.fly.onjoin")) {
             event.getPlayer().setAllowFlight(true);
         }
 

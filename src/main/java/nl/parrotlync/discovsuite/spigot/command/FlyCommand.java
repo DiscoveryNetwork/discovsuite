@@ -53,7 +53,7 @@ public class FlyCommand implements TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         List<String> suggestions = new ArrayList<>();
 
-        if (args.length == 1 && sender.hasPermission("discovsuite.fly.others")) {
+        if (args.length == 1 && sender.hasPermission("discovsuite.command.fly.others")) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 suggestions.add(player.getName());
             }
