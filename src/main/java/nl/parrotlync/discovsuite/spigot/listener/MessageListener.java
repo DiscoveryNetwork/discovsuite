@@ -18,12 +18,12 @@ public class MessageListener implements PluginMessageListener {
     public void onPluginMessageReceived(String channel, Player player, byte[] bytes) {
         ByteArrayDataInput byteArrayDataInput = ByteStreams.newDataInput(bytes);
 
-        if (channel.equalsIgnoreCase("discovchat:filter")) {
+        if (channel.equalsIgnoreCase("dsuite:filter")) {
             DiscovSuite.getInstance().getChatFilter().fetchBannedWords();
             DiscovSuite.getInstance().getChatFilter().fetchExcludedWords();
         }
 
-        if (channel.equalsIgnoreCase("discovchat:mention")) {
+        if (channel.equalsIgnoreCase("dsuite:mention")) {
             UUID playerId = UUID.fromString(byteArrayDataInput.readUTF());
             String message = byteArrayDataInput.readUTF();
             Player mentionedPlayer = Bukkit.getPlayer(playerId);
