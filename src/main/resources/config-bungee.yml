@@ -2,6 +2,7 @@ messages:
   no-permission: "&cYou don't have permission for this command"
   player-only: "&cYou need to be a player to execute that command!"
   player-not-online: "&cThat player is not online!"
+  missing-arguments: "&cThe following arguments are missing: &7%s"
   protocol-accepted: "&aThank you for accepting! &7&oPlease be aware there may be bugs in the version you are using."
   protocol-accept-first: "&cPlease change your version or type &b/accept &cfirst!"
   data-fetch-error: "&cSomething went wrong while attempting to fetch data."
@@ -12,6 +13,7 @@ messages:
   chat-cleared: "[&3%{}%&f] &bChat has been cleared"
   default-swear-warning: "Please keep chat appropriate"
   chat-mentioned: "&aYou have been mentioned in chat!"
+  player-teleport: "&aTeleporting you to &b%s&a..."
 
 formats:
   msg-send: "&7&l[&c&l!&7&l] &r| &dYou &f-> %DISPLAYNAME%&f: %MSG%"

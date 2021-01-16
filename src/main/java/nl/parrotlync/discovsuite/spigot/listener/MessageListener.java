@@ -34,5 +34,13 @@ public class MessageListener implements PluginMessageListener {
                 mentionedPlayer.playSound(mentionedPlayer.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1F, 1F);
             }
         }
+
+        if (channel.equalsIgnoreCase("dsuite:teleport")) {
+            UUID targetId = UUID.fromString(byteArrayDataInput.readUTF());
+            Player target = Bukkit.getPlayer(targetId);
+            if (target != null) {
+                player.teleport(target);
+            }
+        }
     }
 }
