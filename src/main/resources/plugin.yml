@@ -100,6 +100,9 @@ permissions:
     description: Permission to use staff chat
   discovsuite.chat.management:
     description: Permission to use management chat
+  discovsuite.socialspy:
+    default: op
+    description: Permission to receive socialspy
   discovsuite.chat.socialspy.bypass:
     description: Bypass social spy for messages sent by this player
   discovsuite.chat.mute.bypass:
