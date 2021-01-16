@@ -119,6 +119,7 @@ public class DiscovSuite extends Plugin {
 
     private void updateConfig() {
         Configuration resource = new Configuration();
+        Configuration config = getConfig();
         try (InputStream in = getResourceAsStream("config.yml")) {
             resource = ConfigurationProvider.getProvider(YamlConfiguration.class).load(in);
         } catch (Exception e) {
@@ -126,11 +127,17 @@ public class DiscovSuite extends Plugin {
         }
 
         if (resource.contains("messages")) {
-            getConfig().set("messages", resource.getSection("messages"));
+            config.set("messages", resource.getSection("messages"));
         }
 
         if (resource.contains("formats")) {
-            getConfig().set("formats", resource.getSection("formats"));
+            config.set("formats", resource.getSection("formats"));
+        }
+
+        try {
+            ConfigurationProvider.getProvider(YamlConfiguration.class).save(config, new File(getDataFolder(), "config.yml"));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
