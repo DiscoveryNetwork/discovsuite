@@ -40,6 +40,7 @@ public class DiscovSuite extends Plugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
+        updateConfig();
 
         // Channels
         getProxy().registerChannel("dsuite:chat");
@@ -52,6 +53,7 @@ public class DiscovSuite extends Plugin {
         getProxy().registerChannel("dsuite:filter");
         getProxy().registerChannel("dsuite:mention");
         getProxy().registerChannel("dsuite:dpname");
+        getProxy().registerChannel("dsuite:teleport");
 
         // Database
         this.database = new DatabaseUtil(getConfig().getString("database.host"), getConfig().getString("database.username"),
@@ -78,6 +80,7 @@ public class DiscovSuite extends Plugin {
         getProxy().getPluginManager().registerCommand(this, new OnlineTimeCommand());
         getProxy().getPluginManager().registerCommand(this, new CheckTimeCommand());
         getProxy().getPluginManager().registerCommand(this, new SeenCommand());
+        getProxy().getPluginManager().registerCommand(this, new TeleportCommand());
         getLogger().info("DiscovSuite has started.");
     }
 
@@ -97,7 +100,6 @@ public class DiscovSuite extends Plugin {
         File file = new File(getDataFolder(), "config.yml");
 
         if (!file.exists()) {
-
             try (InputStream in = getResourceAsStream("config-bungee.yml")) {
                 Files.copy(in, file.toPath());
             } catch (IOException e) {
@@ -113,6 +115,23 @@ public class DiscovSuite extends Plugin {
             e.printStackTrace();
         }
         return new Configuration();
+    }
+
+    private void updateConfig() {
+        Configuration resource = new Configuration();
+        try (InputStream in = getResourceAsStream("config.yml")) {
+            resource = ConfigurationProvider.getProvider(YamlConfiguration.class).load(in);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (resource.contains("messages")) {
+            getConfig().set("messages", resource.getSection("messages"));
+        }
+
+        if (resource.contains("formats")) {
+            getConfig().set("formats", resource.getSection("formats"));
+        }
     }
 
     public User getLuckPermsUser(ProxiedPlayer player) {

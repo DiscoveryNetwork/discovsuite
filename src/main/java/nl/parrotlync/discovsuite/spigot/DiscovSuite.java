@@ -2,7 +2,6 @@ package nl.parrotlync.discovsuite.spigot;
 
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
-import net.md_5.bungee.api.ProxyServer;
 import nl.parrotlync.discovsuite.spigot.command.*;
 import nl.parrotlync.discovsuite.spigot.listener.*;
 import nl.parrotlync.discovsuite.spigot.manager.ChannelManager;
@@ -12,12 +11,16 @@ import nl.parrotlync.discovsuite.spigot.util.ChatFilter;
 import nl.parrotlync.discovsuite.spigot.util.DatabaseUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 
 public class DiscovSuite extends JavaPlugin {
     private static DiscovSuite instance;
@@ -37,6 +40,8 @@ public class DiscovSuite extends JavaPlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
+        updateConfig();
+        reloadConfig();
 
         // Channels
         getServer().getMessenger().registerOutgoingPluginChannel(this, "dsuite:chat");
@@ -51,6 +56,7 @@ public class DiscovSuite extends JavaPlugin {
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         getServer().getMessenger().registerIncomingPluginChannel(this, "dsuite:filter", new MessageListener());
         getServer().getMessenger().registerIncomingPluginChannel(this, "dsuite:mention", new MessageListener());
+        getServer().getMessenger().registerIncomingPluginChannel(this, "dsuite:teleport", new MessageListener());
 
         // Database
         this.database = new DatabaseUtil(getConfig().getString("database.host"), getConfig().getString("database.username"),
@@ -156,6 +162,30 @@ public class DiscovSuite extends JavaPlugin {
 
     public boolean getPlaceholderSupport() {
         return getServer().getPluginManager().getPlugin("PlaceholderAPI") != null;
+    }
+
+    private void updateConfig() {
+        YamlConfiguration resource = new YamlConfiguration();
+        try (InputStream in = getResource("config.yml")) {
+            resource.loadFromString(stringFromInputStream(in));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (resource.isSet("messages")) {
+            ConfigurationSection messages = resource.getConfigurationSection("messages");
+            getConfig().set("messages", messages);
+        }
+
+        if (resource.isSet("formats")) {
+            ConfigurationSection formats = resource.getConfigurationSection("formats");
+            getConfig().set("formats", formats);
+        }
+        saveConfig();
+    }
+
+    private String stringFromInputStream(InputStream in) {
+        return new Scanner(in).useDelimiter("\\A").next();
     }
 
     public static DiscovSuite getInstance() {
