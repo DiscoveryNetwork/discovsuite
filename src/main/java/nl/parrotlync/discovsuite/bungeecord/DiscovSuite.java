@@ -15,6 +15,7 @@ import nl.parrotlync.discovsuite.bungeecord.listener.PluginMessageListener;
 import nl.parrotlync.discovsuite.bungeecord.listener.ProtocolListener;
 import nl.parrotlync.discovsuite.bungeecord.manager.ConversationManager;
 import nl.parrotlync.discovsuite.bungeecord.util.DatabaseUtil;
+import nl.parrotlync.discovsuite.bungeecord.util.PlayerCache;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,18 +30,19 @@ public class DiscovSuite extends Plugin {
     public static boolean chatMuted = true;
     private final HashMap<UUID, Date> sessions;
     private final ConversationManager conversationManager;
+    private final PlayerCache playerCache;
     private DatabaseUtil database;
 
     public DiscovSuite() {
         instance = this;
         sessions = new HashMap<>();
         conversationManager = new ConversationManager();
+        playerCache = new PlayerCache();
     }
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
-        updateConfig();
 
         // Channels
         getProxy().registerChannel("dsuite:chat");
@@ -68,6 +70,9 @@ public class DiscovSuite extends Plugin {
                e.printStackTrace();
            }
         });
+
+        // Managers
+        playerCache.load();
 
         // Listeners & Commands
         getProxy().getPluginManager().registerListener(this, new ProtocolListener());
@@ -117,30 +122,6 @@ public class DiscovSuite extends Plugin {
         return new Configuration();
     }
 
-    private void updateConfig() {
-        Configuration resource = new Configuration();
-        Configuration config = getConfig();
-        try (InputStream in = getResourceAsStream("config.yml")) {
-            resource = ConfigurationProvider.getProvider(YamlConfiguration.class).load(in);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (resource.contains("messages")) {
-            config.set("messages", resource.getSection("messages"));
-        }
-
-        if (resource.contains("formats")) {
-            config.set("formats", resource.getSection("formats"));
-        }
-
-        try {
-            ConfigurationProvider.getProvider(YamlConfiguration.class).save(config, new File(getDataFolder(), "config.yml"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public User getLuckPermsUser(ProxiedPlayer player) {
         if (ProxyServer.getInstance().getPluginManager().getPlugin("LuckPerms") != null) {
             return LuckPermsProvider.get().getUserManager().getUser(player.getUniqueId());
@@ -151,6 +132,8 @@ public class DiscovSuite extends Plugin {
     public ConversationManager getConversationManager() {
         return conversationManager;
     }
+
+    public PlayerCache getPlayerCache() { return playerCache; }
 
     public static DiscovSuite getInstance() {
         return instance;
