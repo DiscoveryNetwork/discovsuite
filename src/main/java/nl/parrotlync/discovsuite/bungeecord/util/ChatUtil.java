@@ -21,7 +21,7 @@ public class ChatUtil {
     }
 
     public static void sendMissingArguments(CommandSender sender, String[] arguments) {
-        String message = nl.parrotlync.discovsuite.spigot.DiscovSuite.getInstance().getConfig().getString("messages.missing-arguments");
+        String message = DiscovSuite.getInstance().getConfig().getString("messages.missing-arguments");
         message = ChatColor.translateAlternateColorCodes('&', String.format(message, Arrays.toString(arguments)));
         sender.sendMessage(TextComponent.fromLegacyText(message));
     }
