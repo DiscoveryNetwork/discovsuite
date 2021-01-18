@@ -1,9 +1,11 @@
 package nl.parrotlync.discovsuite.bungeecord.listener;
 
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
+import net.md_5.bungee.api.event.ServerKickEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import nl.parrotlync.discovsuite.bungeecord.DiscovSuite;
@@ -39,5 +41,14 @@ public class PlayerListener implements Listener {
                 e.printStackTrace();
             }
         });
+    }
+
+    @EventHandler
+    public void onServerKick(ServerKickEvent event) {
+        ServerInfo defaultServer = ProxyServer.getInstance().getServerInfo(DiscovSuite.getInstance().getConfig().getString("default-server"));
+        if (defaultServer != null && event.getKickedFrom() != defaultServer) {
+            event.setCancelServer(defaultServer);
+            event.setCancelled(true);
+        }
     }
 }

@@ -1,3 +1,5 @@
+default-server: Hub
+
 messages:
   no-permission: "&cYou don't have permission for this command"
   player-only: "&cYou need to be a player to execute that command!"
