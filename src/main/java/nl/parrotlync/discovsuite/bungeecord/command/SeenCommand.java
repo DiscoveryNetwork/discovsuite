@@ -4,10 +4,16 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.plugin.Command;
+import net.md_5.bungee.api.plugin.TabExecutor;
 import nl.parrotlync.discovsuite.bungeecord.DiscovSuite;
 import nl.parrotlync.discovsuite.bungeecord.util.ChatUtil;
 
-public class SeenCommand extends Command {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Locale;
+import java.util.stream.Collectors;
+
+public class SeenCommand extends Command implements TabExecutor {
 
     public SeenCommand() {
         super("seen", "discovsuite.command.seen");
@@ -35,5 +41,15 @@ public class SeenCommand extends Command {
                 e.printStackTrace();
             }
         });
+    }
+
+    @Override
+    public Iterable<String> onTabComplete(final CommandSender sender, final String[] args)
+    {
+        if (args.length != 2) {
+            return Collections.emptyList();
+        } else {
+            return DiscovSuite.getInstance().getPlayerCache().getPlayers().stream().filter(input -> input.toLowerCase(Locale.ROOT).startsWith(args[1].toLowerCase(Locale.ROOT))).collect(Collectors.toCollection(ArrayList::new));
+        }
     }
 }

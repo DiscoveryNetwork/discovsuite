@@ -1,6 +1,5 @@
 package nl.parrotlync.discovsuite.bungeecord.command;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -11,6 +10,7 @@ import nl.parrotlync.discovsuite.bungeecord.event.PrivateMessageEvent;
 
 import java.util.Collections;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class MessageCommand extends Command implements TabExecutor {
 
@@ -30,13 +30,10 @@ public class MessageCommand extends Command implements TabExecutor {
 
     @Override
     public Iterable<String> onTabComplete(final CommandSender sender, final String[] args) {
-        return (args.length > 1) ? Collections.EMPTY_LIST : Iterables.transform(Iterables.filter(ProxyServer.getInstance().getPlayers(), new Predicate<ProxiedPlayer>() {
-            private final String lower = (args.length == 0) ? "" : args[0].toLowerCase(Locale.ROOT);
-
-            @Override
-            public boolean apply(ProxiedPlayer proxiedPlayer) {
-                return proxiedPlayer.getName().toLowerCase(Locale.ROOT).startsWith(lower);
-            }
-        }), CommandSender::getName);
+        if (args.length == 2) {
+            return Collections.emptyList();
+        } else {
+            return Iterables.transform(ProxyServer.getInstance().getPlayers().stream().filter(proxiedPlayer -> proxiedPlayer.getName().toLowerCase(Locale.ROOT).startsWith(args[args.length - 1].toLowerCase(Locale.ROOT))).collect(Collectors.toList()), CommandSender::getName);
+        }
     }
 }

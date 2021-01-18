@@ -5,12 +5,17 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
+import net.md_5.bungee.api.plugin.TabExecutor;
 import nl.parrotlync.discovsuite.bungeecord.DiscovSuite;
 import nl.parrotlync.discovsuite.bungeecord.util.ChatUtil;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
-public class CheckTimeCommand extends Command {
+public class CheckTimeCommand extends Command implements TabExecutor {
 
     public CheckTimeCommand() {
         super("checktime", "discovsuite.command.checktime");
@@ -45,6 +50,16 @@ public class CheckTimeCommand extends Command {
                 e.printStackTrace();
             }
         });
+    }
+
+    @Override
+    public Iterable<String> onTabComplete(final CommandSender sender, final String[] args)
+    {
+        if (args.length != 2) {
+            return Collections.emptyList();
+        } else {
+            return DiscovSuite.getInstance().getPlayerCache().getPlayers().stream().filter(input -> input.toLowerCase(Locale.ROOT).startsWith(args[1].toLowerCase(Locale.ROOT))).collect(Collectors.toCollection(ArrayList::new));
+        }
     }
 
     private int[] getTimes(int total) {

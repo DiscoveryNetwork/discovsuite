@@ -1,6 +1,5 @@
 package nl.parrotlync.discovsuite.bungeecord.command;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
@@ -13,6 +12,7 @@ import nl.parrotlync.discovsuite.bungeecord.util.ChatUtil;
 
 import java.util.Collections;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class TeleportCommand extends Command implements TabExecutor {
 
@@ -52,19 +52,17 @@ public class TeleportCommand extends Command implements TabExecutor {
 
         ChatUtil.sendConfigMessage(player, "player-teleport", target.getName());
         ByteArrayDataOutput byteArrayDataOutput = ByteStreams.newDataOutput();
+        byteArrayDataOutput.writeUTF(player.getUniqueId().toString());
         byteArrayDataOutput.writeUTF(target.getUniqueId().toString());
-        player.getServer().sendData("dsuite:teleport", byteArrayDataOutput.toByteArray());
+        player.getServer().getInfo().sendData("dsuite:teleport", byteArrayDataOutput.toByteArray());
     }
 
     @Override
     public Iterable<String> onTabComplete(final CommandSender sender, final String[] args) {
-        return (args.length == 0 || args.length > 2) ? Collections.EMPTY_LIST : Iterables.transform(Iterables.filter(ProxyServer.getInstance().getPlayers(), new Predicate<ProxiedPlayer>() {
-            private final String lower = args[args.length - 1].toLowerCase(Locale.ROOT);
-
-            @Override
-            public boolean apply(ProxiedPlayer proxiedPlayer) {
-                return proxiedPlayer.getName().toLowerCase(Locale.ROOT).startsWith(lower);
-            }
-        }), CommandSender::getName);
+        if (args.length == 0 || args.length > 2) {
+            return Collections.emptyList();
+        } else {
+            return Iterables.transform(ProxyServer.getInstance().getPlayers().stream().filter(proxiedPlayer -> proxiedPlayer.getName().toLowerCase(Locale.ROOT).startsWith(args[args.length - 1].toLowerCase(Locale.ROOT))).collect(Collectors.toList()), CommandSender::getName);
+        }
     }
 }
