@@ -46,10 +46,10 @@ public class SeenCommand extends Command implements TabExecutor {
     @Override
     public Iterable<String> onTabComplete(final CommandSender sender, final String[] args)
     {
-        if (args.length != 2) {
+        if (args.length != 1) {
             return Collections.emptyList();
         } else {
-            return DiscovSuite.getInstance().getPlayerCache().getPlayers().stream().filter(input -> input.toLowerCase(Locale.ROOT).startsWith(args[1].toLowerCase(Locale.ROOT))).collect(Collectors.toCollection(ArrayList::new));
+            return DiscovSuite.getInstance().getPlayerCache().getPlayers().stream().filter(input -> input.toLowerCase(Locale.ROOT).startsWith(args[0].toLowerCase(Locale.ROOT))).collect(Collectors.toCollection(ArrayList::new));
         }
     }
 }
