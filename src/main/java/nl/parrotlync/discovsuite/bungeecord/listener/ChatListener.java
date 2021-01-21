@@ -44,7 +44,7 @@ public class ChatListener implements Listener {
         if (!event.isCommand() && !event.isProxyCommand()) {
             for (ProxiedPlayer onlinePlayer : ProxyServer.getInstance().getPlayers()) {
                 if (event.getMessage().toLowerCase().contains(onlinePlayer.getName().toLowerCase())) {
-                    String replacement = PlaceholderUtil.parse(onlinePlayer, "&9%NAME%%SUFFIX%").replaceAll("&", "~");
+                    String replacement = (PlaceholderUtil.parse(onlinePlayer, "&9%NAME%") + PlaceholderUtil.parse(player, "%SUFFIX%")).replaceAll("&", "~");
                     event.setMessage(event.getMessage().replaceAll("(?i)" + onlinePlayer.getName(), replacement));
                     mentionPlayer(onlinePlayer);
                 }
