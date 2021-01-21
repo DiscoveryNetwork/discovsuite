@@ -74,6 +74,9 @@ commands:
   warps:
     usage: /warps
     description: Get a list of all warps
+  wake:
+    usage: /wake <player>
+    description: Wake someone up
 permissions:
   discovsuite.command.broadcast:
     default: op

@@ -127,6 +127,7 @@ public class DiscovSuite extends JavaPlugin {
         getCommand("nearby").setExecutor(new NearbyCommand());
         getCommand("warps").setExecutor(new WarpsCommand());
         getCommand("randomwarp").setExecutor(new RandomWarpCommand());
+        getCommand("wake").setExecutor(new WakeCommand());
         getLogger().info("DiscovSuite is now enabled!");
     }
 
