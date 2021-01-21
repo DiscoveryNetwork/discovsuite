@@ -1,7 +1,6 @@
 package nl.parrotlync.discovsuite.bungeecord.listener;
 
 import com.google.common.io.ByteArrayDataInput;
-import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
@@ -9,7 +8,6 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.connection.Server;
 import net.md_5.bungee.api.event.PluginMessageEvent;
@@ -126,24 +124,17 @@ public class PluginMessageListener implements Listener {
             ProxiedPlayer player = ProxyServer.getInstance().getPlayer(UUID.fromString(uuid));
             ProxyServer.getInstance().getLogger().info("CHATFILTER (" + player.getName() + ") > " + message);
             String notice = PlaceholderUtil.parse(player, DiscovSuite.getInstance().getConfig().getString("formats.swear-notice"));
+            notice = ChatColor.translateAlternateColorCodes('&', notice);
             String command = "/warn " + player.getName() + " " + DiscovSuite.getInstance().getConfig().getString("messages.default-swear-warning");
             TextComponent text = new TextComponent(notice);
             text.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
             String hoverMsg = PlaceholderUtil.parse(player, DiscovSuite.getInstance().getConfig().getString("formats.swear-hover-warning"));
+            hoverMsg = ChatColor.translateAlternateColorCodes('&', hoverMsg);
             text.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverMsg).create()));
 
             for (ProxiedPlayer onlinePlayer : ProxyServer.getInstance().getPlayers()) {
                 if (onlinePlayer.hasPermission("discovsuite.chat.filter.notice")) {
                     onlinePlayer.sendMessage(text);
-                }
-            }
-        }
-
-        if (event.getTag().equalsIgnoreCase("dsuite:filter")) {
-            ByteArrayDataOutput byteArrayDataOutput = ByteStreams.newDataOutput();
-            for (ServerInfo server : ProxyServer.getInstance().getServers().values()) {
-                if (server.getPlayers() != null && !server.getPlayers().isEmpty()) {
-                    server.sendData("dsuite:filter", byteArrayDataOutput.toByteArray());
                 }
             }
         }

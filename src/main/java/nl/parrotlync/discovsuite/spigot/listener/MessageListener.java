@@ -5,11 +5,15 @@ import com.google.common.io.ByteStreams;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import nl.parrotlync.discovsuite.spigot.DiscovSuite;
+import nl.parrotlync.discovsuite.spigot.model.Warp;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.util.UUID;
 
 public class MessageListener implements PluginMessageListener {
@@ -18,10 +22,12 @@ public class MessageListener implements PluginMessageListener {
     public void onPluginMessageReceived(String channel, Player player, byte[] bytes) {
         ByteArrayDataInput byteArrayDataInput = ByteStreams.newDataInput(bytes);
 
-        if (channel.equalsIgnoreCase("dsuite:filter")) {
-            DiscovSuite.getInstance().getChatFilter().fetchBannedWords();
-            DiscovSuite.getInstance().getChatFilter().fetchExcludedWords();
+        if (channel.equalsIgnoreCase("BungeeCord")) {
+            String subChannel = byteArrayDataInput.readUTF();
+            if (subChannel.startsWith("dsuite:")) { channel = subChannel; }
         }
+
+        if (!channel.startsWith("dsuite:")) { return; }
 
         if (channel.equalsIgnoreCase("dsuite:mention")) {
             UUID playerId = UUID.fromString(byteArrayDataInput.readUTF());
@@ -36,11 +42,38 @@ public class MessageListener implements PluginMessageListener {
         }
 
         if (channel.equalsIgnoreCase("dsuite:teleport")) {
-            UUID targetId = UUID.fromString(byteArrayDataInput.readUTF());
-            Player target = Bukkit.getPlayer(targetId);
+            UUID teleportPlayer = UUID.fromString(byteArrayDataInput.readUTF());
+            Player target = Bukkit.getPlayer(UUID.fromString(byteArrayDataInput.readUTF()));
             if (target != null) {
-                player.teleport(target);
+                if (Bukkit.getPlayer(teleportPlayer) != null) {
+                    Bukkit.getPlayer(teleportPlayer).teleport(target);
+                } else {
+                    DiscovSuite.getInstance().getTeleportManager().queue(teleportPlayer, target);
+                }
             }
+        }
+
+        if (channel.equalsIgnoreCase("dsuite:warp")) {
+            byte[] data = new byte[byteArrayDataInput.readShort()];
+            byteArrayDataInput.readFully(data);
+            DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(data));
+
+            try {
+                UUID teleportPlayer = UUID.fromString(inputStream.readUTF());
+                Warp warp = DiscovSuite.getInstance().getWarpManager().getWarp(inputStream.readUTF());
+                if (warp != null) {
+                    DiscovSuite.getInstance().getTeleportManager().queue(teleportPlayer, warp);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (channel.equalsIgnoreCase("dsuite:update")) {
+            DiscovSuite.getInstance().getLogger().info("Received update command through BungeeCord");
+            DiscovSuite.getInstance().getChatFilter().fetchBannedWords();
+            DiscovSuite.getInstance().getChatFilter().fetchExcludedWords();
+            DiscovSuite.getInstance().getWarpManager().load();
         }
     }
 }
