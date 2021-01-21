@@ -12,7 +12,6 @@ import nl.parrotlync.discovsuite.bungeecord.command.*;
 import nl.parrotlync.discovsuite.bungeecord.listener.ChatListener;
 import nl.parrotlync.discovsuite.bungeecord.listener.PlayerListener;
 import nl.parrotlync.discovsuite.bungeecord.listener.PluginMessageListener;
-import nl.parrotlync.discovsuite.bungeecord.listener.ProtocolListener;
 import nl.parrotlync.discovsuite.bungeecord.manager.ConversationManager;
 import nl.parrotlync.discovsuite.bungeecord.util.DatabaseUtil;
 import nl.parrotlync.discovsuite.bungeecord.util.PlayerCache;
@@ -21,15 +20,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 public class DiscovSuite extends Plugin {
     private static DiscovSuite instance;
     public static boolean chatMuted = true;
     private final HashMap<UUID, Date> sessions;
     private final ConversationManager conversationManager;
+    private final List<ProxiedPlayer> blockedPlayers = new ArrayList<>();
     private final PlayerCache playerCache;
     private DatabaseUtil database;
 
@@ -75,7 +73,6 @@ public class DiscovSuite extends Plugin {
         playerCache.load();
 
         // Listeners & Commands
-        getProxy().getPluginManager().registerListener(this, new ProtocolListener());
         getProxy().getPluginManager().registerListener(this, new PlayerListener());
         getProxy().getPluginManager().registerListener(this, new ChatListener());
         getProxy().getPluginManager().registerListener(this, new PluginMessageListener());
@@ -134,6 +131,10 @@ public class DiscovSuite extends Plugin {
     }
 
     public PlayerCache getPlayerCache() { return playerCache; }
+
+    public List<ProxiedPlayer> getBlockedPlayers() {
+        return blockedPlayers;
+    }
 
     public static DiscovSuite getInstance() {
         return instance;

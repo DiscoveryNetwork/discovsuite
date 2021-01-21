@@ -31,6 +31,10 @@ public class PlayerCache {
         }
     }
 
+    public boolean hasPlayer(ProxiedPlayer player) {
+        return players.contains(player.getName());
+    }
+
     public List<String> getPlayers() {
         return players;
     }

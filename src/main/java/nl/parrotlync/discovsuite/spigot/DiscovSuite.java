@@ -3,9 +3,14 @@ package nl.parrotlync.discovsuite.spigot;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
 import nl.parrotlync.discovsuite.spigot.command.*;
-import nl.parrotlync.discovsuite.spigot.listener.*;
+import nl.parrotlync.discovsuite.spigot.listener.ChatListener;
+import nl.parrotlync.discovsuite.spigot.listener.EventListener;
+import nl.parrotlync.discovsuite.spigot.listener.LuckPermsListener;
+import nl.parrotlync.discovsuite.spigot.listener.MessageListener;
 import nl.parrotlync.discovsuite.spigot.manager.ChannelManager;
 import nl.parrotlync.discovsuite.spigot.manager.NicknameManager;
+import nl.parrotlync.discovsuite.spigot.manager.TeleportManager;
+import nl.parrotlync.discovsuite.spigot.manager.WarpManager;
 import nl.parrotlync.discovsuite.spigot.scoreboard.BoardManager;
 import nl.parrotlync.discovsuite.spigot.util.ChatFilter;
 import nl.parrotlync.discovsuite.spigot.util.DatabaseUtil;
@@ -15,9 +20,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -29,12 +32,16 @@ public class DiscovSuite extends JavaPlugin {
     private final ChatFilter chatFilter;
     private final NicknameManager nicknameManager;
     private final ChannelManager channelManager;
+    private final WarpManager warpManager;
+    private final TeleportManager teleportManager;
 
     public DiscovSuite() {
         instance = this;
         chatFilter = new ChatFilter();
         nicknameManager = new NicknameManager();
         channelManager = new ChannelManager();
+        warpManager = new WarpManager();
+        teleportManager = new TeleportManager();
     }
 
     @Override
@@ -54,6 +61,7 @@ public class DiscovSuite extends JavaPlugin {
         getServer().getMessenger().registerOutgoingPluginChannel(this, "dsuite:filter");
         getServer().getMessenger().registerOutgoingPluginChannel(this, "dsuite:dpname");
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new MessageListener());
         getServer().getMessenger().registerIncomingPluginChannel(this, "dsuite:filter", new MessageListener());
         getServer().getMessenger().registerIncomingPluginChannel(this, "dsuite:mention", new MessageListener());
         getServer().getMessenger().registerIncomingPluginChannel(this, "dsuite:teleport", new MessageListener());
@@ -71,9 +79,10 @@ public class DiscovSuite extends JavaPlugin {
             }
         });
 
-        // Chat filter
+        // Init
         chatFilter.fetchBannedWords();
         chatFilter.fetchExcludedWords();
+        warpManager.load();
 
         // Scoreboard
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
@@ -98,7 +107,6 @@ public class DiscovSuite extends JavaPlugin {
 
         // Commands & Listeners
         getServer().getPluginManager().registerEvents(new EventListener(), this);
-        getServer().getPluginManager().registerEvents(new ModuleListener(), this);
         getServer().getPluginManager().registerEvents(new ChatListener(), this);
         getCommand("fly").setExecutor(new FlyCommand());
         getCommand("speed").setExecutor(new SpeedCommand());
@@ -110,9 +118,15 @@ public class DiscovSuite extends JavaPlugin {
         getCommand("clearchat").setExecutor(new ClearChatCommand());
         getCommand("mutechat").setExecutor(new MuteChatCommand());
         getCommand("nick").setExecutor(new NicknameCommand());
-        getCommand("chatfilter").setExecutor(new FilterCommand());
+        getCommand("chatfilter").setExecutor(new ChatFilterCommand());
         getCommand("localchat").setExecutor(new LocalChatCommand());
         getCommand("localbroadcast").setExecutor(new LocalBroadcastCommand());
+        getCommand("warp").setExecutor(new WarpCommand());
+        getCommand("setwarp").setExecutor(new SetWarpCommand());
+        getCommand("delwarp").setExecutor(new DelWarpCommand());
+        getCommand("nearby").setExecutor(new NearbyCommand());
+        getCommand("warps").setExecutor(new WarpsCommand());
+        getCommand("randomwarp").setExecutor(new RandomWarpCommand());
         getLogger().info("DiscovSuite is now enabled!");
     }
 
@@ -127,14 +141,6 @@ public class DiscovSuite extends JavaPlugin {
 
     public BoardManager getBoardManager() {
         return boardManager;
-    }
-
-    public List<String> getDisabledWorlds() {
-        if (getConfig().getStringList("punch-disabled-worlds") != null) {
-            return getConfig().getStringList("punch-disabled-worlds");
-        } else {
-            return new ArrayList<>();
-        }
     }
 
     public DatabaseUtil getDatabase() {
@@ -152,6 +158,10 @@ public class DiscovSuite extends JavaPlugin {
     public ChannelManager getChannelManager() {
         return channelManager;
     }
+
+    public WarpManager getWarpManager() { return warpManager; }
+
+    public TeleportManager getTeleportManager() { return teleportManager; }
 
     public User getLuckPermsUser(Player player) {
         if (getServer().getPluginManager().getPlugin("LuckPerms") != null) {

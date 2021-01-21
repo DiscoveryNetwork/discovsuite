@@ -2,6 +2,7 @@ package nl.parrotlync.discovsuite.spigot.util;
 
 import com.google.common.collect.Iterables;
 import nl.parrotlync.discovsuite.spigot.DiscovSuite;
+import nl.parrotlync.discovsuite.spigot.model.Warp;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -67,11 +68,6 @@ public class PluginMessage {
         }
 
         player.sendPluginMessage(DiscovSuite.getInstance(), "dsuite:mute", byteArrayOutputStream.toByteArray());
-    }
-
-    public static void updateFilter() {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        getRandomPlayer().sendPluginMessage(DiscovSuite.getInstance(), "dsuite:filter", byteArrayOutputStream.toByteArray());
     }
 
     public static void sendStaffAlert(CommandSender sender, String message) {
@@ -146,6 +142,65 @@ public class PluginMessage {
         }
 
         player.sendPluginMessage(DiscovSuite.getInstance(), "dsuite:notice", byteArrayOutputStream.toByteArray());
+    }
+
+    public static void connect(Player player, String server) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+
+        try {
+            dataOutputStream.writeUTF("Connect");
+            dataOutputStream.writeUTF(server);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        player.sendPluginMessage(DiscovSuite.getInstance(), "BungeeCord", byteArrayOutputStream.toByteArray());
+    }
+
+    public static void update() {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+
+        try {
+            dataOutputStream.writeUTF("Forward");
+            dataOutputStream.writeUTF("ALL");
+            dataOutputStream.writeUTF("dsuite:update");
+
+            byte[] data = "".getBytes();
+            dataOutputStream.writeShort(data.length);
+            dataOutputStream.write(data);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        getRandomPlayer().sendPluginMessage(DiscovSuite.getInstance(), "BungeeCord", byteArrayOutputStream.toByteArray());
+    }
+
+    public static void warp(Player player, Warp warp) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+
+        ByteArrayOutputStream msgBytes = new ByteArrayOutputStream();
+        DataOutputStream msgOut = new DataOutputStream(msgBytes);
+
+        try {
+            dataOutputStream.writeUTF("Forward");
+            dataOutputStream.writeUTF(warp.getServer());
+            dataOutputStream.writeUTF("dsuite:warp");
+
+            msgOut.writeUTF(player.getUniqueId().toString());
+            msgOut.writeUTF(warp.getName());
+
+            dataOutputStream.writeShort(msgBytes.toByteArray().length);
+            dataOutputStream.write(msgBytes.toByteArray());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        player.sendPluginMessage(DiscovSuite.getInstance(), "BungeeCord", byteArrayOutputStream.toByteArray());
+        connect(player, warp.getServer());
     }
 
     private static Player getRandomPlayer() {
