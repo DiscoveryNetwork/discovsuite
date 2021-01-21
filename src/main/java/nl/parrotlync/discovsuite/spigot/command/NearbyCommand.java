@@ -12,6 +12,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.TreeMap;
 
 public class NearbyCommand implements CommandExecutor {
 
@@ -28,11 +29,11 @@ public class NearbyCommand implements CommandExecutor {
             return true;
         }
 
-        List<Warp> warps = DiscovSuite.getInstance().getWarpManager().getNearbyWarps(player.getLocation());
+        TreeMap<Double, Warp> warps = DiscovSuite.getInstance().getWarpManager().getNearbyWarps(player.getLocation());
         if (warps.size() != 0) {
             ChatUtil.sendConfigMessage(player, "nearby-warps-title");
             String item = ChatColor.translateAlternateColorCodes('&', DiscovSuite.getInstance().getConfig().getString("messages.nearby-warps-item"));
-            for (Warp warp : warps) {
+            for (Warp warp : warps.values()) {
                 if (warp.canAccess(player)) {
                     TextComponent main = new TextComponent(String.format(item, warp.getName()));
                     main.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/warp " + warp.getName()));

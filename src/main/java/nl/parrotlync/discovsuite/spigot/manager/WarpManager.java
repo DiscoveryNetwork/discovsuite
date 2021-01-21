@@ -8,9 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class WarpManager {
     private final HashMap<String, Warp> warps = new HashMap<>();
@@ -96,14 +94,15 @@ public class WarpManager {
         });
     }
 
-    public List<Warp> getNearbyWarps(Location location) {
-        List<Warp> nearbyWarps = new ArrayList<>();
+    public TreeMap<Double, Warp> getNearbyWarps(Location location) {
+       TreeMap<Double, Warp> nearbyWarps = new TreeMap<>();
 
         for (Warp warp : warps.values()) {
             if (warp.isLocal() && warp.getLocation().getWorld() == location.getWorld() && location.distance(warp.getLocation()) <= 200) {
-                nearbyWarps.add(warp);
+                nearbyWarps.put(location.distance(warp.getLocation()), warp);
             }
         }
+
         return nearbyWarps;
     }
 
