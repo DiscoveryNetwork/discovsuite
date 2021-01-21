@@ -4,6 +4,7 @@ messages:
   no-permission: "&cYou don't have permission for this command"
   player-only: "&cYou need to be a player to execute that command!"
   missing-arguments: "&cThe following arguments are missing: &7%s"
+  player-not-found: "&cThat player was not found"
   inventory-clear: "&eYour inventory has been cleared"
   flight-enabled: "&aYou can fly! You can &ofly! &r&aYou can &lfly!"
   flight-disabled: "&cFlight has been disabled"
@@ -14,6 +15,18 @@ messages:
   add-banned-word: "&b%s &ahas been added to the swear filter!"
   add-excluded-word: "&b%s &ahas been added as an excluded word!"
   nickname-changed: "&aYour nickname is now: &b%s"
+  invalid-group: "&f[&9Transport&f] &cPlease enter a valid rank"
+  warp-created: "&f[&9Transport&f] &aCreated warp &b%s &afor &b%s+"
+  warp-already-exists: "&f[&9Transport&f] &cA warp with that name already exists"
+  warp-no-permission: "&f[&9Transport&f] &cYou must be &b%s+ &cto access that warp"
+  invalid-warp: "&f[&9Transport&f] &cThat warp doesn't exist"
+  warp-teleported: "&f[&9Transport&f] &7You have arrived at &f[&b%s&f]"
+  no-warps-found: "&f[&9Transport&f] &cNo warps were found"
+  warp-removed: "&f[&9Transport&f] &cYou have deleted the warp &b%s"
+  nearby-warps-title: "&bAll warps within &a200 blocks &b&o(Click to warp) &r&b:"
+  nearby-warps-item: "&f- &e%s"
+  warps-title: "&bWarp list"
+  warps-item: "&e%s"
 
 formats:
   chat-global: "&f[&d%SERVER%&f] %DISPLAYNAME% &f> %SUFFIX%"
@@ -33,30 +46,33 @@ disable-join-quit-messages: true
 water-teleport-enabled-worlds: []
 cauldron-bins-enabled-worlds: []
 punch-disabled-worlds: []
+nearest-warp-teleport-disabled-worlds: []
 
 scoreboard-settings:
   interval: 50
   max-length: 26
   title: '&dDiscovNetwork'
-scoreboard-content: # Please note that double values will not work.
-  1:
+
+scoreboard-content:
+  '1':
     - '&m{fill}'
-  2:
+  '2':
     - '&dYour rank:'
-  3:
-    - '%vault_prefix%'
-  4:
-    - '  '
-  5:
+  '3':
+    - '%luckperms_prefix_element_highest%'
+  '4':
     - '&dCurrent Server:'
-  6:
+  '5':
     - '&f{server}'
-  7:
+  '6':
     - ' '
-  8:
-    - '&a&o%bungee_total% &r&bplayers Online!'
-    - '&a&o%server_online% &r&bplayers on {server}!'
-  9:
+  '7':
+    - '&e$ &f%vault_eco_balance%'
+  '8':
+    - '  '
+  '9':
+    - '&a%bungee_total% &bplayers Online!'
+  '10':
     - '&f&m{fill}'
-  10:
+  '11':
     - '&bdiscov.network'

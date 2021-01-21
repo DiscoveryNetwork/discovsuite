@@ -1,6 +1,6 @@
 main: nl.parrotlync.discovsuite.spigot.DiscovSuite
 name: DiscovSuite
-version: 2.0
+version: 2.1
 description: Suite with default functionality for the Discovery Network
 softdepend: [PlaceholderAPI, LuckPerms]
 author: ParrotLync
@@ -55,6 +55,25 @@ commands:
     usage: /localbroadcast <message>
     description: Broadcast a message on your server
     aliases: [lbc]
+  warp:
+    usage: /warp <name>
+    description: Warp to a location
+  randomwarp:
+    usage: /randomwarp
+    description: Teleport to a random warp
+  setwarp:
+    usage: /setwarp <name>
+    description: Creates a new warp at your current location
+  delwarp:
+    usage: /delwarp <name>
+    description: Deletes a warp
+  nearby:
+    usage: /nearby
+    description: Get a list of nearby warps
+    aliases: [near]
+  warps:
+    usage: /warps
+    description: Get a list of all warps
 permissions:
   discovsuite.command.broadcast:
     default: op
@@ -92,6 +111,27 @@ permissions:
   discovsuite.command.wake:
     default: op
     description: Permission to use the /wake command
+  discovsuite.command.warp:
+    default: op
+    description: Permission to use the /warp command
+  discovsuite.command.warp.others:
+    default: op
+    description: Permission to use the /warp command for other players
+  discovsuite.command.setwarp:
+    default: op
+    description: Permission to use the /setwarp command
+  discovsuite.command.delwarp:
+    default: op
+    description: Permission to use the /delwarp command
+  discovsuite.command.warps:
+    default: op
+    description: Permission to use the /warps command
+  discovsuite.command.randomwarp:
+    default: op
+    description: Permission to use the /randomwarp command
+  discovsuite.command.nearby:
+    default: op
+    description: Permission to use the /nearby command
   discovsuite.chat.local:
     default: op
     description: Permission to use local chat

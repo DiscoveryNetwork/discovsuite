@@ -15,7 +15,7 @@ messages:
   chat-cleared: "[&3%{}%&f] &bChat has been cleared"
   default-swear-warning: "Please keep chat appropriate"
   chat-mentioned: "&aYou have been mentioned in chat!"
-  player-teleport: "&aTeleporting you to &b%s&a..."
+  player-teleport: "&f[&9Transport&f] &aTeleporting you to &b%s&a..."
 
 formats:
   msg-send: "&7&l[&c&l!&7&l] &r| &dYou &f-> %DISPLAYNAME%&f: %MSG%"
