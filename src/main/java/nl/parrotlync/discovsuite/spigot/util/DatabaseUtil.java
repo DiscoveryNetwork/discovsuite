@@ -2,9 +2,13 @@ package nl.parrotlync.discovsuite.spigot.util;
 
 import nl.parrotlync.discovsuite.common.MySQLDatabaseConnector;
 import nl.parrotlync.discovsuite.spigot.model.Warp;
+import nl.parrotlync.discovsuite.spigot.model.WarpGroup;
 import org.bukkit.Location;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -42,18 +46,13 @@ public class DatabaseUtil extends MySQLDatabaseConnector {
                 "        primary key,\n" +
                 "    name   varchar(48) null,\n" +
                 "    server varchar(48) null,\n" +
+                "    `group`  varchar(48) null,\n" +
                 "    world  varchar(48) null,\n" +
                 "    x      double      null,\n" +
                 "    y      double      null,\n" +
                 "    z      double      null,\n" +
                 "    yaw    float       null,\n" +
                 "    pitch  float       null\n" +
-                ");");
-        statement.execute("CREATE TABLE IF NOT EXISTS dsuite_groups\n" +
-                "(\n" +
-                "    ID   int auto_increment\n" +
-                "        primary key,\n" +
-                "    name varchar(32) null\n" +
                 ");");
     }
 
@@ -117,8 +116,9 @@ public class DatabaseUtil extends MySQLDatabaseConnector {
         List<Warp> warps = new ArrayList<>();
         Statement statement = connection.createStatement();
         ResultSet result = statement.executeQuery("SELECT * FROM dsuite_warps");
-        if (result.next()) {
-            Warp warp = new Warp(result.getString("name"), result.getString("server"),
+        while (result.next()) {
+            WarpGroup group = WarpGroup.valueOf(result.getString("group"));
+            Warp warp = new Warp(result.getString("name"), result.getString("server"), group,
                     result.getString("world"), result.getDouble("x"), result.getDouble("y"),
                     result.getDouble("z"), result.getFloat("yaw"), result.getFloat("pitch"));
             warps.add(warp);
@@ -129,15 +129,16 @@ public class DatabaseUtil extends MySQLDatabaseConnector {
     public void addWarp(Warp warp) throws SQLException, ClassNotFoundException {
         connect();
         Location location = warp.getLocation();
-        PreparedStatement statement = connection.prepareStatement("INSERT INTO dsuite_warps (name, server, world, x, y, z, yaw, pitch) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        PreparedStatement statement = connection.prepareStatement("INSERT INTO dsuite_warps (name, server, `group`, world, x, y, z, yaw, pitch) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
         statement.setString(1, warp.getName());
         statement.setString(2, warp.getServer());
-        statement.setString(3, location.getWorld().getName());
-        statement.setDouble(4, location.getX());
-        statement.setDouble(5, location.getY());
-        statement.setDouble(6, location.getZ());
-        statement.setFloat(7, location.getYaw());
-        statement.setFloat(8, location.getPitch());
+        statement.setString(3, warp.getGroup().toString());
+        statement.setString(4, location.getWorld().getName());
+        statement.setDouble(5, location.getX());
+        statement.setDouble(6, location.getY());
+        statement.setDouble(7, location.getZ());
+        statement.setFloat(8, location.getYaw());
+        statement.setFloat(9, location.getPitch());
         statement.execute();
     }
 

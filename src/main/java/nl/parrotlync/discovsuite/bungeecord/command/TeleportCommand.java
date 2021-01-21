@@ -54,7 +54,7 @@ public class TeleportCommand extends Command implements TabExecutor {
         ByteArrayDataOutput byteArrayDataOutput = ByteStreams.newDataOutput();
         byteArrayDataOutput.writeUTF(player.getUniqueId().toString());
         byteArrayDataOutput.writeUTF(target.getUniqueId().toString());
-        player.getServer().getInfo().sendData("dsuite:teleport", byteArrayDataOutput.toByteArray());
+        target.getServer().getInfo().sendData("dsuite:teleport", byteArrayDataOutput.toByteArray());
     }
 
     @Override

@@ -50,7 +50,7 @@ public class ChatFilter {
                 e.printStackTrace();
             }
         });
-        PluginMessage.updateFilter();
+        PluginMessage.update();
     }
 
     public void addExcludedWord(String match) {
@@ -62,7 +62,7 @@ public class ChatFilter {
                 e.printStackTrace();
             }
         });
-        PluginMessage.updateFilter();
+        PluginMessage.update();
     }
 
     public void fetchBannedWords() {
