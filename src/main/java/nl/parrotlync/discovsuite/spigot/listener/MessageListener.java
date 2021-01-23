@@ -71,8 +71,6 @@ public class MessageListener implements PluginMessageListener {
 
         if (channel.equalsIgnoreCase("dsuite:update")) {
             DiscovSuite.getInstance().getLogger().info("Received update command through BungeeCord");
-            DiscovSuite.getInstance().getChatFilter().fetchBannedWords();
-            DiscovSuite.getInstance().getChatFilter().fetchExcludedWords();
             DiscovSuite.getInstance().getWarpManager().load();
         }
     }
