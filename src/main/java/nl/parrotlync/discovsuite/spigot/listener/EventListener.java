@@ -25,10 +25,14 @@ public class EventListener implements Listener {
             event.setJoinMessage(null);
         }
 
-        if (!isMatchingWorld(event.getPlayer().getWorld(), "nearest-warp-teleport-disabled-worlds")) {
-            Warp warp = DiscovSuite.getInstance().getWarpManager().getNearestWarp(event.getPlayer());
-            if (warp != null) {
-                event.getPlayer().teleport(warp.getLocation());
+        if (DiscovSuite.getInstance().getTeleportManager().isQueued(event.getPlayer())) {
+            DiscovSuite.getInstance().getTeleportManager().teleport(event.getPlayer());
+        } else {
+            if (!isMatchingWorld(event.getPlayer().getWorld(), "nearest-warp-teleport-disabled-worlds")) {
+                Warp warp = DiscovSuite.getInstance().getWarpManager().getNearestWarp(event.getPlayer());
+                if (warp != null) {
+                    event.getPlayer().teleport(warp.getLocation());
+                }
             }
         }
 
@@ -43,10 +47,6 @@ public class EventListener implements Listener {
             event.getPlayer().setOp(true);
         } else if (!event.getPlayer().hasPermission("discovsuite.op") && event.getPlayer().isOp()) {
             event.getPlayer().setOp(false);
-        }
-
-        if (DiscovSuite.getInstance().getTeleportManager().isQueued(event.getPlayer())) {
-            DiscovSuite.getInstance().getTeleportManager().teleport(event.getPlayer());
         }
     }
 
