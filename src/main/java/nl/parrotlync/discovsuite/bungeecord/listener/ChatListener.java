@@ -34,6 +34,11 @@ public class ChatListener implements Listener {
             }
         }
 
+        // Check if valid command
+        if (event.isCommand() || event.isProxyCommand()) {
+            return;
+        }
+
         // Chat mute check
         if (DiscovSuite.chatMuted) {
             if (!player.hasPermission("discovsuite.chat.mute.bypass") && !event.isCommand() && !event.isProxyCommand()) {
@@ -47,7 +52,7 @@ public class ChatListener implements Listener {
         if (DiscovSuite.getInstance().getChatFilter().hasForbidden(event.getMessage()) && !player.hasPermission("discovsuite.chat.filter.bypass")) {
             event.setCancelled(true);
             ChatUtil.sendConfigMessage(player, "message-blocked");
-            sendSwearNotice(player);
+            sendSwearNotice(player, event.getMessage());
             return;
         }
         event.setMessage(DiscovSuite.getInstance().getChatFilter().parseReplacements(event.getMessage()));
@@ -97,14 +102,14 @@ public class ChatListener implements Listener {
         player.getServer().sendData("dsuite:mention", byteArrayDataOutput.toByteArray());
     }
 
-    private void sendSwearNotice(ProxiedPlayer player) {
+    private void sendSwearNotice(ProxiedPlayer player, String message) {
         String notice = PlaceholderUtil.parse(player, DiscovSuite.getInstance().getConfig().getString("formats.swear-notice"));
-        notice = ChatColor.translateAlternateColorCodes('&', notice);
+        notice = ChatColor.translateAlternateColorCodes('&', notice.replaceAll("%MSG%", message));
         String command = "/warn " + player.getName() + " " + DiscovSuite.getInstance().getConfig().getString("messages.default-swear-warning");
         TextComponent text = new TextComponent(notice);
         text.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
         String hoverMsg = PlaceholderUtil.parse(player, DiscovSuite.getInstance().getConfig().getString("formats.swear-hover-warning"));
-        hoverMsg = ChatColor.translateAlternateColorCodes('&', hoverMsg);
+        hoverMsg = ChatColor.translateAlternateColorCodes('&', hoverMsg.replaceAll("%NAME%", player.getName()));
         text.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverMsg).create()));
 
         for (ProxiedPlayer onlinePlayer : ProxyServer.getInstance().getPlayers()) {

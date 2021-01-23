@@ -21,6 +21,8 @@ messages:
   player-teleport: "&f[&9Transport&f] &aTeleporting you to &b%s&a..."
   server-restricted: "&cYou don't have permission to join that server!"
   server-connecting: "&7Now connecting to &6&l%s"
+  add-banned-word: "&b%s &ahas been added to the swear filter!"
+  add-excluded-word: "&b%s &ahas been added as an excluded word!"
   server-list-title: "&eYou can connect to the following servers: (Click to join)"
   server-list-item: "&9- &7%s"
 
@@ -29,7 +31,8 @@ formats:
   msg-receive: "&7&l[&c&l!&7&l] &r| %DISPLAYNAME% &f-> &dYou&f: %MSG%"
   msg-spy: "&f[&7Spy&f] &7%SENDER% &8-> &7%RECEIVER%&f: &8%MSG%"
   swear-notice: "&a%NAME% &emay be swearing: &f%MSG%"
-  swear-warning-hover: "&cClick to warn &e%NAME%"
+  swear-hover-warning: "&cClick to warn &e%NAME%"
+  broadcast: "&f[&a%{}%&f] &b"
   player-join: "&f[&a+&f] &7%NAME%"
   staff-join: "&f[&cStaff&f] &7%NAME% has joined"
   player-leave: "&f[&c-&f] &7%NAME%"

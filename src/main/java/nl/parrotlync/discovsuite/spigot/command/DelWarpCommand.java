@@ -6,6 +6,7 @@ import nl.parrotlync.discovsuite.spigot.util.ChatUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
@@ -40,13 +41,13 @@ public class DelWarpCommand implements TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         List<String> suggestions = new ArrayList<>();
 
-        if (sender.hasPermission("discovsuite.command.setwarp")) {
-            if (args.length == 1) {
-                for (Warp warp : DiscovSuite.getInstance().getWarpManager().getWarps()) {
+        if (args.length == 1 && sender.hasPermission("discovsuite.command.delwarp")) {
+            for (Warp warp : DiscovSuite.getInstance().getWarpManager().getWarps()) {
+                if (sender instanceof Player && warp.canAccess((Player) sender)) {
                     suggestions.add(warp.getName());
                 }
-                StringUtil.copyPartialMatches(args[0], suggestions, new ArrayList<>());
             }
+            return StringUtil.copyPartialMatches(args[0], suggestions, new ArrayList<>());
         }
 
         return suggestions;

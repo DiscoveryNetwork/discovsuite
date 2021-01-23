@@ -6,10 +6,17 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
+import net.md_5.bungee.api.plugin.TabExecutor;
 import nl.parrotlync.discovsuite.bungeecord.DiscovSuite;
 import nl.parrotlync.discovsuite.bungeecord.util.ChatUtil;
 
-public class MuteChatCommand extends Command {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
+
+public class MuteChatCommand extends Command implements TabExecutor {
 
     public MuteChatCommand() {
         super("mutechat", "discovsuite.command.mutechat", "chatmute");
@@ -36,6 +43,17 @@ public class MuteChatCommand extends Command {
             } else {
                 onlinePlayer.sendMessage(TextComponent.fromLegacyText(message.replace("%{}%", "Chat")));
             }
+        }
+    }
+
+    @Override
+    public Iterable<String> onTabComplete(final CommandSender sender, final String[] args) {
+        if (args.length == 1) {
+            List<String> suggestions = new ArrayList<>();
+            suggestions.add("check");
+            return suggestions.stream().filter(input -> input.toLowerCase(Locale.ROOT).startsWith(args[0].toLowerCase(Locale.ROOT))).collect(Collectors.toCollection(ArrayList::new));
+        } else {
+            return Collections.emptyList();
         }
     }
 }

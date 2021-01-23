@@ -1,6 +1,7 @@
 package nl.parrotlync.discovsuite.bungeecord.command;
 
 import com.google.common.collect.Iterables;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -12,7 +13,6 @@ import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
 import nl.parrotlync.discovsuite.bungeecord.DiscovSuite;
 import nl.parrotlync.discovsuite.bungeecord.util.ChatUtil;
-import org.bukkit.ChatColor;
 
 import java.util.Collections;
 import java.util.Locale;
@@ -45,7 +45,8 @@ public class JoinCommand extends Command implements TabExecutor {
 
         if (server.canAccess(player)) {
             String message = ChatColor.translateAlternateColorCodes('&', DiscovSuite.getInstance().getConfig().getString("messages.server-connecting"));
-            player.sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
+            player.sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(String.format(message, server.getName())));
+            player.connect(server);
         } else {
             ChatUtil.sendConfigMessage(player, "server-restricted");
         }
@@ -65,7 +66,7 @@ public class JoinCommand extends Command implements TabExecutor {
         for (ServerInfo server : ProxyServer.getInstance().getServers().values()) {
             if (server.canAccess(player)) {
                 String message = DiscovSuite.getInstance().getConfig().getString("messages.server-list-item");
-                TextComponent main = new TextComponent(ChatColor.translateAlternateColorCodes('&', message));
+                TextComponent main = new TextComponent(ChatColor.translateAlternateColorCodes('&', String.format(message, server.getName())));
                 main.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/join " + server.getName()));
                 player.sendMessage(main);
             }

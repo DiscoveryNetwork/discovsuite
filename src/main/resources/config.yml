@@ -11,8 +11,6 @@ messages:
   fly-speed-change: "&aFlying speed set to: &b%s"
   walk-speed-change: "&aWalking speed set to: &b%s"
   chat-channel-changed: "&aYou are now talking in: &b%s"
-  add-banned-word: "&b%s &ahas been added to the swear filter!"
-  add-excluded-word: "&b%s &ahas been added as an excluded word!"
   nickname-changed: "&aYour nickname is now: &b%s"
   invalid-group: "&f[&9Transport&f] &cPlease enter a valid rank"
   warp-created: "&f[&9Transport&f] &aCreated warp &b%s &afor &b%s+"
@@ -33,7 +31,6 @@ formats:
   chat-local: "&8[&c%SERVER%Chat&8] &7%NAME%&f: "
   chat-management: "&f[&cManagement&f] %DISPLAYNAME%&7: &3"
   staff-alert: "&f[&6StaffAlert&f] &c&l[!]&r &6%NAME% &7on &6%SERVER%&7: &c"
-  broadcast: "&f[&a%{}%&f] &b"
 
 database:
   host: ""
