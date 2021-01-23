@@ -13,8 +13,10 @@ import nl.parrotlync.discovsuite.bungeecord.listener.ChatListener;
 import nl.parrotlync.discovsuite.bungeecord.listener.PlayerListener;
 import nl.parrotlync.discovsuite.bungeecord.listener.PluginMessageListener;
 import nl.parrotlync.discovsuite.bungeecord.manager.ConversationManager;
+import nl.parrotlync.discovsuite.bungeecord.util.ChatFilter;
 import nl.parrotlync.discovsuite.bungeecord.util.DatabaseUtil;
 import nl.parrotlync.discovsuite.bungeecord.util.PlayerCache;
+import nl.parrotlync.discovsuite.common.Beacon;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,32 +27,27 @@ import java.util.*;
 public class DiscovSuite extends Plugin {
     private static DiscovSuite instance;
     public static boolean chatMuted = true;
-    private final HashMap<UUID, Date> sessions;
-    private final ConversationManager conversationManager;
+    private final HashMap<UUID, Date> sessions = new HashMap<>();
+    private final ConversationManager conversationManager = new ConversationManager();
     private final List<ProxiedPlayer> blockedPlayers = new ArrayList<>();
-    private final PlayerCache playerCache;
+    private final PlayerCache playerCache = new PlayerCache();
+    private final ChatFilter chatFilter = new ChatFilter();
     private DatabaseUtil database;
 
     public DiscovSuite() {
         instance = this;
-        sessions = new HashMap<>();
-        conversationManager = new ConversationManager();
-        playerCache = new PlayerCache();
     }
 
     @Override
     public void onEnable() {
+        if (!Beacon.authenticate()) { return; }
         saveDefaultConfig();
 
         // Channels
         getProxy().registerChannel("dsuite:chat");
         getProxy().registerChannel("dsuite:staff");
         getProxy().registerChannel("dsuite:mgchat");
-        getProxy().registerChannel("dsuite:mute");
-        getProxy().registerChannel("dsuite:clear");
         getProxy().registerChannel("dsuite:broadcast");
-        getProxy().registerChannel("dsuite:notice");
-        getProxy().registerChannel("dsuite:filter");
         getProxy().registerChannel("dsuite:mention");
         getProxy().registerChannel("dsuite:dpname");
         getProxy().registerChannel("dsuite:teleport");
@@ -71,11 +68,14 @@ public class DiscovSuite extends Plugin {
 
         // Managers
         playerCache.load();
+        chatFilter.fetchBannedWords();
+        chatFilter.fetchExcludedWords();
 
         // Listeners & Commands
         getProxy().getPluginManager().registerListener(this, new PlayerListener());
         getProxy().getPluginManager().registerListener(this, new ChatListener());
         getProxy().getPluginManager().registerListener(this, new PluginMessageListener());
+        getProxy().getPluginManager().registerCommand(this, new JoinCommand());
         getProxy().getPluginManager().registerCommand(this, new AcceptCommand());
         getProxy().getPluginManager().registerCommand(this, new MessageCommand());
         getProxy().getPluginManager().registerCommand(this, new ReplyCommand());
@@ -83,6 +83,10 @@ public class DiscovSuite extends Plugin {
         getProxy().getPluginManager().registerCommand(this, new CheckTimeCommand());
         getProxy().getPluginManager().registerCommand(this, new SeenCommand());
         getProxy().getPluginManager().registerCommand(this, new TeleportCommand());
+        getProxy().getPluginManager().registerCommand(this, new BroadcastCommand());
+        getProxy().getPluginManager().registerCommand(this, new ChatFilterCommand());
+        getProxy().getPluginManager().registerCommand(this, new ClearChatCommand());
+        getProxy().getPluginManager().registerCommand(this, new MuteChatCommand());
         getLogger().info("DiscovSuite has started.");
     }
 
@@ -131,6 +135,8 @@ public class DiscovSuite extends Plugin {
     }
 
     public PlayerCache getPlayerCache() { return playerCache; }
+
+    public ChatFilter getChatFilter() { return chatFilter; }
 
     public List<ProxiedPlayer> getBlockedPlayers() {
         return blockedPlayers;
