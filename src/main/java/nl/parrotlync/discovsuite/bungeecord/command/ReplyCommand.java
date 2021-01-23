@@ -16,16 +16,24 @@ public class ReplyCommand extends Command {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if (args.length > 0) {
-            ProxiedPlayer player = (ProxiedPlayer) sender;
-            ProxiedPlayer target = DiscovSuite.getInstance().getConversationManager().getReceiver(player);
-
-            if (target != null) {
-                String message = String.join(" ", args);
-                ProxyServer.getInstance().getPluginManager().callEvent(new PrivateMessageEvent(player, target, message));
-            } else {
-                ChatUtil.sendConfigMessage(sender, "player-not-online");
-            }
+        if (!(sender instanceof ProxiedPlayer)) {
+            ChatUtil.sendConfigMessage(sender, "player-only");
+            return;
         }
+
+        ProxiedPlayer player = (ProxiedPlayer) sender;
+        if (args.length < 1) {
+            ChatUtil.sendMissingArguments(sender, new String[] {"message"});
+            return;
+        }
+
+        ProxiedPlayer target = DiscovSuite.getInstance().getConversationManager().getReceiver(player);
+        if (target == null) {
+            ChatUtil.sendConfigMessage(sender, "player-not-online");
+            return;
+        }
+
+        String message = String.join(" ", args);
+        ProxyServer.getInstance().getPluginManager().callEvent(new PrivateMessageEvent(player, target, message));
     }
 }

@@ -24,14 +24,14 @@ public class CheckTimeCommand extends Command implements TabExecutor {
     @Override
     public void execute(CommandSender sender, String[] args) {
         String target;
-        if (args.length == 1) {
-            if (!sender.hasPermission("discovsuite.command.checktime.others")) {
-                ChatUtil.sendConfigMessage(sender, "no-permission");
-                return;
-            }
+
+        if (args.length == 0) {
+            target = sender.getName();
+        } else if (args.length == 1 && sender.hasPermission("discovsuite.command.checktime.others")) {
             target = args[0];
         } else {
-            target = sender.getName();
+            ChatUtil.sendConfigMessage(sender, "no-permission");
+            return;
         }
 
         ProxyServer.getInstance().getScheduler().runAsync(DiscovSuite.getInstance(), () -> {
@@ -58,7 +58,7 @@ public class CheckTimeCommand extends Command implements TabExecutor {
         if (args.length != 1) {
             return Collections.emptyList();
         } else {
-            return DiscovSuite.getInstance().getPlayerCache().getPlayers().stream().filter(input -> input.toLowerCase(Locale.ROOT).startsWith(args[0].toLowerCase(Locale.ROOT))).collect(Collectors.toCollection(ArrayList::new));
+            return DiscovSuite.getInstance().getPlayerCache().getPlayerNames().stream().filter(input -> input.toLowerCase(Locale.ROOT).startsWith(args[0].toLowerCase(Locale.ROOT))).collect(Collectors.toCollection(ArrayList::new));
         }
     }
 

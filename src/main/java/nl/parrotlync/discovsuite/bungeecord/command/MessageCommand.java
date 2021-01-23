@@ -7,6 +7,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
 import nl.parrotlync.discovsuite.bungeecord.event.PrivateMessageEvent;
+import nl.parrotlync.discovsuite.bungeecord.util.ChatUtil;
 
 import java.util.Collections;
 import java.util.Locale;
@@ -20,12 +21,28 @@ public class MessageCommand extends Command implements TabExecutor {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if (args.length > 1) {
-            ProxiedPlayer player = (ProxiedPlayer) sender;
-            ProxiedPlayer target = ProxyServer.getInstance().getPlayer(args[0]);
-            String message = String.join(" ", args).replaceAll(args[0] + " ", "");
-            ProxyServer.getInstance().getPluginManager().callEvent(new PrivateMessageEvent(player, target, message));
+        if (!(sender instanceof ProxiedPlayer)) {
+            ChatUtil.sendConfigMessage(sender, "player-only");
+            return;
         }
+
+        ProxiedPlayer player = (ProxiedPlayer) sender;
+        if (args.length < 1) {
+            ChatUtil.sendMissingArguments(sender, new String[] {"player", "message"});
+            return;
+        } else if (args.length < 2) {
+            ChatUtil.sendMissingArguments(sender, new String[] {"message"});
+            return;
+        }
+
+        ProxiedPlayer target = ProxyServer.getInstance().getPlayer(args[0]);
+        if (target == null) {
+            ChatUtil.sendConfigMessage(sender, "player-not-online");
+            return;
+        }
+
+        String message = String.join(" ", args).replace(args[0] + " ", "");
+        ProxyServer.getInstance().getPluginManager().callEvent(new PrivateMessageEvent(player, target, message));
     }
 
     @Override

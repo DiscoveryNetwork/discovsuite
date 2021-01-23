@@ -21,11 +21,14 @@ public class SeenCommand extends Command implements TabExecutor {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if (args.length == 1) {
-            if (ProxyServer.getInstance().getPlayer(args[0]) != null) {
-                sender.sendMessage(TextComponent.fromLegacyText("§6" + args[0] + " §7is currently §aonline"));
-                return;
-            }
+        if (args.length < 1) {
+            ChatUtil.sendMissingArguments(sender, new String[] {"player"});
+            return;
+        }
+
+        if (ProxyServer.getInstance().getPlayer(args[0]) != null) {
+            ChatUtil.sendConfigMessage(sender, "player-online", args[0]);
+            return;
         }
 
         ProxyServer.getInstance().getScheduler().runAsync(DiscovSuite.getInstance(), () -> {
@@ -49,7 +52,7 @@ public class SeenCommand extends Command implements TabExecutor {
         if (args.length != 1) {
             return Collections.emptyList();
         } else {
-            return DiscovSuite.getInstance().getPlayerCache().getPlayers().stream().filter(input -> input.toLowerCase(Locale.ROOT).startsWith(args[0].toLowerCase(Locale.ROOT))).collect(Collectors.toCollection(ArrayList::new));
+            return DiscovSuite.getInstance().getPlayerCache().getPlayerNames().stream().filter(input -> input.toLowerCase(Locale.ROOT).startsWith(args[0].toLowerCase(Locale.ROOT))).collect(Collectors.toCollection(ArrayList::new));
         }
     }
 }
