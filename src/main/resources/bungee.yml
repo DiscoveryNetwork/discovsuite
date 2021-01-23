@@ -2,5 +2,5 @@ name: DiscovSuite
 main: nl.parrotlync.discovsuite.bungeecord.DiscovSuite
 softdepend: [LuckPerms]
 depend: [ParrotPluginManager]
-version: 2.1.0
+version: 2.2.0
 author: ParrotLync

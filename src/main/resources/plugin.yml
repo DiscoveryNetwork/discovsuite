@@ -1,6 +1,6 @@
 main: nl.parrotlync.discovsuite.spigot.DiscovSuite
 name: DiscovSuite
-version: 2.1
+version: 2.2
 description: Suite with default functionality for the Discovery Network
 softdepend: [PlaceholderAPI, LuckPerms]
 depend: [ParrotPluginManager]

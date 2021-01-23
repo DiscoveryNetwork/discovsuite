@@ -5,7 +5,7 @@
 
     <groupId>nl.parrotlync</groupId>
     <artifactId>DiscovSuite</artifactId>
-    <version>2.1${revision}</version>
+    <version>2.2${revision}</version>
 
     <properties>
         <revision>-SNAPSHOT</revision>
