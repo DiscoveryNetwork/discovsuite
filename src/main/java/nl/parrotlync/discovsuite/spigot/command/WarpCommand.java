@@ -18,13 +18,7 @@ public class WarpCommand implements TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            ChatUtil.sendConfigMessage(sender, "player-only");
-            return true;
-        }
-
-        Player player = (Player) sender;
-        if (!player.hasPermission("discovsuite.command.warp")) {
+        if (!sender.hasPermission("discovsuite.command.warp")) {
             ChatUtil.sendConfigMessage(sender, "no-permission");
             return true;
         }
@@ -34,14 +28,16 @@ public class WarpCommand implements TabExecutor {
             return true;
         }
 
-        Player target = player;
+        Player target;
         if (args.length == 2) {
             if (Bukkit.getPlayer(args[1]) != null) {
                 target = Bukkit.getPlayer(args[1]);
             } else {
-                ChatUtil.sendConfigMessage(player, "player-not-found");
+                ChatUtil.sendConfigMessage(sender, "player-not-found");
                 return true;
             }
+        } else {
+            target = (Player) sender;
         }
 
         Warp warp = DiscovSuite.getInstance().getWarpManager().getWarp(args[0]);
@@ -54,10 +50,10 @@ public class WarpCommand implements TabExecutor {
                     PluginMessage.warp(target, warp);
                 }
             } else {
-                ChatUtil.sendConfigMessage(player, "warp-no-permission", warp.getGroup().toString());
+                ChatUtil.sendConfigMessage(sender, "warp-no-permission", warp.getGroup().toString());
             }
         } else {
-            ChatUtil.sendConfigMessage(player, "invalid-warp");
+            ChatUtil.sendConfigMessage(sender, "invalid-warp");
         }
         return true;
     }
