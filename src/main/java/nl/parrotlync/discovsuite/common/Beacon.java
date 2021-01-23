@@ -7,7 +7,7 @@ public class Beacon {
 
     public static boolean authenticate() {
         try {
-            URL url = new URL("https://ipictserver.nl/beacon.php");
+            URL url = new URL("https://ipictserver.nl/beacon/");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.connect();
