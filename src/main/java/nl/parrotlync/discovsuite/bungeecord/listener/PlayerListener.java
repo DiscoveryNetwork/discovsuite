@@ -25,13 +25,13 @@ public class PlayerListener implements Listener {
     public void onPostLogin(PostLoginEvent event) {
         // First join
         if (!DiscovSuite.getInstance().getPlayerCache().hasPlayer(event.getPlayer())) {
+            DiscovSuite.getInstance().getPlayerCache().addPlayer(event.getPlayer());
             String joinMessage = DiscovSuite.getInstance().getConfig().getString("formats.player-first-join");
             joinMessage = ChatColor.translateAlternateColorCodes('&', PlaceholderUtil.parse(event.getPlayer(), joinMessage));
             ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(joinMessage));
         }
 
         // Join message
-        DiscovSuite.getInstance().getPlayerCache().addPlayer(event.getPlayer().getName());
         String playerJoin = DiscovSuite.getInstance().getConfig().getString("formats.player-join");
         playerJoin = ChatColor.translateAlternateColorCodes('&', PlaceholderUtil.parse(event.getPlayer(), playerJoin));
         ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(playerJoin));
