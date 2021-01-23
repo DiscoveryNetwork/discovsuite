@@ -22,18 +22,6 @@ public class DatabaseUtil extends MySQLDatabaseConnector {
     public void createTables() throws SQLException, ClassNotFoundException {
         connect();
         Statement statement = connection.createStatement();
-        statement.execute("CREATE TABLE IF NOT EXISTS dchat_banned\n" +
-                "(\n" +
-                "    ID      int auto_increment\n" +
-                "        primary key,\n" +
-                "    `match` varchar(50) null\n" +
-                ");");
-        statement.execute("CREATE TABLE IF NOT EXISTS dchat_exclusions\n" +
-                "(\n" +
-                "    ID      int auto_increment\n" +
-                "        primary key,\n" +
-                "    `match` varchar(50) null\n" +
-                ");");
         statement.execute("CREATE TABLE IF NOT EXISTS dchat_nicknames\n" +
                 "(\n" +
                 "    player   varchar(36) default '' not null\n" +
@@ -54,42 +42,6 @@ public class DatabaseUtil extends MySQLDatabaseConnector {
                 "    yaw    float       null,\n" +
                 "    pitch  float       null\n" +
                 ");");
-    }
-
-    public List<String> getBannedWords() throws SQLException, ClassNotFoundException {
-        connect();
-        List<String> bannedWords = new ArrayList<>();
-        Statement statement = connection.createStatement();
-        ResultSet result = statement.executeQuery("SELECT * FROM dchat_banned");
-        while (result.next()) {
-            bannedWords.add(result.getString("match"));
-        }
-        return bannedWords;
-    }
-
-    public List<String> getExcludedWords() throws SQLException, ClassNotFoundException {
-        connect();
-        List<String> excludedWords = new ArrayList<>();
-        Statement statement = connection.createStatement();
-        ResultSet result = statement.executeQuery("SELECT * FROM dchat_exclusions");
-        while (result.next()) {
-            excludedWords.add(result.getString("match"));
-        }
-        return excludedWords;
-    }
-
-    public void addBannedWord(String match) throws SQLException, ClassNotFoundException {
-        connect();
-        PreparedStatement statement = connection.prepareStatement("REPLACE INTO dchat_banned (`match`) VALUES (?)");
-        statement.setString(1, match);
-        statement.execute();
-    }
-
-    public void addExcludedWord(String match) throws SQLException, ClassNotFoundException {
-        connect();
-        PreparedStatement statement = connection.prepareStatement("REPLACE INTO dchat_exclusions (`match`) VALUES (?)");
-        statement.setString(1, match);
-        statement.execute();
     }
 
     public String getNickname(UUID uuid) throws SQLException, ClassNotFoundException {

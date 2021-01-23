@@ -5,10 +5,8 @@ import nl.parrotlync.discovsuite.common.MySQLDatabaseConnector;
 import org.ocpsoft.prettytime.PrettyTime;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.*;
 import java.util.Date;
-import java.util.List;
 
 public class DatabaseUtil extends MySQLDatabaseConnector {
 
@@ -18,8 +16,8 @@ public class DatabaseUtil extends MySQLDatabaseConnector {
 
     public void createTables() throws SQLException, ClassNotFoundException {
         connect();
-        Statement playerStatement = connection.createStatement();
-        playerStatement.execute("CREATE TABLE IF NOT EXISTS playermonitor_players (\n" +
+        Statement statement = connection.createStatement();
+        statement.execute("CREATE TABLE IF NOT EXISTS dsuite_players (\n" +
                 "    UUID        varchar(36) default '' not null\n" +
                 "        primary key,\n" +
                 "    name        varchar(16)            null,\n" +
@@ -27,8 +25,7 @@ public class DatabaseUtil extends MySQLDatabaseConnector {
                 "    last_seen   timestamp              null,\n" +
                 "    ip_address  varchar(16)            null\n" +
                 ");");
-        Statement sessionStatement = connection.createStatement();
-        sessionStatement.execute("CREATE TABLE IF NOT EXISTS playermonitor_sessions\n" +
+        statement.execute("CREATE TABLE IF NOT EXISTS dsuite_sessions\n" +
                 "(\n" +
                 "    ID          int auto_increment\n" +
                 "        primary key,\n" +
@@ -37,12 +34,24 @@ public class DatabaseUtil extends MySQLDatabaseConnector {
                 "    time_logout timestamp   null,\n" +
                 "    seconds     int         null\n" +
                 ");");
+        statement.execute("CREATE TABLE IF NOT EXISTS dsuite_chat_banned\n" +
+                "(\n" +
+                "    ID      int auto_increment\n" +
+                "        primary key,\n" +
+                "    `match` varchar(50) null\n" +
+                ");");
+        statement.execute("CREATE TABLE IF NOT EXISTS dsuite_chat_exclusions\n" +
+                "(\n" +
+                "    ID      int auto_increment\n" +
+                "        primary key,\n" +
+                "    `match` varchar(50) null\n" +
+                ");");
     }
 
     public void savePlayer(ProxiedPlayer player, Date login) throws SQLException, ClassNotFoundException {
         connect();
         String address = player.getSocketAddress().toString().replace("/", "").split(":")[0];
-        PreparedStatement statement = connection.prepareStatement("INSERT INTO playermonitor_players (UUID, `name`, first_login, ip_address) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE `name` = ?, ip_address = ?");
+        PreparedStatement statement = connection.prepareStatement("INSERT INTO dsuite_players (UUID, `name`, first_login, ip_address) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE `name` = ?, ip_address = ?");
         statement.setString(1, player.getUniqueId().toString());
         statement.setString(2, player.getName());
         statement.setTimestamp(3, new Timestamp(login.getTime()));
@@ -55,7 +64,7 @@ public class DatabaseUtil extends MySQLDatabaseConnector {
     public void saveSession(ProxiedPlayer player, Date login, Date logout) throws SQLException, ClassNotFoundException {
         connect();
         long seconds = logout.toInstant().getEpochSecond() - login.toInstant().getEpochSecond();
-        PreparedStatement statement = connection.prepareStatement("INSERT INTO playermonitor_sessions (player, time_login, time_logout, seconds) VALUES (?, ?, ?, ?)");
+        PreparedStatement statement = connection.prepareStatement("INSERT INTO dsuite_sessions (player, time_login, time_logout, seconds) VALUES (?, ?, ?, ?)");
         statement.setString(1, player.getUniqueId().toString());
         statement.setTimestamp(2, new Timestamp(login.getTime()));
         statement.setTimestamp(3, new Timestamp(logout.getTime()));
@@ -66,26 +75,26 @@ public class DatabaseUtil extends MySQLDatabaseConnector {
 
     private void saveLastLogout(ProxiedPlayer player, Date logout) throws SQLException, ClassNotFoundException {
         connect();
-        PreparedStatement statement = connection.prepareStatement("UPDATE playermonitor_players SET last_seen = ? WHERE UUID = ?");
+        PreparedStatement statement = connection.prepareStatement("UPDATE dsuite_players SET last_seen = ? WHERE UUID = ?");
         statement.setTimestamp(1, new Timestamp(logout.getTime()));
         statement.setString(2, player.getUniqueId().toString());
         statement.execute();
     }
 
-    public List<String> getPlayers() throws SQLException, ClassNotFoundException {
+    public HashMap<UUID, String> getPlayers() throws SQLException, ClassNotFoundException {
         connect();
-        List<String> players = new ArrayList<>();
+        HashMap<UUID, String> players = new HashMap<>();
         Statement statement = connection.createStatement();
-        ResultSet result = statement.executeQuery("SELECT `name` FROM playermonitor_players");
+        ResultSet result = statement.executeQuery("SELECT UUID, `name` FROM dsuite_players");
         while (result.next()) {
-            players.add(result.getString("name"));
+            players.put(UUID.fromString(result.getString("UUID")), result.getString("name"));
         }
         return players;
     }
 
     public String getSeen(String player) throws SQLException, ClassNotFoundException {
         connect();
-        PreparedStatement statement = connection.prepareStatement("SELECT last_seen FROM playermonitor_players WHERE playermonitor_players.name = ?");
+        PreparedStatement statement = connection.prepareStatement("SELECT last_seen FROM dsuite_players WHERE dsuite_players.name = ?");
         statement.setString(1, player);
         ResultSet result = statement.executeQuery();
         if (result.next()) {
@@ -97,7 +106,7 @@ public class DatabaseUtil extends MySQLDatabaseConnector {
     public int getSecondsThisWeek(String player) throws SQLException, ClassNotFoundException {
         connect();
         int seconds = 0;
-        PreparedStatement statement = connection.prepareStatement("SELECT seconds FROM playermonitor_sessions, playermonitor_players WHERE player = UUID AND `name` = ? AND time_login > ?");
+        PreparedStatement statement = connection.prepareStatement("SELECT seconds FROM dsuite_sessions, dsuite_players WHERE player = UUID AND `name` = ? AND time_login > ?");
         statement.setString(1, player);
         statement.setTimestamp(2, getFirstDayOfWeek());
         ResultSet result = statement.executeQuery();
@@ -110,13 +119,48 @@ public class DatabaseUtil extends MySQLDatabaseConnector {
     public int getSeconds(String player) throws SQLException, ClassNotFoundException {
         connect();
         int seconds = 0;
-        PreparedStatement statement = connection.prepareStatement("SELECT seconds FROM playermonitor_sessions, playermonitor_players WHERE player = UUID AND `name` = ?");
+        PreparedStatement statement = connection.prepareStatement("SELECT seconds FROM dsuite_sessions, dsuite_players WHERE player = UUID AND `name` = ?");
         statement.setString(1, player);
         ResultSet result = statement.executeQuery();
         while (result.next()) {
             seconds += result.getInt("seconds");
         }
         return seconds;
+    }
+    public List<String> getBannedWords() throws SQLException, ClassNotFoundException {
+        connect();
+        List<String> bannedWords = new ArrayList<>();
+        Statement statement = connection.createStatement();
+        ResultSet result = statement.executeQuery("SELECT * FROM dsuite_chat_banned");
+        while (result.next()) {
+            bannedWords.add(result.getString("match"));
+        }
+        return bannedWords;
+    }
+
+    public List<String> getExcludedWords() throws SQLException, ClassNotFoundException {
+        connect();
+        List<String> excludedWords = new ArrayList<>();
+        Statement statement = connection.createStatement();
+        ResultSet result = statement.executeQuery("SELECT * FROM dsuite_chat_exclusions");
+        while (result.next()) {
+            excludedWords.add(result.getString("match"));
+        }
+        return excludedWords;
+    }
+
+    public void addBannedWord(String match) throws SQLException, ClassNotFoundException {
+        connect();
+        PreparedStatement statement = connection.prepareStatement("REPLACE INTO dsuite_chat_banned (`match`) VALUES (?)");
+        statement.setString(1, match);
+        statement.execute();
+    }
+
+    public void addExcludedWord(String match) throws SQLException, ClassNotFoundException {
+        connect();
+        PreparedStatement statement = connection.prepareStatement("REPLACE INTO dsuite_chat_exclusions (`match`) VALUES (?)");
+        statement.setString(1, match);
+        statement.execute();
     }
 
     private Timestamp getFirstDayOfWeek() {

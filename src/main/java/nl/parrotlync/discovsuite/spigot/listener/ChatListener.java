@@ -20,16 +20,6 @@ public class ChatListener implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
 
-        if (DiscovSuite.getInstance().getChatFilter().hasForbidden(event.getMessage()) && !player.hasPermission("discovsuite.chat.filter.bypass")) {
-            event.setCancelled(true);
-            ChatUtil.sendConfigMessage(player, "message-has-banned-words");
-            PluginMessage.sendNotice(event.getPlayer(), event.getMessage());
-            return;
-        }
-
-        event.setMessage(DiscovSuite.getInstance().getChatFilter().parseReplacements(event.getMessage()));
-        event.setMessage(ChatColor.translateAlternateColorCodes('~', event.getMessage()));
-
         if (DiscovSuite.getInstance().getPlaceholderSupport() && player.hasPermission("discovsuite.chat.placeholders")) {
             event.setMessage(PlaceholderAPI.setPlaceholders(player, event.getMessage()));
         }

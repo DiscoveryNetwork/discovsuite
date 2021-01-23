@@ -4,6 +4,9 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
@@ -40,11 +43,21 @@ public class ChatListener implements Listener {
             }
         }
 
+        // Chat filter
+        if (DiscovSuite.getInstance().getChatFilter().hasForbidden(event.getMessage()) && !player.hasPermission("discovsuite.chat.filter.bypass")) {
+            event.setCancelled(true);
+            ChatUtil.sendConfigMessage(player, "message-blocked");
+            sendSwearNotice(player);
+            return;
+        }
+        event.setMessage(DiscovSuite.getInstance().getChatFilter().parseReplacements(event.getMessage()));
+
         // Mentioning
         if (!event.isCommand() && !event.isProxyCommand()) {
             for (ProxiedPlayer onlinePlayer : ProxyServer.getInstance().getPlayers()) {
                 if (event.getMessage().toLowerCase().contains(onlinePlayer.getName().toLowerCase())) {
-                    String replacement = (PlaceholderUtil.parse(onlinePlayer, "&9%NAME%") + PlaceholderUtil.parse(player, "%SUFFIX%")).replaceAll("&", "~");
+                    String replacement = (PlaceholderUtil.parse(onlinePlayer, "&9%NAME%") + PlaceholderUtil.parse(player, "%SUFFIX%"));
+                    replacement = ChatColor.translateAlternateColorCodes('&', replacement);
                     event.setMessage(event.getMessage().replaceAll("(?i)" + onlinePlayer.getName(), replacement));
                     mentionPlayer(onlinePlayer);
                 }
@@ -82,5 +95,22 @@ public class ChatListener implements Listener {
         byteArrayDataOutput.writeUTF(player.getUniqueId().toString());
         byteArrayDataOutput.writeUTF(ChatColor.translateAlternateColorCodes('&', DiscovSuite.getInstance().getConfig().getString("messages.chat-mentioned")));
         player.getServer().sendData("dsuite:mention", byteArrayDataOutput.toByteArray());
+    }
+
+    private void sendSwearNotice(ProxiedPlayer player) {
+        String notice = PlaceholderUtil.parse(player, DiscovSuite.getInstance().getConfig().getString("formats.swear-notice"));
+        notice = ChatColor.translateAlternateColorCodes('&', notice);
+        String command = "/warn " + player.getName() + " " + DiscovSuite.getInstance().getConfig().getString("messages.default-swear-warning");
+        TextComponent text = new TextComponent(notice);
+        text.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
+        String hoverMsg = PlaceholderUtil.parse(player, DiscovSuite.getInstance().getConfig().getString("formats.swear-hover-warning"));
+        hoverMsg = ChatColor.translateAlternateColorCodes('&', hoverMsg);
+        text.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverMsg).create()));
+
+        for (ProxiedPlayer onlinePlayer : ProxyServer.getInstance().getPlayers()) {
+            if (onlinePlayer.hasPermission("discovsuite.chat.filter.notice")) {
+                onlinePlayer.sendMessage(text);
+            }
+        }
     }
 }

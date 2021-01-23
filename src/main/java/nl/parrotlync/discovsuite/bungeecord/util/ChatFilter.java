@@ -1,6 +1,7 @@
-package nl.parrotlync.discovsuite.spigot.util;
+package nl.parrotlync.discovsuite.bungeecord.util;
 
-import nl.parrotlync.discovsuite.spigot.DiscovSuite;
+import net.md_5.bungee.api.ProxyServer;
+import nl.parrotlync.discovsuite.bungeecord.DiscovSuite;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -42,7 +43,8 @@ public class ChatFilter {
     }
 
     public void addBannedWord(String match) {
-        Bukkit.getScheduler().runTaskAsynchronously(DiscovSuite.getInstance(), () -> {
+        bannedWords.add(match);
+        ProxyServer.getInstance().getScheduler().runAsync(DiscovSuite.getInstance(), () -> {
             try {
                 DiscovSuite.getInstance().getDatabase().addBannedWord(match);
             } catch (Exception e) {
@@ -50,11 +52,11 @@ public class ChatFilter {
                 e.printStackTrace();
             }
         });
-        PluginMessage.update();
     }
 
     public void addExcludedWord(String match) {
-        Bukkit.getScheduler().runTaskAsynchronously(DiscovSuite.getInstance(), () -> {
+        excludedWords.add(match);
+        ProxyServer.getInstance().getScheduler().runAsync(DiscovSuite.getInstance(), () -> {
             try {
                 DiscovSuite.getInstance().getDatabase().addExcludedWord(match);
             } catch (Exception e) {
@@ -62,11 +64,10 @@ public class ChatFilter {
                 e.printStackTrace();
             }
         });
-        PluginMessage.update();
     }
 
     public void fetchBannedWords() {
-        Bukkit.getScheduler().runTaskAsynchronously(DiscovSuite.getInstance(), () -> {
+        ProxyServer.getInstance().getScheduler().runAsync(DiscovSuite.getInstance(), () -> {
             try {
                 List<String> bannedWords = DiscovSuite.getInstance().getDatabase().getBannedWords();
                 if (bannedWords != null && !bannedWords.isEmpty()) {
@@ -81,7 +82,7 @@ public class ChatFilter {
     }
 
     public void fetchExcludedWords() {
-        Bukkit.getScheduler().runTaskAsynchronously(DiscovSuite.getInstance(), () -> {
+        ProxyServer.getInstance().getScheduler().runAsync(DiscovSuite.getInstance(), () -> {
             try {
                 List<String> excludedWords = DiscovSuite.getInstance().getDatabase().getExcludedWords();
                 if (excludedWords != null && !excludedWords.isEmpty()) {
