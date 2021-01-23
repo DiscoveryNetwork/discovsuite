@@ -11,7 +11,6 @@ messages:
   fly-speed-change: "&aFlying speed set to: &b%s"
   walk-speed-change: "&aWalking speed set to: &b%s"
   chat-channel-changed: "&aYou are now talking in: &b%s"
-  message-has-banned-words: "&f[&3DiscovChat&f] &cPlease keep your language clean and safe!"
   add-banned-word: "&b%s &ahas been added to the swear filter!"
   add-excluded-word: "&b%s &ahas been added as an excluded word!"
   nickname-changed: "&aYour nickname is now: &b%s"

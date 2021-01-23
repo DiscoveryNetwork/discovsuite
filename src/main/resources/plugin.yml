@@ -3,6 +3,7 @@ name: DiscovSuite
 version: 2.1
 description: Suite with default functionality for the Discovery Network
 softdepend: [PlaceholderAPI, LuckPerms]
+depend: [ParrotPluginManager]
 author: ParrotLync
 commands:
   fly:
@@ -23,30 +24,14 @@ commands:
     usage: /managementchat [message]
     description: Send a message in Management chat
     aliases: [mc]
-  broadcast:
-    usage: /broadcast <message>
-    description: Broadcast a message to the entire network
-    aliases: [bc]
   staffalert:
     usage: /staffalert <message>
     description: Send a staff alert to the entire network
     aliases: [sa]
-  clearchat:
-    usage: /clearchat
-    description: Clear the chat
-    aliases: [cc]
-  mutechat:
-    usage: /mutechat
-    description: Mute the chat
-    aliases: [chatmute]
   nick:
     usage: /nick <nickname>
     description: Change your nickname
     aliases: [nickname]
-  chatfilter:
-    usage: /chatfilter <ban/exclude> <word>
-    description: Update the chat filter
-    aliases: [filter]
   localchat:
     usage: /localchat [message]
     description: Send a message in local chat
@@ -78,18 +63,9 @@ commands:
     usage: /wake <player>
     description: Wake someone up
 permissions:
-  discovsuite.command.broadcast:
-    default: op
-    description: Permission to use the /broadcast command
-  discovsuite.command.clearchat:
-    default: op
-    description: Permission to use the /clearchat command
   discovsuite.command.clearinventory:
     default: op
     description: Permission to use the /clearinventory command
-  discovsuite.command.chatfilter:
-    default: op
-    description: Permission to use the /chatfilter command
   discovsuite.command.fly:
     default: op
     description: Permission to use the /fly command
@@ -99,9 +75,6 @@ permissions:
   discovsuite.command.localbroadcast:
     default: op
     description: Permission to use the /localbroadcast command
-  discovsuite.command.mutechat:
-    default: op
-    description: Permission to use the /mutechat command
   discovsuite.command.nickname:
     default: op
     description: Permission to use the /nickname command
