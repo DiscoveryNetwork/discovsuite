@@ -24,6 +24,9 @@ messages:
   nearby-warps-item: "&f- &e%s"
   warps-title: "&bWarp list"
   warps-item: "&e%s"
+  player-time-set: "&aSet your time to: &b%s"
+  player-time-reset: "&eYour time has been synced with the server"
+  player-time-invalid: "&cThat time value is invalid."
 
 formats:
   chat-global: "&f[&d%SERVER%&f] %DISPLAYNAME% &f> %SUFFIX%"

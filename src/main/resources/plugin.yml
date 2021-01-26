@@ -62,6 +62,10 @@ commands:
   wake:
     usage: /wake <player>
     description: Wake someone up
+  playertime:
+    usage: /playertime <time>
+    description: Change your player time
+    aliases: [ptime]
 permissions:
   discovsuite.command.clearinventory:
     default: op
@@ -108,6 +112,9 @@ permissions:
   discovsuite.command.nearby:
     default: op
     description: Permission to use the /nearby command
+  discovsuite.command.playertime:
+    default: op
+    description: Permission to use the /playertime command
   discovsuite.chat.local:
     default: op
     description: Permission to use local chat
