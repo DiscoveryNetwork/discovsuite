@@ -34,11 +34,6 @@ public class ChatListener implements Listener {
             }
         }
 
-        // Check if valid command
-        if (event.isCommand() || event.isProxyCommand()) {
-            return;
-        }
-
         // Chat mute check
         if (DiscovSuite.chatMuted) {
             if (!player.hasPermission("discovsuite.chat.mute.bypass") && !event.isCommand() && !event.isProxyCommand()) {
@@ -46,6 +41,11 @@ public class ChatListener implements Listener {
                 ChatUtil.sendConfigMessage(player, "chat-blocked");
                 return;
             }
+        }
+
+        // Check if valid command
+        if ((event.isCommand() || event.isProxyCommand()) && !event.getMessage().contains("/msg")) {
+            return;
         }
 
         // Chat filter
@@ -61,8 +61,7 @@ public class ChatListener implements Listener {
         if (!event.isCommand() && !event.isProxyCommand()) {
             for (ProxiedPlayer onlinePlayer : ProxyServer.getInstance().getPlayers()) {
                 if (event.getMessage().toLowerCase().contains(onlinePlayer.getName().toLowerCase())) {
-                    String replacement = (PlaceholderUtil.parse(onlinePlayer, "&9%NAME%") + PlaceholderUtil.parse(player, "%SUFFIX%"));
-                    replacement = ChatColor.translateAlternateColorCodes('&', replacement);
+                    String replacement = (PlaceholderUtil.parse(onlinePlayer, "&9%NAME%") + PlaceholderUtil.parse(player, "%SUFFIX%")).replaceAll("&", "~");
                     event.setMessage(event.getMessage().replaceAll("(?i)" + onlinePlayer.getName(), replacement));
                     mentionPlayer(onlinePlayer);
                 }

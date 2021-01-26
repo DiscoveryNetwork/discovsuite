@@ -24,6 +24,7 @@ public class ChatListener implements Listener {
             event.setMessage(PlaceholderAPI.setPlaceholders(player, event.getMessage()));
         }
 
+        event.setMessage(ChatColor.translateAlternateColorCodes('~', event.getMessage()));
         if (player.hasPermission("discovsuite.chat.color")) {
             event.setMessage(ChatColor.translateAlternateColorCodes('&', event.getMessage()));
         }
