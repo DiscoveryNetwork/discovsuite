@@ -21,7 +21,10 @@ public class TeleportManager {
     }
 
     public boolean isQueued(Player player) {
-        return player_queue.containsKey(player.getUniqueId()) || warp_queue.containsKey(player.getUniqueId());
+        if (player_queue.containsKey(player.getUniqueId())) {
+            return true;
+        }
+        return warp_queue.containsKey(player.getUniqueId());
     }
 
     public void teleport(Player player) {
