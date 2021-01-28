@@ -6,6 +6,7 @@ import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import nl.parrotlync.discovsuite.spigot.DiscovSuite;
 import nl.parrotlync.discovsuite.spigot.model.Warp;
+import nl.parrotlync.discovsuite.spigot.util.ChatUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -62,7 +63,12 @@ public class MessageListener implements PluginMessageListener {
                 UUID teleportPlayer = UUID.fromString(inputStream.readUTF());
                 Warp warp = DiscovSuite.getInstance().getWarpManager().getWarp(inputStream.readUTF());
                 if (warp != null) {
-                    DiscovSuite.getInstance().getTeleportManager().queue(teleportPlayer, warp);
+                    if (Bukkit.getPlayer(teleportPlayer) != null) {
+                        Bukkit.getPlayer(teleportPlayer).teleport(warp.getLocation());
+                        ChatUtil.sendConfigMessage(player, "warp-teleported", warp.getName());
+                    } else {
+                        DiscovSuite.getInstance().getTeleportManager().queue(teleportPlayer, warp);
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();

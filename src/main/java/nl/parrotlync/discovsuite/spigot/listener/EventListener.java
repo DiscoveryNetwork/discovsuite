@@ -25,12 +25,16 @@ public class EventListener implements Listener {
             event.setJoinMessage(null);
         }
 
+        debug(String.format("Last location of player %s is %s", event.getPlayer().getName(), event.getPlayer().getLocation().toString()));
         if (DiscovSuite.getInstance().getTeleportManager().isQueued(event.getPlayer())) {
+            debug(String.format("Player %s is queued.", event.getPlayer().getName()));
             DiscovSuite.getInstance().getTeleportManager().teleport(event.getPlayer());
         } else {
+            debug(String.format("Player %s is not queued. Teleporting to nearest warp.", event.getPlayer().getName()));
             if (!isMatchingWorld(event.getPlayer().getWorld(), "nearest-warp-teleport-disabled-worlds")) {
                 Warp warp = DiscovSuite.getInstance().getWarpManager().getNearestWarp(event.getPlayer());
                 if (warp != null) {
+                    debug(String.format("Nearest warp is %s for player %s", warp.getName(), event.getPlayer().getName()));
                     event.getPlayer().teleport(warp.getLocation());
                 }
             }
@@ -121,5 +125,9 @@ public class EventListener implements Listener {
             }
         }
         return false;
+    }
+
+    private void debug(String message) {
+        DiscovSuite.getInstance().getLogger().info("[DEBUG] " + message);
     }
 }
