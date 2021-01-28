@@ -4,6 +4,7 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import nl.parrotlync.discovsuite.bungeecord.DiscovSuite;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -19,7 +20,7 @@ public class PlayerCache {
                 for (UUID player : storedPlayers.keySet()) {
                     players.put(player, storedPlayers.get(player));
                 }
-                DiscovSuite.getInstance().getLogger().warning("CACHE: Fetched " + players.size() + " players from database!");
+                DiscovSuite.getInstance().getLogger().info("CACHE: Fetched " + players.size() + " players from database!");
             } catch (Exception e) {
                 DiscovSuite.getInstance().getLogger().warning("CACHE: Something went wrong while fetching players");
                 e.printStackTrace();
@@ -38,6 +39,6 @@ public class PlayerCache {
     }
 
     public List<String> getPlayerNames() {
-        return (List<String>) players.values();
+        return new ArrayList<>(players.values());
     }
 }
