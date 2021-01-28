@@ -56,7 +56,7 @@ public class NicknameManager {
             String prefix = user.getCachedData().getMetaData().getPrefix();
             String displayName = prefix + " " + getNickname(player);
             player.setDisplayName(ChatColor.translateAlternateColorCodes('&', displayName));
-            PluginMessage.sendDisplayName(player, ChatColor.translateAlternateColorCodes('&', displayName));
+            PluginMessage.sendDisplayName(player);
         }
     }
 }

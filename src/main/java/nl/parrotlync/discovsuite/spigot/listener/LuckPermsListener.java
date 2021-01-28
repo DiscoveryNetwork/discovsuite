@@ -24,7 +24,7 @@ public class LuckPermsListener {
             String prefix = event.getUser().getCachedData().getMetaData().getPrefix();
             String displayName = prefix + " " + DiscovSuite.getInstance().getNicknameManager().getNickname(player);
             player.setDisplayName(ChatColor.translateAlternateColorCodes('&', displayName));
-            PluginMessage.sendDisplayName(player, displayName);
+            PluginMessage.sendDisplayName(player);
         }
     }
 }

@@ -66,7 +66,7 @@ public class PluginMessageListener implements Listener {
             String displayName = byteArrayDataInput.readUTF();
 
             ProxiedPlayer player = ProxyServer.getInstance().getPlayer(uuid);
-            player.setDisplayName(ChatColor.translateAlternateColorCodes('&', displayName));
+            player.setDisplayName(displayName);
         }
     }
 }
