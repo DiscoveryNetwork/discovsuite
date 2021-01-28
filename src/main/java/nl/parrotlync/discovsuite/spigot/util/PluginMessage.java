@@ -44,32 +44,6 @@ public class PluginMessage {
         getRandomPlayer().sendPluginMessage(DiscovSuite.getInstance(), "dsuite:broadcast", byteArrayOutputStream.toByteArray());
     }
 
-    public static void clearChat(Player player) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
-
-        try {
-            dataOutputStream.writeUTF(player.getName());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        player.sendPluginMessage(DiscovSuite.getInstance(), "dsuite:clear", byteArrayOutputStream.toByteArray());
-    }
-
-    public static void muteChat(Player player) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
-
-        try {
-            dataOutputStream.writeUTF(player.getName());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        player.sendPluginMessage(DiscovSuite.getInstance(), "dsuite:mute", byteArrayOutputStream.toByteArray());
-    }
-
     public static void sendStaffAlert(CommandSender sender, String message) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
@@ -116,32 +90,18 @@ public class PluginMessage {
         player.sendPluginMessage(DiscovSuite.getInstance(), "dsuite:mgchat", byteArrayOutputStream.toByteArray());
     }
 
-    public static void sendDisplayName(Player player, String displayName) {
+    public static void sendDisplayName(Player player) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
 
         try {
             dataOutputStream.writeUTF(player.getUniqueId().toString());
-            dataOutputStream.writeUTF(displayName);
+            dataOutputStream.writeUTF(player.getDisplayName());
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         player.sendPluginMessage(DiscovSuite.getInstance(), "dsuite:dpname", byteArrayOutputStream.toByteArray());
-    }
-
-    public static void sendNotice(Player player, String message) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
-
-        try {
-            dataOutputStream.writeUTF(player.getUniqueId().toString());
-            dataOutputStream.writeUTF(message);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        player.sendPluginMessage(DiscovSuite.getInstance(), "dsuite:notice", byteArrayOutputStream.toByteArray());
     }
 
     public static void connect(Player player, String server) {
