@@ -70,6 +70,7 @@ public class DiscovSuite extends Plugin {
         playerCache.load();
         chatFilter.fetchBannedWords();
         chatFilter.fetchExcludedWords();
+        chatFilter.fetchReplacements();
 
         // Listeners & Commands
         getProxy().getPluginManager().registerListener(this, new PlayerListener());

@@ -46,6 +46,13 @@ public class DatabaseUtil extends MySQLDatabaseConnector {
                 "        primary key,\n" +
                 "    `match` varchar(50) null\n" +
                 ");");
+        statement.execute("create table dsuite_chat_replacements\n" +
+                "(\n" +
+                "    ID          int auto_increment\n" +
+                "        primary key,\n" +
+                "    `match`     varchar(50) null,\n" +
+                "    replacement varchar(50) null\n" +
+                ");");
     }
 
     public void savePlayer(ProxiedPlayer player, Date login) throws SQLException, ClassNotFoundException {
@@ -149,6 +156,17 @@ public class DatabaseUtil extends MySQLDatabaseConnector {
         return excludedWords;
     }
 
+    public HashMap<String, String> getReplacements() throws SQLException, ClassNotFoundException {
+        connect();
+        HashMap<String, String> replacements = new HashMap<>();
+        Statement statement = connection.createStatement();
+        ResultSet result = statement.executeQuery("SELECT * FROM dsuite_chat_replacements");
+        while (result.next()) {
+            replacements.put(result.getString("match"), result.getString("replacement"));
+        }
+        return replacements;
+    }
+
     public void addBannedWord(String match) throws SQLException, ClassNotFoundException {
         connect();
         PreparedStatement statement = connection.prepareStatement("REPLACE INTO dsuite_chat_banned (`match`) VALUES (?)");
@@ -160,6 +178,14 @@ public class DatabaseUtil extends MySQLDatabaseConnector {
         connect();
         PreparedStatement statement = connection.prepareStatement("REPLACE INTO dsuite_chat_exclusions (`match`) VALUES (?)");
         statement.setString(1, match);
+        statement.execute();
+    }
+
+    public void addReplacement(String match, String replacement) throws SQLException, ClassNotFoundException {
+        connect();
+        PreparedStatement statement = connection.prepareStatement("REPLACE INTO dsuite_chat_replacements (`match`, replacement) VALUES (?, ?)");
+        statement.setString(1, match);
+        statement.setString(2, replacement);
         statement.execute();
     }
 

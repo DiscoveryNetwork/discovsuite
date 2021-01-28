@@ -66,6 +66,18 @@ public class ChatFilter {
         });
     }
 
+    public void addReplacement(String match, String replacement) {
+        replacements.put(match, replacement);
+        ProxyServer.getInstance().getScheduler().runAsync(DiscovSuite.getInstance(), () -> {
+           try {
+               DiscovSuite.getInstance().getDatabase().addReplacement(match, replacement);
+           } catch (Exception e) {
+               DiscovSuite.getInstance().getLogger().warning("Something went wrong while updating the ChatFilter.");
+               e.printStackTrace();
+           }
+        });
+    }
+
     public void fetchBannedWords() {
         ProxyServer.getInstance().getScheduler().runAsync(DiscovSuite.getInstance(), () -> {
             try {
@@ -91,6 +103,21 @@ public class ChatFilter {
                 }
             } catch (Exception e) {
                 DiscovSuite.getInstance().getLogger().warning("Something went wrong while fetching excluded words from the database.");
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public void fetchReplacements() {
+        ProxyServer.getInstance().getScheduler().runAsync(DiscovSuite.getInstance(), () -> {
+            try {
+                HashMap<String, String> replacements = DiscovSuite.getInstance().getDatabase().getReplacements();
+                if (replacements != null && !replacements.isEmpty()) {
+                    this.replacements = replacements;
+                    DiscovSuite.getInstance().getLogger().info("Succesfully retrieved " + replacements.size() + " replacements from the database!");
+                }
+            } catch (Exception e) {
+                DiscovSuite.getInstance().getLogger().warning("Something went wrong while fetching replacements from the database.");
                 e.printStackTrace();
             }
         });
