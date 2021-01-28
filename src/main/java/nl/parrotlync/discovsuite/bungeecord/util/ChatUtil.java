@@ -20,6 +20,12 @@ public class ChatUtil {
         sender.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', message)));
     }
 
+    public static void sendConfigMessage(CommandSender sender, String path, String[] arguments) {
+        String message = DiscovSuite.getInstance().getConfig().getString("messages." + path);
+        message = String.format(message, Arrays.stream(arguments).toArray());
+        sender.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', message)));
+    }
+
     public static void sendMissingArguments(CommandSender sender, String[] arguments) {
         String message = DiscovSuite.getInstance().getConfig().getString("messages.missing-arguments");
         message = ChatColor.translateAlternateColorCodes('&', String.format(message, Arrays.toString(arguments)));
