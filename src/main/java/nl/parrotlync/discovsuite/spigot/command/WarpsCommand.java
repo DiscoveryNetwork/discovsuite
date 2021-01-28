@@ -27,6 +27,12 @@ public class WarpsCommand implements CommandExecutor {
             return true;
         }
 
+        if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
+            player.sendMessage("§7Reloading warps...");
+            DiscovSuite.getInstance().getWarpManager().load();
+            return true;
+        }
+
         ChatUtil.sendConfigMessage(player, "warps-title");
         String item = ChatColor.translateAlternateColorCodes('&', DiscovSuite.getInstance().getConfig().getString("messages.warps-item"));
         List<String> warpNames = new ArrayList<>();
