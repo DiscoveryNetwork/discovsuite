@@ -23,6 +23,7 @@ messages:
   server-connecting: "&7Now connecting to &6&l%s"
   add-banned-word: "&b%s &ahas been added to the swear filter!"
   add-excluded-word: "&b%s &ahas been added as an excluded word!"
+  add-replacement: "&b%s &awill now be replaced with &b%s&a!"
   server-list-title: "&eYou can connect to the following servers: (Click to join)"
   server-list-item: "&9- &7%s"
 
