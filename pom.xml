@@ -97,7 +97,7 @@
         <dependency>
             <groupId>nl.parrotlync</groupId>
             <artifactId>DiscovOutlines</artifactId>
-            <version>1.1.7</version>
+            <version>1.1.1</version>
         </dependency>
         <dependency>
             <groupId>org.ocpsoft.prettytime</groupId>
