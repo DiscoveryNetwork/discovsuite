@@ -3,7 +3,6 @@ package nl.parrotlync.discovsuite.spigot.listener;
 import me.clip.placeholderapi.PlaceholderAPI;
 import nl.parrotlync.discovsuite.spigot.DiscovSuite;
 import nl.parrotlync.discovsuite.spigot.model.ChannelType;
-import nl.parrotlync.discovsuite.spigot.util.ChatUtil;
 import nl.parrotlync.discovsuite.spigot.util.PlaceholderUtil;
 import nl.parrotlync.discovsuite.spigot.util.PluginMessage;
 import org.bukkit.Bukkit;
@@ -32,11 +31,11 @@ public class ChatListener implements Listener {
         ChannelType channel = DiscovSuite.getInstance().getChannelManager().getChannel(player);
 
         if (channel == ChannelType.GLOBAL) {
-            String format = PlaceholderUtil.parse(player, DiscovSuite.getInstance().getConfig().getString("formats.chat-global"));
+            String format = PlaceholderUtil.parse(player, DiscovSuite.getInstance().getMessages().getString("formats.chat-global"));
             event.setFormat(ChatColor.translateAlternateColorCodes('&', format + "%2$s"));
             PluginMessage.sendChat(player, event.getMessage(), event.getFormat());
         } else if (channel == ChannelType.LOCAL) {
-            String format = PlaceholderUtil.parse(player, DiscovSuite.getInstance().getConfig().getString("formats.chat-local"));
+            String format = PlaceholderUtil.parse(player, DiscovSuite.getInstance().getMessages().getString("formats.chat-local"));
             Bukkit.broadcast(ChatColor.translateAlternateColorCodes('&', format + event.getMessage()), "discovsuite.chat.local");
             event.setCancelled(true);
         } else if (channel == ChannelType.MANAGEMENT_CHAT) {

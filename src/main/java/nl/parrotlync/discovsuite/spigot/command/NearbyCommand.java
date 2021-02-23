@@ -32,7 +32,7 @@ public class NearbyCommand implements CommandExecutor {
         TreeMap<Double, Warp> warps = DiscovSuite.getInstance().getWarpManager().getNearbyWarps(player.getLocation());
         if (warps.size() != 0) {
             ChatUtil.sendConfigMessage(player, "nearby-warps-title");
-            String item = ChatColor.translateAlternateColorCodes('&', DiscovSuite.getInstance().getConfig().getString("messages.nearby-warps-item"));
+            String item = ChatColor.translateAlternateColorCodes('&', DiscovSuite.getInstance().getMessages().getString("messages.nearby-warps-item"));
             for (Warp warp : warps.values()) {
                 if (warp.canAccess(player)) {
                     TextComponent main = new TextComponent(String.format(item, warp.getName()));

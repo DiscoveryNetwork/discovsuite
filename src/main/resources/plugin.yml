@@ -66,6 +66,9 @@ commands:
     usage: /playertime <time>
     description: Change your player time
     aliases: [ptime]
+  build:
+    usage: /build
+    description: Toggle BuildMode
 permissions:
   discovsuite.command.clearinventory:
     default: op
@@ -115,6 +118,9 @@ permissions:
   discovsuite.command.playertime:
     default: op
     description: Permission to use the /playertime command
+  discovsuite.command.build:
+    default: op
+    description: Permission to use the /build command
   discovsuite.chat.local:
     default: op
     description: Permission to use local chat

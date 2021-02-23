@@ -79,5 +79,10 @@ public class MessageListener implements PluginMessageListener {
             DiscovSuite.getInstance().getLogger().info("Received update command through BungeeCord");
             DiscovSuite.getInstance().getWarpManager().load();
         }
+
+        if (channel.equalsIgnoreCase("dsuite:auth")) {
+            UUID uuid = UUID.fromString(byteArrayDataInput.readUTF());
+            DiscovSuite.getInstance().getAuthUtil().authSuccess(uuid);
+        }
     }
 }

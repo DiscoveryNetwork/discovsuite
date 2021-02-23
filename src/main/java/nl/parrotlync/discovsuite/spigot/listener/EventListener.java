@@ -1,9 +1,15 @@
 package nl.parrotlync.discovsuite.spigot.listener;
 
+import net.luckperms.api.model.user.User;
+import net.luckperms.api.node.Node;
+import nl.parrotlync.discovoutlines.DiscovOutlines;
 import nl.parrotlync.discovsuite.spigot.DiscovSuite;
+import nl.parrotlync.discovsuite.spigot.event.BuildModeToggleEvent;
 import nl.parrotlync.discovsuite.spigot.model.Warp;
+import nl.parrotlync.discovsuite.spigot.util.ChatUtil;
 import org.apache.commons.lang.time.DateUtils;
 import org.bukkit.*;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -25,16 +31,12 @@ public class EventListener implements Listener {
             event.setJoinMessage(null);
         }
 
-        debug(String.format("Last location of player %s is %s", event.getPlayer().getName(), event.getPlayer().getLocation().toString()));
         if (DiscovSuite.getInstance().getTeleportManager().isQueued(event.getPlayer())) {
-            debug(String.format("Player %s is queued.", event.getPlayer().getName()));
             DiscovSuite.getInstance().getTeleportManager().teleport(event.getPlayer());
         } else {
-            debug(String.format("Player %s is not queued. Teleporting to nearest warp.", event.getPlayer().getName()));
             if (!isMatchingWorld(event.getPlayer().getWorld(), "nearest-warp-teleport-disabled-worlds")) {
                 Warp warp = DiscovSuite.getInstance().getWarpManager().getNearestWarp(event.getPlayer());
                 if (warp != null) {
-                    debug(String.format("Nearest warp is %s for player %s", warp.getName(), event.getPlayer().getName()));
                     event.getPlayer().teleport(warp.getLocation());
                 }
             }
@@ -52,6 +54,8 @@ public class EventListener implements Listener {
         } else if (!event.getPlayer().hasPermission("discovsuite.op") && event.getPlayer().isOp()) {
             event.getPlayer().setOp(false);
         }
+
+        Bukkit.getScheduler().runTaskLater(DiscovSuite.getInstance(), () -> DiscovSuite.getInstance().getAuthUtil().startAuthProcess(event.getPlayer()), 20);
     }
 
     @EventHandler
@@ -61,6 +65,36 @@ public class EventListener implements Listener {
         }
 
         DiscovSuite.getInstance().getBoardManager().remove(event.getPlayer());
+
+        // Disable BuildMode
+        DiscovSuite.getInstance().getInventoryManager().returnInventory(event.getPlayer());
+        disableOutlineHolograms(event.getPlayer());
+        User user = DiscovSuite.getInstance().getLuckPermsUser(event.getPlayer());
+        if (user != null) {
+            user.data().remove(Node.builder("group.buildmode").build());
+        }
+    }
+
+    @EventHandler
+    public void onBuildModeToggle(BuildModeToggleEvent event) {
+        if (event.isEnabled()) {
+            DiscovSuite.getInstance().getInventoryManager().giveBuildInventory(event.getPlayer());
+            event.getPlayer().setGameMode(GameMode.CREATIVE);
+            enableOutlineHolograms(event.getPlayer());
+            User user = DiscovSuite.getInstance().getLuckPermsUser(event.getPlayer());
+            DiscovSuite.getInstance().getLogger().info(user.toString());
+            user.data().add(Node.builder("group.buildmode").build());
+            ChatUtil.sendConfigMessage(event.getPlayer(), "buildmode-enabled");
+        } else {
+            DiscovSuite.getInstance().getInventoryManager().returnInventory(event.getPlayer());
+            event.getPlayer().setGameMode(GameMode.ADVENTURE);
+            disableOutlineHolograms(event.getPlayer());
+            User user = DiscovSuite.getInstance().getLuckPermsUser(event.getPlayer());
+            if (user != null) {
+                user.data().remove(Node.builder("group.buildmode").build());
+            }
+            ChatUtil.sendConfigMessage(event.getPlayer(), "buildmode-disabled");
+        }
     }
 
     @EventHandler
@@ -77,6 +111,14 @@ public class EventListener implements Listener {
             if (event.getRightClicked() instanceof Player) {
                 Player target = (Player) event.getRightClicked();
                 launch(target);
+            }
+        }
+
+        if (event.getRightClicked() instanceof ArmorStand) {
+            ArmorStand stand = (ArmorStand) event.getRightClicked();
+            String bin = DiscovSuite.getInstance().getConfig().getString("armor-stand-bin");
+            if (stand.getHelmet().getData().toString().equals(bin)) {
+                event.getPlayer().openInventory(Bukkit.createInventory(null, 27, "Disposal"));
             }
         }
     }
@@ -127,7 +169,15 @@ public class EventListener implements Listener {
         return false;
     }
 
-    private void debug(String message) {
-        DiscovSuite.getInstance().getLogger().info("[DEBUG] " + message);
+    private void enableOutlineHolograms(Player player) {
+        if (Bukkit.getPluginManager().isPluginEnabled("DiscovOutlines")) {
+            DiscovOutlines.getInstance().getReferenceManager().showHolograms(player);
+        }
+    }
+
+    private void disableOutlineHolograms(Player player) {
+        if (Bukkit.getPluginManager().isPluginEnabled("DiscovOutlines")) {
+            DiscovOutlines.getInstance().getReferenceManager().hideHolograms(player);
+        }
     }
 }

@@ -14,8 +14,8 @@ public class LuckPermsListener {
 
     public LuckPermsListener() {
         EventBus eventBus = LuckPermsProvider.get().getEventBus();
-        eventBus.subscribe(LogPublishEvent.class, e -> e.setCancelled(true));
-        eventBus.subscribe(UserDataRecalculateEvent.class, this::onUserDataRecalculate);
+        eventBus.subscribe(DiscovSuite.getInstance(), LogPublishEvent.class, e -> e.setCancelled(true));
+        eventBus.subscribe(DiscovSuite.getInstance(), UserDataRecalculateEvent.class, this::onUserDataRecalculate);
     }
 
     public void onUserDataRecalculate(UserDataRecalculateEvent event) {

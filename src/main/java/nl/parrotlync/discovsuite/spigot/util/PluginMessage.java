@@ -32,7 +32,7 @@ public class PluginMessage {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
 
-        String format = DiscovSuite.getInstance().getConfig().getString("formats.broadcast");
+        String format = DiscovSuite.getInstance().getMessages().getString("formats.broadcast");
 
         try {
             dataOutputStream.writeUTF(ChatColor.translateAlternateColorCodes('&', format + message));
@@ -48,7 +48,7 @@ public class PluginMessage {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
 
-        String format = PlaceholderUtil.parseForSender(sender, DiscovSuite.getInstance().getConfig().getString("formats.staff-alert"));
+        String format = PlaceholderUtil.parseForSender(sender, DiscovSuite.getInstance().getMessages().getString("formats.staff-alert"));
 
         try {
             dataOutputStream.writeUTF(ChatColor.translateAlternateColorCodes('&', format + message));
@@ -64,7 +64,7 @@ public class PluginMessage {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
 
-        String format = PlaceholderUtil.parse(player, DiscovSuite.getInstance().getConfig().getString("formats.chat-staff"));
+        String format = PlaceholderUtil.parse(player, DiscovSuite.getInstance().getMessages().getString("formats.chat-staff"));
 
         try {
             dataOutputStream.writeUTF(ChatColor.translateAlternateColorCodes('&', format + message));
@@ -79,7 +79,7 @@ public class PluginMessage {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
 
-        String format = PlaceholderUtil.parse(player, DiscovSuite.getInstance().getConfig().getString("formats.chat-management"));
+        String format = PlaceholderUtil.parse(player, DiscovSuite.getInstance().getMessages().getString("formats.chat-management"));
 
         try {
             dataOutputStream.writeUTF(ChatColor.translateAlternateColorCodes('&', format + message));
@@ -102,6 +102,20 @@ public class PluginMessage {
         }
 
         player.sendPluginMessage(DiscovSuite.getInstance(), "dsuite:dpname", byteArrayOutputStream.toByteArray());
+    }
+
+    public static void auth(Player player) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+
+        try {
+            dataOutputStream.writeUTF(player.getUniqueId().toString());
+            dataOutputStream.writeUTF(player.getName());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        getRandomPlayer().sendPluginMessage(DiscovSuite.getInstance(), "dsuite:auth", byteArrayOutputStream.toByteArray());
     }
 
     public static void connect(Player player, String server) {

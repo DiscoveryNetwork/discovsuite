@@ -8,11 +8,9 @@ import nl.parrotlync.discovsuite.spigot.listener.ChatListener;
 import nl.parrotlync.discovsuite.spigot.listener.EventListener;
 import nl.parrotlync.discovsuite.spigot.listener.LuckPermsListener;
 import nl.parrotlync.discovsuite.spigot.listener.MessageListener;
-import nl.parrotlync.discovsuite.spigot.manager.ChannelManager;
-import nl.parrotlync.discovsuite.spigot.manager.NicknameManager;
-import nl.parrotlync.discovsuite.spigot.manager.TeleportManager;
-import nl.parrotlync.discovsuite.spigot.manager.WarpManager;
+import nl.parrotlync.discovsuite.spigot.manager.*;
 import nl.parrotlync.discovsuite.spigot.scoreboard.BoardManager;
+import nl.parrotlync.discovsuite.spigot.util.AuthUtil;
 import nl.parrotlync.discovsuite.spigot.util.DatabaseUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -20,7 +18,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -33,6 +34,8 @@ public class DiscovSuite extends JavaPlugin {
     private final ChannelManager channelManager = new ChannelManager();
     private final WarpManager warpManager = new WarpManager();
     private final TeleportManager teleportManager = new TeleportManager();
+    private final InventoryManager inventoryManager = new InventoryManager();
+    private final AuthUtil authUtil = new AuthUtil();
 
     public DiscovSuite() {
         instance = this;
@@ -44,6 +47,7 @@ public class DiscovSuite extends JavaPlugin {
         saveDefaultConfig();
         updateConfig();
         reloadConfig();
+        saveMessages();
 
         // Channels
         getServer().getMessenger().registerOutgoingPluginChannel(this, "dsuite:chat");
@@ -55,8 +59,10 @@ public class DiscovSuite extends JavaPlugin {
         getServer().getMessenger().registerOutgoingPluginChannel(this, "dsuite:notice");
         getServer().getMessenger().registerOutgoingPluginChannel(this, "dsuite:filter");
         getServer().getMessenger().registerOutgoingPluginChannel(this, "dsuite:dpname");
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "dsuite:auth");
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new MessageListener());
+        getServer().getMessenger().registerIncomingPluginChannel(this, "dsuite:auth", new MessageListener());
         getServer().getMessenger().registerIncomingPluginChannel(this, "dsuite:filter", new MessageListener());
         getServer().getMessenger().registerIncomingPluginChannel(this, "dsuite:mention", new MessageListener());
         getServer().getMessenger().registerIncomingPluginChannel(this, "dsuite:teleport", new MessageListener());
@@ -94,7 +100,7 @@ public class DiscovSuite extends JavaPlugin {
         }
 
         // LuckPerms listener
-        if (getServer().getPluginManager().getPlugin("LuckPerms") != null) {
+        if (getServer().getPluginManager().isPluginEnabled("LuckPerms")) {
             LuckPermsListener luckPermsListener = new LuckPermsListener();
         }
 
@@ -118,6 +124,7 @@ public class DiscovSuite extends JavaPlugin {
         getCommand("randomwarp").setExecutor(new RandomWarpCommand());
         getCommand("wake").setExecutor(new WakeCommand());
         getCommand("playertime").setExecutor(new PlayerTimeCommand());
+        getCommand("build").setExecutor(new BuildCommand());
         getLogger().info("DiscovSuite is now enabled!");
     }
 
@@ -150,15 +157,38 @@ public class DiscovSuite extends JavaPlugin {
 
     public TeleportManager getTeleportManager() { return teleportManager; }
 
+    public InventoryManager getInventoryManager() { return inventoryManager; }
+
+    public AuthUtil getAuthUtil() { return authUtil; }
+
     public User getLuckPermsUser(Player player) {
-        if (getServer().getPluginManager().getPlugin("LuckPerms") != null) {
+        if (getServer().getPluginManager().isPluginEnabled("LuckPerms")) {
             return LuckPermsProvider.get().getUserManager().getUser(player.getUniqueId());
         }
         return null;
     }
 
     public boolean getPlaceholderSupport() {
-        return getServer().getPluginManager().getPlugin("PlaceholderAPI") != null;
+        return getServer().getPluginManager().isPluginEnabled("PlaceholderAPI");
+    }
+
+    public YamlConfiguration getMessages() {
+        YamlConfiguration config = new YamlConfiguration();
+        try {
+            config.load(new File(getDataFolder(), "messages.yml"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return config;
+    }
+
+    private void saveMessages() {
+        File file = new File(getDataFolder(), "messages.yml");
+        try (InputStream in = getResource("messages-spigot.yml")) {
+            Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void updateConfig() {
@@ -169,14 +199,16 @@ public class DiscovSuite extends JavaPlugin {
             e.printStackTrace();
         }
 
-        if (resource.isSet("messages")) {
-            ConfigurationSection messages = resource.getConfigurationSection("messages");
-            getConfig().set("messages", messages);
+        for (String path : getConfig().getKeys(false)) {
+            if (!resource.isSet(path)) {
+                getConfig().set(path, null);
+            }
         }
 
-        if (resource.isSet("formats")) {
-            ConfigurationSection formats = resource.getConfigurationSection("formats");
-            getConfig().set("formats", formats);
+        for (String path : resource.getKeys(false)) {
+            if (!getConfig().isSet((path))) {
+                getConfig().set(path, resource.get(path));
+            }
         }
         saveConfig();
     }

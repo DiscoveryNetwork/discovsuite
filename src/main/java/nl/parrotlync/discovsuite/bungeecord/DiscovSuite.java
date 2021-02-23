@@ -3,6 +3,7 @@ package nl.parrotlync.discovsuite.bungeecord;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
@@ -22,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 public class DiscovSuite extends Plugin {
@@ -42,6 +44,8 @@ public class DiscovSuite extends Plugin {
     public void onEnable() {
         if (!Beacon.authenticate()) { return; }
         saveDefaultConfig();
+        updateConfig();
+        saveMessages();
 
         // Channels
         getProxy().registerChannel("dsuite:chat");
@@ -51,6 +55,7 @@ public class DiscovSuite extends Plugin {
         getProxy().registerChannel("dsuite:mention");
         getProxy().registerChannel("dsuite:dpname");
         getProxy().registerChannel("dsuite:teleport");
+        getProxy().registerChannel("dsuite:auth");
 
         // Database
         this.database = new DatabaseUtil(getConfig().getString("database.host"), getConfig().getString("database.username"),
@@ -115,9 +120,59 @@ public class DiscovSuite extends Plugin {
         }
     }
 
+    private void saveMessages() {
+        File file = new File(getDataFolder(), "messages.yml");
+        try (InputStream in = getResourceAsStream("messages-bungee.yml")) {
+            Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateConfig() {
+        Configuration resource = null;
+        Configuration config = getConfig();
+        try (InputStream in = getResourceAsStream("config-bungee.yml")) {
+            resource = ConfigurationProvider.getProvider(YamlConfiguration.class).load(in);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (resource == null) {
+            return;
+        }
+
+        for (String path : config.getKeys()) {
+            if (!resource.contains(path)) {
+                config.set(path, null);
+            }
+        }
+
+        for (String path : resource.getKeys()) {
+            if (!config.contains(path)) {
+                config.set(path, resource.get(path));
+            }
+        }
+
+        try {
+            ConfigurationProvider.getProvider(YamlConfiguration.class).save(config, new File(getDataFolder(), "config.yml"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public Configuration getConfig() {
         try {
             return ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File(getDataFolder(), "config.yml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new Configuration();
+    }
+
+    public Configuration getMessages() {
+        try {
+            return ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File(getDataFolder(), "messages.yml"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -129,6 +184,14 @@ public class DiscovSuite extends Plugin {
             return LuckPermsProvider.get().getUserManager().getUser(player.getUniqueId());
         }
         return null;
+    }
+
+    public boolean isExcludedServer(ServerInfo server) {
+        for (String excludedServer : getConfig().getStringList("excluded-servers")) {
+            ServerInfo exclServer = ProxyServer.getInstance().getServerInfo(excludedServer);
+            if (exclServer != null && server == exclServer) { return true; }
+        }
+        return false;
     }
 
     public ConversationManager getConversationManager() {

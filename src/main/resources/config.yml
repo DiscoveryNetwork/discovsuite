@@ -1,40 +1,5 @@
 server-name: DiscovServer
 
-messages:
-  no-permission: "&cYou don't have permission for this command"
-  player-only: "&cYou need to be a player to execute that command!"
-  missing-arguments: "&cThe following arguments are missing: &7%s"
-  player-not-found: "&cThat player was not found"
-  inventory-clear: "&eYour inventory has been cleared"
-  flight-enabled: "&aYou can fly! You can &ofly! &r&aYou can &lfly!"
-  flight-disabled: "&cFlight has been disabled"
-  fly-speed-change: "&aFlying speed set to: &b%s"
-  walk-speed-change: "&aWalking speed set to: &b%s"
-  chat-channel-changed: "&aYou are now talking in: &b%s"
-  nickname-changed: "&aYour nickname is now: &b%s"
-  invalid-group: "&f[&9Transport&f] &cPlease enter a valid rank"
-  warp-created: "&f[&9Transport&f] &aCreated warp &b%s &afor &b%s+"
-  warp-already-exists: "&f[&9Transport&f] &cA warp with that name already exists"
-  warp-no-permission: "&f[&9Transport&f] &cYou must be &b%s+ &cto access that warp"
-  invalid-warp: "&f[&9Transport&f] &cThat warp doesn't exist"
-  warp-teleported: "&f[&9Transport&f] &7You have arrived at &f[&b%s&f]"
-  no-warps-found: "&f[&9Transport&f] &cNo warps were found"
-  warp-removed: "&f[&9Transport&f] &cYou have deleted the warp &b%s"
-  nearby-warps-title: "&bAll warps within &a200 blocks &b&o(Click to warp) &r&b:"
-  nearby-warps-item: "&f- &e%s"
-  warps-title: "&bWarp list"
-  warps-item: "&e%s"
-  player-time-set: "&aSet your time to: &b%s"
-  player-time-reset: "&eYour time has been synced with the server"
-  player-time-invalid: "&cThat time value is invalid."
-
-formats:
-  chat-global: "&f[&d%SERVER%&f] %DISPLAYNAME% &f> %SUFFIX%"
-  chat-staff: "&f[&cStaff&f] %DISPLAYNAME%&7: &b"
-  chat-local: "&8[&c%SERVER%Chat&8] &7%NAME%&f: "
-  chat-management: "&f[&cManagement&f] %DISPLAYNAME%&7: &3"
-  staff-alert: "&f[&6StaffAlert&f] &c&l[!]&r &6%NAME% &7on &6%SERVER%&7: &c"
-
 database:
   host: ""
   username: ""
@@ -42,10 +7,15 @@ database:
   database: ""
 
 disable-join-quit-messages: true
+armor-stand-bin: IRON_PICKAXE(1)
 water-teleport-enabled-worlds: []
 cauldron-bins-enabled-worlds: []
 punch-disabled-worlds: []
 nearest-warp-teleport-disabled-worlds: []
+
+build-inventory:
+  0: WOOD_AXE
+  1: COMPASS
 
 scoreboard-settings:
   interval: 50

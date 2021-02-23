@@ -46,7 +46,7 @@ public class DatabaseUtil extends MySQLDatabaseConnector {
                 "        primary key,\n" +
                 "    `match` varchar(50) null\n" +
                 ");");
-        statement.execute("create table dsuite_chat_replacements\n" +
+        statement.execute("CREATE TABLE IF NOT EXISTS dsuite_chat_replacements\n" +
                 "(\n" +
                 "    ID          int auto_increment\n" +
                 "        primary key,\n" +

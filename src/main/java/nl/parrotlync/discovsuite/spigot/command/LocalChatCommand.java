@@ -38,7 +38,7 @@ public class LocalChatCommand implements CommandExecutor {
                 return true;
             }
 
-            String format = PlaceholderUtil.parseForSender(sender, DiscovSuite.getInstance().getConfig().getString("formats.chat-local"));
+            String format = PlaceholderUtil.parseForSender(sender, DiscovSuite.getInstance().getMessages().getString("formats.chat-local"));
             Bukkit.broadcast(ChatColor.translateAlternateColorCodes('&', format + String.join(" ", args)), "discovsuite.chat.local");
         }
         return true;

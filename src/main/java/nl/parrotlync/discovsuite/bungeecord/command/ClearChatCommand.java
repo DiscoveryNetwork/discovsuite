@@ -23,7 +23,7 @@ public class ClearChatCommand extends Command {
                 }
             }
 
-            String message = ChatColor.translateAlternateColorCodes('&', DiscovSuite.getInstance().getConfig().getString("messages.chat-cleared"));
+            String message = ChatColor.translateAlternateColorCodes('&', DiscovSuite.getInstance().getMessages().getString("messages.chat-cleared"));
             if (onlinePlayer.hasPermission("discovsuite.chat.clear.bypass")) {
                 onlinePlayer.sendMessage(TextComponent.fromLegacyText(message.replace("%{}%", sender.getName())));
             } else {

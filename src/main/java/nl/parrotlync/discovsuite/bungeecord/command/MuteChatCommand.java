@@ -32,9 +32,9 @@ public class MuteChatCommand extends Command implements TabExecutor {
         DiscovSuite.chatMuted = !DiscovSuite.chatMuted;
         String message;
         if (DiscovSuite.chatMuted) {
-            message = ChatColor.translateAlternateColorCodes('&', DiscovSuite.getInstance().getConfig().getString("messages.chat-muted"));
+            message = ChatColor.translateAlternateColorCodes('&', DiscovSuite.getInstance().getMessages().getString("messages.chat-muted"));
         } else {
-            message = ChatColor.translateAlternateColorCodes('&', DiscovSuite.getInstance().getConfig().getString("messages.chat-unmuted"));
+            message = ChatColor.translateAlternateColorCodes('&', DiscovSuite.getInstance().getMessages().getString("messages.chat-unmuted"));
         }
 
         for (ProxiedPlayer onlinePlayer : ProxyServer.getInstance().getPlayers()) {

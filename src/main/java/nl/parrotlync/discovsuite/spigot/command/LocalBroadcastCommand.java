@@ -22,7 +22,7 @@ public class LocalBroadcastCommand implements CommandExecutor {
             return true;
         }
 
-        String message = DiscovSuite.getInstance().getConfig().getString("formats.broadcast") + String.join(" ", args);
+        String message = DiscovSuite.getInstance().getMessages().getString("formats.broadcast") + String.join(" ", args);
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
             if (onlinePlayer.hasPermission("discovsuite.chat.broadcast.showsender")) {
                 onlinePlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', message.replace("%{}%", sender.getName())));

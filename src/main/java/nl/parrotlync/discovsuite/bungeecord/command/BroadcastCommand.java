@@ -22,7 +22,7 @@ public class BroadcastCommand extends Command {
             return;
         }
 
-        String message = DiscovSuite.getInstance().getConfig().getString("formats.broadcast") + String.join(" ", args);
+        String message = DiscovSuite.getInstance().getMessages().getString("formats.broadcast") + String.join(" ", args);
         message = ChatColor.translateAlternateColorCodes('&', message);
         for (ProxiedPlayer onlinePlayer : ProxyServer.getInstance().getPlayers()) {
             if (onlinePlayer.hasPermission("discovsuite.chat.broadcast.showsender")) {

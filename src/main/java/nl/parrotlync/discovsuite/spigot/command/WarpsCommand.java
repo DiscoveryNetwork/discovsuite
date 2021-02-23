@@ -34,7 +34,7 @@ public class WarpsCommand implements CommandExecutor {
         }
 
         ChatUtil.sendConfigMessage(player, "warps-title");
-        String item = ChatColor.translateAlternateColorCodes('&', DiscovSuite.getInstance().getConfig().getString("messages.warps-item"));
+        String item = ChatColor.translateAlternateColorCodes('&', DiscovSuite.getInstance().getMessages().getString("messages.warps-item"));
         List<String> warpNames = new ArrayList<>();
         for (Warp warp: DiscovSuite.getInstance().getWarpManager().getAccessibleWarps(player)) {
             warpNames.add(String.format(item, warp.getName()));

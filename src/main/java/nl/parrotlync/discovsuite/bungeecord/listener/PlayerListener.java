@@ -16,6 +16,7 @@ import nl.parrotlync.discovsuite.bungeecord.event.PlayerProtocolAcceptEvent;
 import nl.parrotlync.discovsuite.bungeecord.util.ChatUtil;
 import nl.parrotlync.discovsuite.bungeecord.util.PlaceholderUtil;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -26,19 +27,19 @@ public class PlayerListener implements Listener {
         // First join
         if (!DiscovSuite.getInstance().getPlayerCache().hasPlayer(event.getPlayer())) {
             DiscovSuite.getInstance().getPlayerCache().addPlayer(event.getPlayer());
-            String joinMessage = DiscovSuite.getInstance().getConfig().getString("formats.player-first-join");
+            String joinMessage = DiscovSuite.getInstance().getMessages().getString("formats.player-first-join");
             joinMessage = ChatColor.translateAlternateColorCodes('&', PlaceholderUtil.parse(event.getPlayer(), joinMessage));
             ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(joinMessage));
         }
 
         // Join message
-        String playerJoin = DiscovSuite.getInstance().getConfig().getString("formats.player-join");
+        String playerJoin = DiscovSuite.getInstance().getMessages().getString("formats.player-join");
         playerJoin = ChatColor.translateAlternateColorCodes('&', PlaceholderUtil.parse(event.getPlayer(), playerJoin));
         ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(playerJoin));
 
         // Staff join message
         if (event.getPlayer().hasPermission("discovsuite.chat.staff")) {
-            String staffJoin = DiscovSuite.getInstance().getConfig().getString("formats.staff-join");
+            String staffJoin = DiscovSuite.getInstance().getMessages().getString("formats.staff-join");
             staffJoin = ChatColor.translateAlternateColorCodes('&', PlaceholderUtil.parse(event.getPlayer(), staffJoin));
             for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
                 if (player.hasPermission("discovsuite.chat.staff")) {
@@ -51,7 +52,7 @@ public class PlayerListener implements Listener {
         Integer version = event.getPlayer().getPendingConnection().getVersion();
         List<Integer> allowedVersions = DiscovSuite.getInstance().getConfig().getIntList("accepted-protocol-versions");
         if (!allowedVersions.contains(version)) {
-            DiscovSuite.getInstance().getBlockedPlayers().add(event.getPlayer());
+            //DiscovSuite.getInstance().getBlockedPlayers().add(event.getPlayer());
             sendWarning(event.getPlayer());
         }
 
@@ -72,14 +73,14 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerDisconnect(PlayerDisconnectEvent event) {
         // Leave message
-        String playerLeave = DiscovSuite.getInstance().getConfig().getString("formats.player-leave");
+        String playerLeave = DiscovSuite.getInstance().getMessages().getString("formats.player-leave");
         playerLeave = ChatColor.translateAlternateColorCodes('&', PlaceholderUtil.parse(event.getPlayer(), playerLeave));
         ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(playerLeave));
 
         // Staff leave message & auto mute
         if (event.getPlayer().hasPermission("discovsuite.chat.staff")) {
             boolean staffOnline = false;
-            String staffLeave = DiscovSuite.getInstance().getConfig().getString("formats.staff-leave");
+            String staffLeave = DiscovSuite.getInstance().getMessages().getString("formats.staff-leave");
             staffLeave = ChatColor.translateAlternateColorCodes('&', PlaceholderUtil.parse(event.getPlayer(), staffLeave));
             for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
                 if (player.hasPermission("discovsuite.chat.staff")) {
@@ -90,7 +91,7 @@ public class PlayerListener implements Listener {
 
             if (!staffOnline && !DiscovSuite.chatMuted) {
                 ProxyServer.getInstance().getLogger().info("No online staff detected. Muting chat...");
-                String message = DiscovSuite.getInstance().getConfig().getString("messages.chat-muted");
+                String message = DiscovSuite.getInstance().getMessages().getString("messages.chat-muted");
                 message = ChatColor.translateAlternateColorCodes('&', message);
                 ProxyServer.getInstance().broadcast(TextComponent.fromLegacyText(message.replace("%{}%", "Chat")));
                 DiscovSuite.chatMuted = true;
@@ -128,7 +129,7 @@ public class PlayerListener implements Listener {
     }
 
     private void sendWarning(ProxiedPlayer player) {
-        for (String line : DiscovSuite.getInstance().getConfig().getStringList("protocol-warning")) {
+        for (String line : DiscovSuite.getInstance().getMessages().getStringList("protocol-warning")) {
             player.sendMessage(TextComponent.fromLegacyText(line));
         }
     }

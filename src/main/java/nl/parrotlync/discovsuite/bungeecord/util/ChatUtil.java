@@ -10,24 +10,24 @@ import java.util.Arrays;
 public class ChatUtil {
 
     public static void sendConfigMessage(CommandSender sender, String path) {
-        String message = DiscovSuite.getInstance().getConfig().getString("messages." + path);
+        String message = DiscovSuite.getInstance().getMessages().getString("messages." + path);
         sender.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', message)));
     }
 
     public static void sendConfigMessage(CommandSender sender, String path, String argument) {
-        String message = DiscovSuite.getInstance().getConfig().getString("messages." + path);
+        String message = DiscovSuite.getInstance().getMessages().getString("messages." + path);
         message = String.format(message, argument);
         sender.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', message)));
     }
 
     public static void sendConfigMessage(CommandSender sender, String path, String[] arguments) {
-        String message = DiscovSuite.getInstance().getConfig().getString("messages." + path);
+        String message = DiscovSuite.getInstance().getMessages().getString("messages." + path);
         message = String.format(message, Arrays.stream(arguments).toArray());
         sender.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', message)));
     }
 
     public static void sendMissingArguments(CommandSender sender, String[] arguments) {
-        String message = DiscovSuite.getInstance().getConfig().getString("messages.missing-arguments");
+        String message = DiscovSuite.getInstance().getMessages().getString("messages.missing-arguments");
         message = ChatColor.translateAlternateColorCodes('&', String.format(message, Arrays.toString(arguments)));
         sender.sendMessage(TextComponent.fromLegacyText(message));
     }

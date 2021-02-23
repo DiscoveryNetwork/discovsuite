@@ -43,8 +43,12 @@ public class JoinCommand extends Command implements TabExecutor {
             return;
         }
 
+        if (DiscovSuite.getInstance().isExcludedServer(server)) {
+            return;
+        }
+
         if (server.canAccess(player)) {
-            String message = ChatColor.translateAlternateColorCodes('&', DiscovSuite.getInstance().getConfig().getString("messages.server-connecting"));
+            String message = ChatColor.translateAlternateColorCodes('&', DiscovSuite.getInstance().getMessages().getString("messages.server-connecting"));
             player.sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(String.format(message, server.getName())));
             player.connect(server);
         } else {
@@ -64,8 +68,8 @@ public class JoinCommand extends Command implements TabExecutor {
     private void showMenu(ProxiedPlayer player) {
         ChatUtil.sendConfigMessage(player, "server-list-title");
         for (ServerInfo server : ProxyServer.getInstance().getServers().values()) {
-            if (server.canAccess(player)) {
-                String message = DiscovSuite.getInstance().getConfig().getString("messages.server-list-item");
+            if (server.canAccess(player) && !DiscovSuite.getInstance().isExcludedServer(server)) {
+                String message = DiscovSuite.getInstance().getMessages().getString("messages.server-list-item");
                 TextComponent main = new TextComponent(ChatColor.translateAlternateColorCodes('&', String.format(message, server.getName())));
                 main.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/join " + server.getName()));
                 player.sendMessage(main);

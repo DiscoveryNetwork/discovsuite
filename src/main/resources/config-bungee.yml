@@ -1,50 +1,12 @@
 default-server: Hub
 
-messages:
-  no-permission: "&cYou don't have permission for this command"
-  player-only: "&cYou need to be a player to execute that command!"
-  player-not-online: "&cThat player is not online!"
-  player-online: "&6%s &7is currently &aonline"
-  missing-arguments: "&cThe following arguments are missing: &7%s"
-  protocol-accepted: "&aThank you for accepting! &7&oPlease be aware there may be bugs in the version you are using."
-  protocol-accept-first: "&cPlease change your version or type &b/accept &cfirst!"
-  data-fetch-error: "&cSomething went wrong while attempting to fetch data."
-  player-not-found: "&cThat player was not found"
-  chat-blocked: "&cChat is currently muted. &e&oFind out why: &f&ohttps://www.discov.network/faq"
-  message-blocked: "&f[&3Chat&f] &cPlease keep your language clean and safe!"
-  chat-muted: "[&3%{}%&f] &bChat has been muted"
-  chat-unmuted: "[&3%{}%&f] &bChat has been unmuted"
-  chat-mute-check: "&7Chat muted: &6%s"
-  chat-cleared: "[&3%{}%&f] &bChat has been cleared"
-  default-swear-warning: "Please keep chat appropriate"
-  chat-mentioned: "&aYou have been mentioned in chat!"
-  player-teleport: "&f[&9Transport&f] &aTeleporting you to &b%s&a..."
-  server-restricted: "&cYou don't have permission to join that server!"
-  server-connecting: "&7Now connecting to &6&l%s"
-  add-banned-word: "&b%s &ahas been added to the swear filter!"
-  add-excluded-word: "&b%s &ahas been added as an excluded word!"
-  add-replacement: "&b%s &awill now be replaced with &b%s&a!"
-  server-list-title: "&eYou can connect to the following servers: (Click to join)"
-  server-list-item: "&9- &7%s"
-
-formats:
-  msg-send: "&7&l[&c&l!&7&l] &r| &dYou &f-> %DISPLAYNAME%&f: %MSG%"
-  msg-receive: "&7&l[&c&l!&7&l] &r| %DISPLAYNAME% &f-> &dYou&f: %MSG%"
-  msg-spy: "&f[&7Spy&f] &7%SENDER% &8-> &7%RECEIVER%&f: &8%MSG%"
-  swear-notice: "&a%NAME% &emay be swearing: &f%MSG%"
-  swear-hover-warning: "&cClick to warn &e%NAME%"
-  broadcast: "&f[&a%{}%&f] &b"
-  player-join: "&f[&a+&f] &7%NAME%"
-  staff-join: "&f[&cStaff&f] &7%NAME% has joined"
-  player-leave: "&f[&c-&f] &7%NAME%"
-  staff-leave: "&f[&cStaff&f] &7%NAME% has left"
-  player-first-join: "&aPlease welcome &d%NAME%! &b&oIt's their &6&lfirst &r&b&otime on the network!"
-
 database:
   host: ""
   username: ""
   password: ""
   database: ""
+
+excluded-servers: []
 
 accepted-protocol-versions:
   - 328
@@ -60,12 +22,3 @@ accepted-protocol-versions:
   - 338
   - 339
   - 340
-
-protocol-warning:
-  - "            §c§l§n- - - = WARNING = - - -"
-  - ""
-  - "You are using an §eunsupported version! §fWe recommend the use of §b1.12 §ffor the least buggy experience."
-  - ""
-  - "§7If you wish to continue using this unsupported version, please type §a§n§o/accept"
-  - ""
-  - "            §c§l- - - = = [+] = = - - -"

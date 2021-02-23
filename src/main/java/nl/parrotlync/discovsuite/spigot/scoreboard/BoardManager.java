@@ -11,7 +11,7 @@ import java.util.UUID;
 public class BoardManager {
     private final String title;
     private final HashMap<Integer, List<String>> lines;
-    private final HashMap<UUID, PlayerBoard> boards = new HashMap<>();
+    private final HashMap<UUID, Integer> boardTasks = new HashMap<>();
 
     public BoardManager(String title, HashMap<Integer, List<String>> lines) {
         this.title = title;
@@ -20,13 +20,13 @@ public class BoardManager {
 
     public void init(Player player) {
         PlayerBoard board = new PlayerBoard(player);
-        Bukkit.getScheduler().runTaskTimerAsynchronously(DiscovSuite.getInstance(), board, 0, DiscovSuite.getInstance().getConfig().getInt("scoreboard-settings.interval"));
-        boards.put(player.getUniqueId(), board);
+        int task = Bukkit.getScheduler().runTaskTimerAsynchronously(DiscovSuite.getInstance(), board, 0, DiscovSuite.getInstance().getConfig().getInt("scoreboard-settings.interval")).getTaskId();
+        boardTasks.put(player.getUniqueId(), task);
     }
 
     public void remove(Player player) {
         player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
-        boards.remove(player.getUniqueId());
+        boardTasks.remove(player.getUniqueId());
     }
 
     public String getTitle() {

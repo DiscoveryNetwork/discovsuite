@@ -72,9 +72,9 @@ public class ChatListener implements Listener {
     @EventHandler
     public void onPrivateMessage(PrivateMessageEvent event) {
         DiscovSuite.getInstance().getConversationManager().setReceiver(event.getReceiver(), event.getSender());
-        String sendFormat = DiscovSuite.getInstance().getConfig().getString("formats.msg-send");
-        String receiveFormat = DiscovSuite.getInstance().getConfig().getString("formats.msg-receive");
-        String spyFormat = DiscovSuite.getInstance().getConfig().getString("formats.msg-spy");
+        String sendFormat = DiscovSuite.getInstance().getMessages().getString("formats.msg-send");
+        String receiveFormat = DiscovSuite.getInstance().getMessages().getString("formats.msg-receive");
+        String spyFormat = DiscovSuite.getInstance().getMessages().getString("formats.msg-spy");
 
         String senderMsg = PlaceholderUtil.parse(event.getReceiver(), sendFormat).replaceAll("%MSG%", event.getMessage());
         event.getSender().sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', senderMsg)));
@@ -97,17 +97,17 @@ public class ChatListener implements Listener {
     private void mentionPlayer(ProxiedPlayer player) {
         ByteArrayDataOutput byteArrayDataOutput = ByteStreams.newDataOutput();
         byteArrayDataOutput.writeUTF(player.getUniqueId().toString());
-        byteArrayDataOutput.writeUTF(ChatColor.translateAlternateColorCodes('&', DiscovSuite.getInstance().getConfig().getString("messages.chat-mentioned")));
+        byteArrayDataOutput.writeUTF(ChatColor.translateAlternateColorCodes('&', DiscovSuite.getInstance().getMessages().getString("messages.chat-mentioned")));
         player.getServer().sendData("dsuite:mention", byteArrayDataOutput.toByteArray());
     }
 
     private void sendSwearNotice(ProxiedPlayer player, String message) {
-        String notice = PlaceholderUtil.parse(player, DiscovSuite.getInstance().getConfig().getString("formats.swear-notice"));
+        String notice = PlaceholderUtil.parse(player, DiscovSuite.getInstance().getMessages().getString("formats.swear-notice"));
         notice = ChatColor.translateAlternateColorCodes('&', notice.replaceAll("%MSG%", message));
-        String command = "/warn " + player.getName() + " " + DiscovSuite.getInstance().getConfig().getString("messages.default-swear-warning");
+        String command = "/warn " + player.getName() + " " + DiscovSuite.getInstance().getMessages().getString("messages.default-swear-warning");
         TextComponent text = new TextComponent(notice);
         text.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
-        String hoverMsg = PlaceholderUtil.parse(player, DiscovSuite.getInstance().getConfig().getString("formats.swear-hover-warning"));
+        String hoverMsg = PlaceholderUtil.parse(player, DiscovSuite.getInstance().getMessages().getString("formats.swear-hover-warning"));
         hoverMsg = ChatColor.translateAlternateColorCodes('&', hoverMsg.replaceAll("%NAME%", player.getName()));
         text.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverMsg).create()));
 
