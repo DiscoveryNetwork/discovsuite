@@ -6,6 +6,7 @@
     <groupId>nl.parrotlync</groupId>
     <artifactId>DiscovSuite</artifactId>
     <version>2.2${revision}</version>
+    <description>Main plugin suite for Discovery Network</description>
 
     <properties>
         <revision>-SNAPSHOT</revision>
@@ -45,6 +46,12 @@
                 </configuration>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
 
     <distributionManagement>
