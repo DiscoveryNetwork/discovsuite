@@ -23,7 +23,7 @@ public class DatabaseUtil extends MySQLDatabaseConnector {
     public void createTables() throws SQLException, ClassNotFoundException {
         connect();
         Statement statement = connection.createStatement();
-        statement.execute("CREATE TABLE IF NOT EXISTS dchat_nicknames\n" +
+        statement.execute("CREATE TABLE IF NOT EXISTS dsuite_nicknames\n" +
                 "(\n" +
                 "    player   varchar(36) default '' not null\n" +
                 "        primary key,\n" +
@@ -47,7 +47,7 @@ public class DatabaseUtil extends MySQLDatabaseConnector {
 
     public String getNickname(UUID uuid) throws SQLException, ClassNotFoundException {
         connect();
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM dchat_nicknames WHERE player = ?");
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM dsuite_nicknames WHERE player = ?");
         statement.setString(1, uuid.toString());
         ResultSet result = statement.executeQuery();
         if (result.next()) {
@@ -58,7 +58,7 @@ public class DatabaseUtil extends MySQLDatabaseConnector {
 
     public void setNickname(UUID uuid, String nickname) throws SQLException, ClassNotFoundException {
         connect();
-        PreparedStatement statement = connection.prepareStatement("REPLACE INTO dchat_nicknames (player, nickname) VALUES (?, ?)");
+        PreparedStatement statement = connection.prepareStatement("REPLACE INTO dsuite_nicknames (player, nickname) VALUES (?, ?)");
         statement.setString(1, uuid.toString());
         statement.setString(2, nickname);
         statement.execute();
