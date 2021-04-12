@@ -8,14 +8,16 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class WarpsCommand implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (!(sender instanceof Player)) {
             ChatUtil.sendConfigMessage(sender, "player-only");
             return true;
@@ -34,7 +36,7 @@ public class WarpsCommand implements CommandExecutor {
         }
 
         ChatUtil.sendConfigMessage(player, "warps-title");
-        String item = ChatColor.translateAlternateColorCodes('&', DiscovSuite.getInstance().getMessages().getString("messages.warps-item"));
+        String item = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(DiscovSuite.getInstance().getMessages().getString("messages.warps-item")));
         List<String> warpNames = new ArrayList<>();
         for (Warp warp: DiscovSuite.getInstance().getWarpManager().getAccessibleWarps(player)) {
             warpNames.add(String.format(item, warp.getName()));

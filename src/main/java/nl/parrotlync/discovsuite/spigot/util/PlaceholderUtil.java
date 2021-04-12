@@ -5,17 +5,19 @@ import nl.parrotlync.discovsuite.spigot.DiscovSuite;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Objects;
+
 public class PlaceholderUtil {
 
     public static String parse(Player player, String format) {
-        format = format.replaceAll("%SERVER%", DiscovSuite.getInstance().getConfig().getString("server-name"));
+        format = format.replaceAll("%SERVER%", Objects.requireNonNull(DiscovSuite.getInstance().getConfig().getString("server-name")));
         format = format.replaceAll("%DISPLAYNAME%", player.getDisplayName());
         format = format.replaceAll("%NAME%", player.getName());
         return format.replaceAll("%SUFFIX%", getSuffix(player));
     }
 
     public static String parseForSender(CommandSender sender, String format) {
-        format = format.replaceAll("%SERVER%", DiscovSuite.getInstance().getConfig().getString("server-name"));
+        format = format.replaceAll("%SERVER%", Objects.requireNonNull(DiscovSuite.getInstance().getConfig().getString("server-name")));
         format = format.replaceAll("%NAME%", sender.getName());
         return format;
     }

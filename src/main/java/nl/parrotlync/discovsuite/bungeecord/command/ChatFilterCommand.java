@@ -4,8 +4,8 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
-import nl.parrotlync.discovsuite.bungeecord.util.ChatUtil;
 import nl.parrotlync.discovsuite.bungeecord.DiscovSuite;
+import nl.parrotlync.discovsuite.bungeecord.util.ChatUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;

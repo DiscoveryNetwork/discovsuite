@@ -11,16 +11,18 @@ import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
 public class MessageListener implements PluginMessageListener {
 
     @Override
-    public void onPluginMessageReceived(String channel, Player player, byte[] bytes) {
+    public void onPluginMessageReceived(String channel, @NotNull Player player, byte[] bytes) {
         ByteArrayDataInput byteArrayDataInput = ByteStreams.newDataInput(bytes);
 
         if (channel.equalsIgnoreCase("BungeeCord")) {
@@ -47,7 +49,7 @@ public class MessageListener implements PluginMessageListener {
             Player target = Bukkit.getPlayer(UUID.fromString(byteArrayDataInput.readUTF()));
             if (target != null) {
                 if (Bukkit.getPlayer(teleportPlayer) != null) {
-                    Bukkit.getPlayer(teleportPlayer).teleport(target);
+                    Objects.requireNonNull(Bukkit.getPlayer(teleportPlayer)).teleport(target);
                 } else {
                     DiscovSuite.getInstance().getTeleportManager().queue(teleportPlayer, target);
                 }
@@ -64,7 +66,7 @@ public class MessageListener implements PluginMessageListener {
                 Warp warp = DiscovSuite.getInstance().getWarpManager().getWarp(inputStream.readUTF());
                 if (warp != null) {
                     if (Bukkit.getPlayer(teleportPlayer) != null) {
-                        Bukkit.getPlayer(teleportPlayer).teleport(warp.getLocation());
+                        Objects.requireNonNull(Bukkit.getPlayer(teleportPlayer)).teleport(warp.getLocation());
                         ChatUtil.sendConfigMessage(player, "warp-teleported", warp.getName());
                     } else {
                         DiscovSuite.getInstance().getTeleportManager().queue(teleportPlayer, warp);

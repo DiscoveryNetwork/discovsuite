@@ -10,6 +10,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.UUID;
 
 public class InventoryManager {
@@ -39,8 +40,9 @@ public class InventoryManager {
     private HashMap<Integer, ItemStack> getBuildItems() {
         HashMap<Integer, ItemStack> items = new HashMap<>();
         ConfigurationSection section = DiscovSuite.getInstance().getConfig().getConfigurationSection("build-inventory");
+        assert section != null;
         for (String key : section.getKeys(false)) {
-            Material material = Material.getMaterial(section.getString(key));
+            Material material = Material.getMaterial(Objects.requireNonNull(section.getString(key)));
             if (material != null) {
                 items.put(Integer.valueOf(key), new ItemStack(material, 1));
             }

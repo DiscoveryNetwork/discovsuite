@@ -10,6 +10,7 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class PlayerBoard implements Runnable {
     private final Player player;
@@ -21,8 +22,8 @@ public class PlayerBoard implements Runnable {
 
     public PlayerBoard(Player player) {
         this.player = player;
-        scoreboard = DiscovSuite.getInstance().getServer().getScoreboardManager().getNewScoreboard();
-        objective = scoreboard.registerNewObjective("dsb1", "dsb2");
+        scoreboard = Objects.requireNonNull(DiscovSuite.getInstance().getServer().getScoreboardManager()).getNewScoreboard();
+        objective = scoreboard.registerNewObjective("dsb1", "dsb2", "dsb3");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         String title = PlaceholderAPI.setPlaceholders(player, DiscovSuite.getInstance().getBoardManager().getTitle());
         objective.setDisplayName(ChatColor.translateAlternateColorCodes('&', title));
@@ -77,7 +78,7 @@ public class PlayerBoard implements Runnable {
     private String prep(String string) {
         string = PlaceholderAPI.setPlaceholders(this.player, string);
         string = string.replace("{fill}", String.format("%-" + (size - 2) + "s", ""));
-        string = string.replace("{server}", DiscovSuite.getInstance().getConfig().getString("server-name"));
+        string = string.replace("{server}", Objects.requireNonNull(DiscovSuite.getInstance().getConfig().getString("server-name")));
         return ChatColor.translateAlternateColorCodes('&', string).substring(0, Math.min(string.length(), 40));
     }
 

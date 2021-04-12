@@ -9,7 +9,7 @@ public enum TimeValue {
         return this.value;
     }
 
-    private TimeValue(Long value) {
+    TimeValue(Long value) {
         this.value = value;
     }
 }

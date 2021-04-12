@@ -23,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class DiscovSuite extends JavaPlugin {
@@ -85,6 +86,7 @@ public class DiscovSuite extends JavaPlugin {
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             HashMap<Integer, List<String>> lines = new HashMap<>();
             ConfigurationSection scoreboardContent = getConfig().getConfigurationSection("scoreboard-content");
+            assert scoreboardContent != null;
             for (String key : scoreboardContent.getKeys(false)) {
                 lines.put(Integer.parseInt(key), scoreboardContent.getStringList(key));
             }
@@ -99,30 +101,30 @@ public class DiscovSuite extends JavaPlugin {
 
         // LuckPerms listener
         if (getServer().getPluginManager().isPluginEnabled("LuckPerms")) {
-            LuckPermsListener luckPermsListener = new LuckPermsListener();
+            new LuckPermsListener();
         }
 
         // Commands & Listeners
         getServer().getPluginManager().registerEvents(new EventListener(), this);
         getServer().getPluginManager().registerEvents(new ChatListener(), this);
-        getCommand("fly").setExecutor(new FlyCommand());
-        getCommand("speed").setExecutor(new SpeedCommand());
-        getCommand("clearinventory").setExecutor(new ClearInventoryCommand());
-        getCommand("staffchat").setExecutor(new StaffChatCommand());
-        getCommand("managementchat").setExecutor(new ManagementChatCommand());
-        getCommand("staffalert").setExecutor(new StaffAlertCommand());
-        getCommand("nick").setExecutor(new NicknameCommand());
-        getCommand("localchat").setExecutor(new LocalChatCommand());
-        getCommand("localbroadcast").setExecutor(new LocalBroadcastCommand());
-        getCommand("warp").setExecutor(new WarpCommand());
-        getCommand("setwarp").setExecutor(new SetWarpCommand());
-        getCommand("delwarp").setExecutor(new DelWarpCommand());
-        getCommand("nearby").setExecutor(new NearbyCommand());
-        getCommand("warps").setExecutor(new WarpsCommand());
-        getCommand("randomwarp").setExecutor(new RandomWarpCommand());
-        getCommand("wake").setExecutor(new WakeCommand());
-        getCommand("playertime").setExecutor(new PlayerTimeCommand());
-        getCommand("build").setExecutor(new BuildCommand());
+        Objects.requireNonNull(getCommand("fly")).setExecutor(new FlyCommand());
+        Objects.requireNonNull(getCommand("speed")).setExecutor(new SpeedCommand());
+        Objects.requireNonNull(getCommand("clearinventory")).setExecutor(new ClearInventoryCommand());
+        Objects.requireNonNull(getCommand("staffchat")).setExecutor(new StaffChatCommand());
+        Objects.requireNonNull(getCommand("managementchat")).setExecutor(new ManagementChatCommand());
+        Objects.requireNonNull(getCommand("staffalert")).setExecutor(new StaffAlertCommand());
+        Objects.requireNonNull(getCommand("nick")).setExecutor(new NicknameCommand());
+        Objects.requireNonNull(getCommand("localchat")).setExecutor(new LocalChatCommand());
+        Objects.requireNonNull(getCommand("localbroadcast")).setExecutor(new LocalBroadcastCommand());
+        Objects.requireNonNull(getCommand("warp")).setExecutor(new WarpCommand());
+        Objects.requireNonNull(getCommand("setwarp")).setExecutor(new SetWarpCommand());
+        Objects.requireNonNull(getCommand("delwarp")).setExecutor(new DelWarpCommand());
+        Objects.requireNonNull(getCommand("nearby")).setExecutor(new NearbyCommand());
+        Objects.requireNonNull(getCommand("warps")).setExecutor(new WarpsCommand());
+        Objects.requireNonNull(getCommand("randomwarp")).setExecutor(new RandomWarpCommand());
+        Objects.requireNonNull(getCommand("wake")).setExecutor(new WakeCommand());
+        Objects.requireNonNull(getCommand("playertime")).setExecutor(new PlayerTimeCommand());
+        Objects.requireNonNull(getCommand("build")).setExecutor(new BuildCommand());
         getLogger().info("DiscovSuite is now enabled!");
     }
 
@@ -183,6 +185,7 @@ public class DiscovSuite extends JavaPlugin {
     private void saveMessages() {
         File file = new File(getDataFolder(), "messages.yml");
         try (InputStream in = getResource("messages-spigot.yml")) {
+            assert in != null;
             Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
             e.printStackTrace();

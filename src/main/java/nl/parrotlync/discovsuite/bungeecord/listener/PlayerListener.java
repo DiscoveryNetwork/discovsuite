@@ -16,7 +16,6 @@ import nl.parrotlync.discovsuite.bungeecord.event.PlayerProtocolAcceptEvent;
 import nl.parrotlync.discovsuite.bungeecord.util.ChatUtil;
 import nl.parrotlync.discovsuite.bungeecord.util.PlaceholderUtil;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 

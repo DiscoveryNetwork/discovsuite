@@ -9,6 +9,7 @@ import nl.parrotlync.discovsuite.spigot.model.Warp;
 import nl.parrotlync.discovsuite.spigot.util.ChatUtil;
 import org.apache.commons.lang.time.DateUtils;
 import org.bukkit.*;
+import org.bukkit.block.data.type.Slab;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,6 +21,7 @@ import org.bukkit.util.Vector;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.UUID;
 
 public class EventListener implements Listener {
@@ -101,7 +103,7 @@ public class EventListener implements Listener {
     public void onSignChange(SignChangeEvent event) {
         String[] lines = event.getLines();
         for (int i = 0; i < lines.length; i++) {
-            event.setLine(i, ChatColor.translateAlternateColorCodes('&', event.getLine(i)));
+            event.setLine(i, ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(event.getLine(i))));
         }
     }
 
@@ -117,7 +119,7 @@ public class EventListener implements Listener {
         if (event.getRightClicked() instanceof ArmorStand) {
             ArmorStand stand = (ArmorStand) event.getRightClicked();
             String bin = DiscovSuite.getInstance().getConfig().getString("armor-stand-bin");
-            if (stand.getHelmet().getData().toString().equals(bin)) {
+            if (Objects.requireNonNull(stand.getHelmet().getData()).toString().equals(bin)) {
                 event.getPlayer().openInventory(Bukkit.createInventory(null, 27, "Disposal"));
             }
         }
@@ -128,7 +130,7 @@ public class EventListener implements Listener {
         Player player = event.getPlayer();
         if (player.hasPermission("discovsuite.watertp.bypass")) { return; }
         Location location = player.getLocation();
-        if (location.getBlock().getType() == Material.STATIONARY_WATER || location.getBlock().getType() == Material.WATER) {
+        if (location.getBlock().getType() == Material.WATER) {
             World world = player.getWorld();
             if (isMatchingWorld(world, "water-teleport-enabled-worlds")) {
                 player.teleport(world.getSpawnLocation());
@@ -138,10 +140,10 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.CAULDRON) {
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && Objects.requireNonNull(event.getClickedBlock()).getType() == Material.CAULDRON) {
             World world = event.getClickedBlock().getWorld();
             if (isMatchingWorld(world, "cauldron-bins-enabled-worlds")) {
-                if (world.getBlockAt(event.getClickedBlock().getLocation().add(0, 1, 0)).getType() == Material.WOOD_STEP) {
+                if (world.getBlockAt(event.getClickedBlock().getLocation().add(0, 1, 0)).getBlockData() instanceof Slab) {
                     event.getPlayer().openInventory(Bukkit.createInventory(null, 27, "Disposal"));
                 }
             }

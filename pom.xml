@@ -5,8 +5,8 @@
 
     <groupId>nl.parrotlync</groupId>
     <artifactId>DiscovSuite</artifactId>
-    <version>2.2${revision}</version>
-    <description>Main plugin suite for Discovery Network</description>
+    <version>2.3${revision}</version>
+    <description>Main plugin suite for Discov Network</description>
 
     <properties>
         <revision>-SNAPSHOT</revision>
@@ -72,7 +72,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.12.2-R0.1-SNAPSHOT</version>
+            <version>1.15.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -104,7 +104,7 @@
         <dependency>
             <groupId>nl.parrotlync</groupId>
             <artifactId>DiscovOutlines</artifactId>
-            <version>1.1.1</version>
+            <version>1.2.4</version>
         </dependency>
         <dependency>
             <groupId>org.ocpsoft.prettytime</groupId>

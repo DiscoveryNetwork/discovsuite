@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class DatabaseUtil extends MySQLDatabaseConnector {
@@ -85,7 +86,7 @@ public class DatabaseUtil extends MySQLDatabaseConnector {
         statement.setString(1, warp.getName());
         statement.setString(2, warp.getServer());
         statement.setString(3, warp.getGroup().toString());
-        statement.setString(4, location.getWorld().getName());
+        statement.setString(4, Objects.requireNonNull(location.getWorld()).getName());
         statement.setDouble(5, location.getX());
         statement.setDouble(6, location.getY());
         statement.setDouble(7, location.getZ());

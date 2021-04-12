@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.List;
 public class WakeCommand implements TabExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (!sender.hasPermission("discovsuite.command.wake")) {
             ChatUtil.sendConfigMessage(sender, "no-permission");
             return true;
@@ -33,19 +34,15 @@ public class WakeCommand implements TabExecutor {
             return true;
         }
 
-        int task = Bukkit.getScheduler().runTaskTimer(DiscovSuite.getInstance(), () -> {
-            target.playSound(target.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1F, 1F);
-        }, 0, 5).getTaskId();
+        int task = Bukkit.getScheduler().runTaskTimer(DiscovSuite.getInstance(), () -> target.playSound(target.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1F, 1F), 0, 5).getTaskId();
 
-        Bukkit.getScheduler().runTaskLater(DiscovSuite.getInstance(), () -> {
-            Bukkit.getScheduler().cancelTask(task);
-        }, 30);
+        Bukkit.getScheduler().runTaskLater(DiscovSuite.getInstance(), () -> Bukkit.getScheduler().cancelTask(task), 30);
         target.sendMessage("§a§lWAKEY, WAKEY!");
         return true;
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+    public List<String> onTabComplete(CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         List<String> suggestions = new ArrayList<>();
 
         if (sender.hasPermission("discovsuite.command.wake") && args.length == 1) {

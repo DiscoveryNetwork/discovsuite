@@ -43,6 +43,7 @@ public class Warp {
 
     public boolean isLocal() {
         String serverName = DiscovSuite.getInstance().getConfig().getString("server-name");
+        assert serverName != null;
         return serverName.equalsIgnoreCase(server);
     }
 

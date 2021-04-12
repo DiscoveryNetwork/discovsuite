@@ -3,6 +3,7 @@ package nl.parrotlync.discovsuite.spigot.event;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
 
 public class BuildModeToggleEvent extends Event {
     private static final HandlerList HANDLERS = new HandlerList();
@@ -22,7 +23,7 @@ public class BuildModeToggleEvent extends Event {
         return enabled;
     }
 
-    public HandlerList getHandlers() {
+    public @NotNull HandlerList getHandlers() {
         return HANDLERS;
     }
 

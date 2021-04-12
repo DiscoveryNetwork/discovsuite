@@ -28,22 +28,6 @@ public class PluginMessage {
         player.sendPluginMessage(DiscovSuite.getInstance(), "dsuite:chat", byteArrayOutputStream.toByteArray());
     }
 
-    public static void sendBroadcast(CommandSender sender, String message) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
-
-        String format = DiscovSuite.getInstance().getMessages().getString("formats.broadcast");
-
-        try {
-            dataOutputStream.writeUTF(ChatColor.translateAlternateColorCodes('&', format + message));
-            dataOutputStream.writeUTF(sender.getName());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        getRandomPlayer().sendPluginMessage(DiscovSuite.getInstance(), "dsuite:broadcast", byteArrayOutputStream.toByteArray());
-    }
-
     public static void sendStaffAlert(CommandSender sender, String message) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);

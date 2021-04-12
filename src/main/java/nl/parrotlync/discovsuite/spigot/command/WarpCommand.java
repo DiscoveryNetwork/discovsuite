@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.List;
 public class WarpCommand implements TabExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (!sender.hasPermission("discovsuite.command.warp")) {
             ChatUtil.sendConfigMessage(sender, "no-permission");
             return true;
@@ -42,6 +43,7 @@ public class WarpCommand implements TabExecutor {
 
         Warp warp = DiscovSuite.getInstance().getWarpManager().getWarp(args[0]);
         if (warp != null) {
+            assert target != null;
             if (warp.canAccess(target)) {
                 if (warp.isLocal()) {
                     target.teleport(warp.getLocation());
@@ -59,7 +61,7 @@ public class WarpCommand implements TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         List<String> suggestions = new ArrayList<>();
 
         if (args.length == 1 && sender.hasPermission("discovsuite.command.warp")) {

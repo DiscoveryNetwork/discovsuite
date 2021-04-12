@@ -5,8 +5,8 @@ import nl.parrotlync.discovsuite.common.MySQLDatabaseConnector;
 import org.ocpsoft.prettytime.PrettyTime;
 
 import java.sql.*;
-import java.util.*;
 import java.util.Date;
+import java.util.*;
 
 public class DatabaseUtil extends MySQLDatabaseConnector {
 

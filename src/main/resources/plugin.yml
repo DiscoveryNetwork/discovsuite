@@ -5,6 +5,7 @@ description: ${description}
 softdepend: [PlaceholderAPI, LuckPerms]
 depend: [ParrotPluginManager]
 author: ParrotLync
+api-version: 1.15
 commands:
   fly:
     usage: /fly

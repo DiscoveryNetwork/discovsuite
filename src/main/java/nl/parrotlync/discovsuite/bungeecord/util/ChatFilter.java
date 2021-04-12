@@ -2,7 +2,6 @@ package nl.parrotlync.discovsuite.bungeecord.util;
 
 import net.md_5.bungee.api.ProxyServer;
 import nl.parrotlync.discovsuite.bungeecord.DiscovSuite;
-import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.HashMap;
