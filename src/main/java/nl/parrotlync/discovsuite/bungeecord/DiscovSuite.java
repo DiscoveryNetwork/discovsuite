@@ -17,7 +17,6 @@ import nl.parrotlync.discovsuite.bungeecord.manager.ConversationManager;
 import nl.parrotlync.discovsuite.bungeecord.util.ChatFilter;
 import nl.parrotlync.discovsuite.bungeecord.util.DatabaseUtil;
 import nl.parrotlync.discovsuite.bungeecord.util.PlayerCache;
-import nl.parrotlync.discovsuite.common.Beacon;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,7 +41,6 @@ public class DiscovSuite extends Plugin {
 
     @Override
     public void onEnable() {
-        if (!Beacon.authenticate()) { return; }
         saveDefaultConfig();
         updateConfig();
         saveMessages();

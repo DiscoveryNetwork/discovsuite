@@ -2,7 +2,6 @@ package nl.parrotlync.discovsuite.spigot;
 
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
-import nl.parrotlync.discovsuite.common.Beacon;
 import nl.parrotlync.discovsuite.spigot.command.*;
 import nl.parrotlync.discovsuite.spigot.listener.ChatListener;
 import nl.parrotlync.discovsuite.spigot.listener.EventListener;
@@ -43,7 +42,6 @@ public class DiscovSuite extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        if (!Beacon.authenticate()) { this.setEnabled(false); return; }
         saveDefaultConfig();
         updateConfig();
         reloadConfig();
