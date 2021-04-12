@@ -12,12 +12,9 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
 import nl.parrotlync.discovsuite.bungeecord.DiscovSuite;
-import nl.parrotlync.discovsuite.bungeecord.event.PlayerProtocolAcceptEvent;
-import nl.parrotlync.discovsuite.bungeecord.util.ChatUtil;
 import nl.parrotlync.discovsuite.bungeecord.util.PlaceholderUtil;
 
 import java.util.Date;
-import java.util.List;
 
 public class PlayerListener implements Listener {
 
@@ -45,14 +42,6 @@ public class PlayerListener implements Listener {
                     player.sendMessage(TextComponent.fromLegacyText(staffJoin));
                 }
             }
-        }
-
-        // Protocol check
-        Integer version = event.getPlayer().getPendingConnection().getVersion();
-        List<Integer> allowedVersions = DiscovSuite.getInstance().getConfig().getIntList("accepted-protocol-versions");
-        if (!allowedVersions.contains(version)) {
-            //DiscovSuite.getInstance().getBlockedPlayers().add(event.getPlayer());
-            sendWarning(event.getPlayer());
         }
 
         // Player monitoring
@@ -116,20 +105,6 @@ public class PlayerListener implements Listener {
         if (defaultServer != null && event.getKickedFrom() != defaultServer) {
             event.setCancelServer(defaultServer);
             event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onPlayerProtocolAccept(PlayerProtocolAcceptEvent event) {
-        if (DiscovSuite.getInstance().getBlockedPlayers().contains(event.getPlayer())) {
-            DiscovSuite.getInstance().getBlockedPlayers().remove(event.getPlayer());
-            ChatUtil.sendConfigMessage(event.getPlayer(), "protocol-accepted");
-        }
-    }
-
-    private void sendWarning(ProxiedPlayer player) {
-        for (String line : DiscovSuite.getInstance().getMessages().getStringList("protocol-warning")) {
-            player.sendMessage(TextComponent.fromLegacyText(line));
         }
     }
 }

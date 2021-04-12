@@ -80,7 +80,6 @@ public class DiscovSuite extends Plugin {
         getProxy().getPluginManager().registerListener(this, new ChatListener());
         getProxy().getPluginManager().registerListener(this, new PluginMessageListener());
         getProxy().getPluginManager().registerCommand(this, new JoinCommand());
-        getProxy().getPluginManager().registerCommand(this, new AcceptCommand());
         getProxy().getPluginManager().registerCommand(this, new MessageCommand());
         getProxy().getPluginManager().registerCommand(this, new ReplyCommand());
         getProxy().getPluginManager().registerCommand(this, new OnlineTimeCommand());

@@ -6,8 +6,6 @@ messages:
   player-not-online: "&cThat player is not online!"
   player-online: "&6%s &7is currently &aonline"
   missing-arguments: "&cThe following arguments are missing: &7%s"
-  protocol-accepted: "&aThank you for accepting! &7&oPlease be aware there may be bugs in the version you are using."
-  protocol-accept-first: "&cPlease change your version or type &b/accept &cfirst!"
   data-fetch-error: "&cSomething went wrong while attempting to fetch data."
   player-not-found: "&cThat player was not found"
   chat-blocked: "&cChat is currently muted. &e&oFind out why: &f&ohttps://www.discov.network/faq"
@@ -39,12 +37,3 @@ formats:
   player-leave: "&f[&c-&f] &7%NAME%"
   staff-leave: "&f[&cStaff&f] &7%NAME% has left"
   player-first-join: "&aPlease welcome &d%NAME%! &b&oIt's their &6&lfirst &r&b&otime on the network!"
-
-protocol-warning:
-  - "            §c§l§n- - - = WARNING = - - -"
-  - ""
-  - "You are using an §eunsupported version! §fWe recommend the use of §b1.12 §ffor the least buggy experience."
-  - ""
-  - "§7If you wish to continue using this unsupported version, please type §a§n§o/accept"
-  - ""
-  - "            §c§l- - - = = [+] = = - - -"
