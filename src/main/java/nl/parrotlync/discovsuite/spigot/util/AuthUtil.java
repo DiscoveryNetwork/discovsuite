@@ -13,7 +13,7 @@ public class AuthUtil {
     public void startAuthProcess(final Player player) {
         Bukkit.getLogger().info("Starting authentication process for player " + player.getName());
         PluginMessage.auth(player);
-        Integer taskId = Bukkit.getScheduler().runTaskLater(DiscovSuite.getInstance(), () -> player.kickPlayer("Unauthorized"), 50).getTaskId();
+        Integer taskId = Bukkit.getScheduler().runTaskLater(DiscovSuite.getInstance(), () -> player.kickPlayer("Gandalf has identified you as a Balrog. You shall not pass."), 50).getTaskId();
         tasks.put(player.getUniqueId(), taskId);
     }
 
