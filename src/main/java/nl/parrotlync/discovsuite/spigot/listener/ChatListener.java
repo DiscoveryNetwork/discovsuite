@@ -42,7 +42,7 @@ public class ChatListener implements Listener {
             PluginMessage.sendManagementMessage(player, event.getMessage());
             event.setCancelled(true);
         } else if (channel == ChannelType.STAFF_CHAT) {
-            PluginMessage.sendStaffMessage(player, event.getMessage());
+            PluginMessage.sendStaffMessage(player, event.getMessage(), true);
             event.setCancelled(true);
         }
     }

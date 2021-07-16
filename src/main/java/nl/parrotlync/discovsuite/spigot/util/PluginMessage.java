@@ -44,11 +44,15 @@ public class PluginMessage {
     }
 
 
-    public static void sendStaffMessage(Player player, String message) {
+    public static void sendStaffMessage(Player player, String message, boolean withFormat) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
 
-        String format = PlaceholderUtil.parse(player, DiscovSuite.getInstance().getMessages().getString("formats.chat-staff"));
+        String format = "";
+        if (withFormat) {
+            format = PlaceholderUtil.parse(player, DiscovSuite.getInstance().getMessages().getString("formats.chat-staff"));
+        }
+        message = PlaceholderUtil.parse(player, message);
 
         try {
             dataOutputStream.writeUTF(ChatColor.translateAlternateColorCodes('&', format + message));

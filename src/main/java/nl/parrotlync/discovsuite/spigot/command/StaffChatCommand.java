@@ -37,7 +37,7 @@ public class StaffChatCommand implements CommandExecutor {
                 return true;
             }
 
-            PluginMessage.sendStaffMessage(player, String.join(" ", args));
+            PluginMessage.sendStaffMessage(player, String.join(" ", args), true);
         }
         return true;
     }

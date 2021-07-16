@@ -7,6 +7,10 @@ depend: [ParrotPluginManager]
 author: ParrotLync
 api-version: 1.15
 commands:
+  vanish:
+    usage: /vanish
+    description: Vanish
+    aliases: [v]
   fly:
     usage: /fly
     description: Toggle flight
@@ -170,3 +174,12 @@ permissions:
   discovsuite.watertp.bypass:
     default: op
     description: Permission to bypass water teleport
+  discovsuite.command.vanish:
+    default: op
+    description: Permission to use the vanish command
+  discovsuite.vanish.onjoin:
+    description: Be vanished when you join the server
+  discovsuite.vanish.bypass:
+    description: Permission to see vanished players
+  discovsuite.fly.vanish:
+    description: Auto-vanish when you start flying

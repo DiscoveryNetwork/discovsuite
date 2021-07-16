@@ -33,6 +33,11 @@ public class EventListener implements Listener {
             event.setJoinMessage(null);
         }
 
+        DiscovSuite.getInstance().getVanishManager().handleNewPlayer(event.getPlayer());
+        if (event.getPlayer().hasPermission("discovsuite.vanish.onjoin")) {
+            DiscovSuite.getInstance().getVanishManager().hidePlayer(event.getPlayer());
+        }
+
         if (DiscovSuite.getInstance().getTeleportManager().isQueued(event.getPlayer())) {
             DiscovSuite.getInstance().getTeleportManager().teleport(event.getPlayer());
         } else {
@@ -66,6 +71,7 @@ public class EventListener implements Listener {
             event.setQuitMessage(null);
         }
 
+        DiscovSuite.getInstance().getVanishManager().showPlayer(event.getPlayer());
         DiscovSuite.getInstance().getBoardManager().remove(event.getPlayer());
 
         // Disable BuildMode

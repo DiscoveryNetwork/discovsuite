@@ -33,7 +33,7 @@ formats:
   swear-hover-warning: "&cClick to warn &e%NAME%"
   broadcast: "&f[&a%{}%&f] &b"
   player-join: "&f[&a+&f] &7%NAME%"
-  staff-join: "&f[&cStaff&f] &7%NAME% has joined"
+  staff-join: "&f[&c&lStaff&r&f] &7%NAME% &fhas connected"
   player-leave: "&f[&c-&f] &7%NAME%"
   staff-leave: "&f[&cStaff&f] &7%NAME% has left"
   player-first-join: "&aPlease welcome &d%NAME%! &b&oIt's their &6&lfirst &r&b&otime on the network!"

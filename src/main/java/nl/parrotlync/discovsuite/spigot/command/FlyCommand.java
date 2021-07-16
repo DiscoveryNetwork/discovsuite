@@ -1,5 +1,6 @@
 package nl.parrotlync.discovsuite.spigot.command;
 
+import nl.parrotlync.discovsuite.spigot.DiscovSuite;
 import nl.parrotlync.discovsuite.spigot.util.ChatUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -41,9 +42,15 @@ public class FlyCommand implements TabExecutor {
 
         target.setAllowFlight(!target.getAllowFlight());
         if (target.getAllowFlight()) {
+            if (target.hasPermission("discovsuite.fly.vanish") && !target.hasPermission("discovsuite.command.vanish")) {
+                DiscovSuite.getInstance().getVanishManager().hidePlayer(target);
+            }
             ChatUtil.sendConfigMessage(sender, "flight-enabled");
         } else {
             target.setFlying(false);
+            if (target.hasPermission("discovsuite.fly.vanish") && !target.hasPermission("discovsuite.command.vanish")) {
+                DiscovSuite.getInstance().getVanishManager().showPlayer(target);
+            }
             ChatUtil.sendConfigMessage(sender, "flight-disabled");
         }
         return true;

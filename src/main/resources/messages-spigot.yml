@@ -29,10 +29,14 @@ messages:
   player-time-invalid: "&cThat time value is invalid."
   buildmode-enabled: "&aYou have enabled &eBuild Mode!"
   buildmode-disabled: "&cYou have disabled &eBuild Mode!"
+  player-vanish: "&e&oWait... Where have you gone? &r&aYou are now invisible!"
+  player-unvanish: "&e&oFound ya! &r&cYou are no longer invisible!"
+  staff-vanish-announce: "&f[&c&lStaff&r&f] &b%NAME% &eis now invisible"
+  staff-unvanish-announce: "&f[&c&lStaff&r&f] &b%NAME% &eis now visible"
 
 formats:
   chat-global: "&f[&d%SERVER%&f] %DISPLAYNAME% &f> %SUFFIX%"
-  chat-staff: "&f[&c&lStaff&e] %DISPLAYNAME%&7: &b"
+  chat-staff: "&f[&c&lStaff&r&f] %DISPLAYNAME%&7: &b"
   chat-local: "&8[&c%SERVER%Chat&8] &7%NAME%&f: "
   chat-management: "&f[&c&lMAN&r] %DISPLAYNAME%&7: &3"
   staff-alert: "&f[&6&lSTAFFALERT&r] &c&l[!]&r &b%NAME% &7on &b%SERVER%&7: &c"

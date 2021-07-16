@@ -35,6 +35,7 @@ public class DiscovSuite extends JavaPlugin {
     private final WarpManager warpManager = new WarpManager();
     private final TeleportManager teleportManager = new TeleportManager();
     private final InventoryManager inventoryManager = new InventoryManager();
+    private final VanishManager vanishManager = new VanishManager();
     private final AuthUtil authUtil = new AuthUtil();
 
     public DiscovSuite() {
@@ -125,6 +126,7 @@ public class DiscovSuite extends JavaPlugin {
         Objects.requireNonNull(getCommand("wake")).setExecutor(new WakeCommand());
         Objects.requireNonNull(getCommand("playertime")).setExecutor(new PlayerTimeCommand());
         Objects.requireNonNull(getCommand("build")).setExecutor(new BuildCommand());
+        Objects.requireNonNull(getCommand("vanish")).setExecutor(new VanishCommand());
         getLogger().info("DiscovSuite is now enabled!");
     }
 
@@ -133,6 +135,7 @@ public class DiscovSuite extends JavaPlugin {
         Bukkit.getScheduler().cancelTasks(this);
         for (Player player : Bukkit.getOnlinePlayers()) {
             boardManager.remove(player);
+            vanishManager.showPlayer(player);
         }
         getLogger().info("DiscovSuite is now disabled!");
     }
@@ -158,6 +161,10 @@ public class DiscovSuite extends JavaPlugin {
     public TeleportManager getTeleportManager() { return teleportManager; }
 
     public InventoryManager getInventoryManager() { return inventoryManager; }
+
+    public VanishManager getVanishManager() {
+        return vanishManager;
+    }
 
     public AuthUtil getAuthUtil() { return authUtil; }
 
