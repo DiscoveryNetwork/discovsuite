@@ -11,12 +11,14 @@ import java.util.UUID;
 
 public class BoardManager {
     private final String title;
-    private final HashMap<Integer, List<String>> lines;
+    private final HashMap<Integer, List<String>> visitorLines;
+    private final HashMap<Integer, List<String>> staffLines;
     private final HashMap<UUID, Integer> boardTasks = new HashMap<>();
 
-    public BoardManager(String title, HashMap<Integer, List<String>> lines) {
+    public BoardManager(String title, HashMap<Integer, List<String>> visitorLines, HashMap<Integer, List<String>> staffLines) {
         this.title = title;
-        this.lines = lines;
+        this.visitorLines = visitorLines;
+        this.staffLines = staffLines;
     }
 
     public void init(Player player) {
@@ -34,7 +36,10 @@ public class BoardManager {
         return title;
     }
 
-    public HashMap<Integer, List<String>> getLines() {
-        return lines;
+    public HashMap<Integer, List<String>> getLines(Player player) {
+        if (player.hasPermission("discovsuite.chat.staff")) {
+            return staffLines;
+        }
+        return visitorLines;
     }
 }

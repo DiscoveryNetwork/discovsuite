@@ -8,6 +8,7 @@ import nl.parrotlync.discovsuite.spigot.listener.EventListener;
 import nl.parrotlync.discovsuite.spigot.listener.LuckPermsListener;
 import nl.parrotlync.discovsuite.spigot.listener.MessageListener;
 import nl.parrotlync.discovsuite.spigot.manager.*;
+import nl.parrotlync.discovsuite.spigot.placeholder.DiscovSuiteExpansion;
 import nl.parrotlync.discovsuite.spigot.scoreboard.BoardManager;
 import nl.parrotlync.discovsuite.spigot.util.AuthUtil;
 import nl.parrotlync.discovsuite.spigot.util.DatabaseUtil;
@@ -80,18 +81,31 @@ public class DiscovSuite extends JavaPlugin {
             }
         });
 
+        // PlaceholderAPI
+        new DiscovSuiteExpansion().register();
+
         // Managers
         warpManager.load();
 
         // Scoreboard
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            HashMap<Integer, List<String>> lines = new HashMap<>();
-            ConfigurationSection scoreboardContent = getConfig().getConfigurationSection("scoreboard-content");
-            assert scoreboardContent != null;
-            for (String key : scoreboardContent.getKeys(false)) {
-                lines.put(Integer.parseInt(key), scoreboardContent.getStringList(key));
+            // Get visitor lines
+            HashMap<Integer, List<String>> visitorLines = new HashMap<>();
+            ConfigurationSection visitorContent = getConfig().getConfigurationSection("visitor-scoreboard");
+            assert visitorContent != null;
+            for (String key : visitorContent.getKeys(false)) {
+                visitorLines.put(Integer.parseInt(key), visitorContent.getStringList(key));
             }
-            boardManager = new BoardManager(getConfig().getString("scoreboard-settings.title"), lines);
+
+            // Get staff lines
+            HashMap<Integer, List<String>> staffLines = new HashMap<>();
+            ConfigurationSection staffContent = getConfig().getConfigurationSection("staff-scoreboard");
+            assert staffContent != null;
+            for (String key : staffContent.getKeys(false)) {
+                staffLines.put(Integer.parseInt(key), staffContent.getStringList(key));
+            }
+
+            boardManager = new BoardManager(getConfig().getString("scoreboard-settings.title"), visitorLines, staffLines);
             for (Player player : Bukkit.getOnlinePlayers()) {
                 boardManager.init(player);
             }

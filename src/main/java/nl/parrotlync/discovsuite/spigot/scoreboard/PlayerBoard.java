@@ -8,6 +8,7 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -28,7 +29,7 @@ public class PlayerBoard implements Runnable {
         String title = PlaceholderAPI.setPlaceholders(player, DiscovSuite.getInstance().getBoardManager().getTitle());
         objective.setDisplayName(ChatColor.translateAlternateColorCodes('&', title));
 
-        HashMap<Integer, List<String>> lines = DiscovSuite.getInstance().getBoardManager().getLines();
+        HashMap<Integer, List<String>> lines = getLines();
         for (Integer key : lines.keySet()) {
             List<String> values = lines.get(key);
             if (values.size() == 1) {
@@ -45,7 +46,7 @@ public class PlayerBoard implements Runnable {
     }
 
     public void update() {
-        HashMap<Integer, List<String>> lines = DiscovSuite.getInstance().getBoardManager().getLines();
+        HashMap<Integer, List<String>> lines = getLines();
         for (Integer key : lines.keySet()) {
             List<String> values = lines.get(key);
             if (values.size() == 1) {
@@ -68,6 +69,10 @@ public class PlayerBoard implements Runnable {
                 }
             }
         }
+    }
+
+    private HashMap<Integer, List<String>> getLines() {
+        return DiscovSuite.getInstance().getBoardManager().getLines(player);
     }
 
     @Override

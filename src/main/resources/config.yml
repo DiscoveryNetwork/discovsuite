@@ -22,7 +22,7 @@ scoreboard-settings:
   max-length: 26
   title: '&dDiscovNetwork'
 
-scoreboard-content:
+visitor-scoreboard:
   '1':
     - '&m{fill}'
   '2':
@@ -44,4 +44,32 @@ scoreboard-content:
   '10':
     - '&f&m{fill}'
   '11':
+    - '&bdiscov.network'
+
+staff-scoreboard:
+  '1':
+    - '&m{fill}'
+  '2':
+    - '&dYour rank:'
+  '3':
+    - '%luckperms_prefix_element_highest%'
+  '4':
+    - '&dCurrent Server:'
+  '5':
+    - '&f{server}'
+  '6':
+    - ' '
+  '7':
+    - '&e$ &f%vault_eco_balance%'
+  '8':
+    - '  '
+  '9':
+    - '&a%bungee_total% &bplayers Online!'
+  '10':
+    - '&f&m{fill}'
+  '11':
+    - 'Vanished: %dsuite_vanished%'
+  '12':
+    - '&f&f&m{fill}'
+  '13':
     - '&bdiscov.network'
