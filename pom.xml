@@ -102,11 +102,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>nl.parrotlync</groupId>
-            <artifactId>DiscovOutlines</artifactId>
-            <version>1.2.7</version>
-        </dependency>
-        <dependency>
             <groupId>org.ocpsoft.prettytime</groupId>
             <artifactId>prettytime</artifactId>
             <version>4.0.5.Final</version>

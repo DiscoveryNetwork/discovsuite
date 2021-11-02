@@ -2,11 +2,8 @@ package nl.parrotlync.discovsuite.spigot.listener;
 
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
-import nl.parrotlync.discovoutlines.DiscovOutlines;
 import nl.parrotlync.discovsuite.spigot.DiscovSuite;
-import nl.parrotlync.discovsuite.spigot.event.BuildModeToggleEvent;
 import nl.parrotlync.discovsuite.spigot.model.Warp;
-import nl.parrotlync.discovsuite.spigot.util.ChatUtil;
 import org.apache.commons.lang.time.DateUtils;
 import org.bukkit.*;
 import org.bukkit.block.data.type.Slab;
@@ -29,15 +26,6 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        if (DiscovSuite.getInstance().getConfig().getBoolean("disable-join-quit-messages")) {
-            event.setJoinMessage(null);
-        }
-
-        DiscovSuite.getInstance().getVanishManager().handleNewPlayer(event.getPlayer());
-        if (event.getPlayer().hasPermission("discovsuite.vanish.onjoin")) {
-            DiscovSuite.getInstance().getVanishManager().hidePlayer(event.getPlayer());
-        }
-
         if (DiscovSuite.getInstance().getTeleportManager().isQueued(event.getPlayer())) {
             DiscovSuite.getInstance().getTeleportManager().teleport(event.getPlayer());
         } else {
@@ -50,7 +38,6 @@ public class EventListener implements Listener {
         }
 
         DiscovSuite.getInstance().getNicknameManager().load(event.getPlayer());
-        DiscovSuite.getInstance().getBoardManager().init(event.getPlayer());
 
         if (event.getPlayer().hasPermission("discovsuite.fly.onjoin")) {
             event.getPlayer().setAllowFlight(true);
@@ -63,46 +50,6 @@ public class EventListener implements Listener {
         }
 
         Bukkit.getScheduler().runTaskLater(DiscovSuite.getInstance(), () -> DiscovSuite.getInstance().getAuthUtil().startAuthProcess(event.getPlayer()), 20);
-    }
-
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        if (DiscovSuite.getInstance().getConfig().getBoolean("disable-join-quit-messages")) {
-            event.setQuitMessage(null);
-        }
-
-        DiscovSuite.getInstance().getVanishManager().showPlayer(event.getPlayer());
-        DiscovSuite.getInstance().getBoardManager().remove(event.getPlayer());
-
-        // Disable BuildMode
-        DiscovSuite.getInstance().getInventoryManager().returnInventory(event.getPlayer());
-        disableOutlineHolograms(event.getPlayer());
-        User user = DiscovSuite.getInstance().getLuckPermsUser(event.getPlayer());
-        if (user != null) {
-            user.data().remove(Node.builder("group.buildmode").build());
-        }
-    }
-
-    @EventHandler
-    public void onBuildModeToggle(BuildModeToggleEvent event) {
-        if (event.isEnabled()) {
-            DiscovSuite.getInstance().getInventoryManager().giveBuildInventory(event.getPlayer());
-            event.getPlayer().setGameMode(GameMode.CREATIVE);
-            enableOutlineHolograms(event.getPlayer());
-            User user = DiscovSuite.getInstance().getLuckPermsUser(event.getPlayer());
-            DiscovSuite.getInstance().getLogger().info(user.toString());
-            user.data().add(Node.builder("group.buildmode").build());
-            ChatUtil.sendConfigMessage(event.getPlayer(), "buildmode-enabled");
-        } else {
-            DiscovSuite.getInstance().getInventoryManager().returnInventory(event.getPlayer());
-            event.getPlayer().setGameMode(GameMode.ADVENTURE);
-            disableOutlineHolograms(event.getPlayer());
-            User user = DiscovSuite.getInstance().getLuckPermsUser(event.getPlayer());
-            if (user != null) {
-                user.data().remove(Node.builder("group.buildmode").build());
-            }
-            ChatUtil.sendConfigMessage(event.getPlayer(), "buildmode-disabled");
-        }
     }
 
     @EventHandler
@@ -175,17 +122,5 @@ public class EventListener implements Listener {
             }
         }
         return false;
-    }
-
-    private void enableOutlineHolograms(Player player) {
-        if (Bukkit.getPluginManager().isPluginEnabled("DiscovOutlines")) {
-            DiscovOutlines.getInstance().getReferenceManager().showHolograms(player);
-        }
-    }
-
-    private void disableOutlineHolograms(Player player) {
-        if (Bukkit.getPluginManager().isPluginEnabled("DiscovOutlines")) {
-            DiscovOutlines.getInstance().getReferenceManager().hideHolograms(player);
-        }
     }
 }

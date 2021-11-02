@@ -8,12 +8,9 @@ import nl.parrotlync.discovsuite.spigot.listener.EventListener;
 import nl.parrotlync.discovsuite.spigot.listener.LuckPermsListener;
 import nl.parrotlync.discovsuite.spigot.listener.MessageListener;
 import nl.parrotlync.discovsuite.spigot.manager.*;
-import nl.parrotlync.discovsuite.spigot.placeholder.DiscovSuiteExpansion;
-import nl.parrotlync.discovsuite.spigot.scoreboard.BoardManager;
 import nl.parrotlync.discovsuite.spigot.util.AuthUtil;
 import nl.parrotlync.discovsuite.spigot.util.DatabaseUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,21 +19,17 @@ import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
 public class DiscovSuite extends JavaPlugin {
     private static DiscovSuite instance;
     private DatabaseUtil database;
-    private BoardManager boardManager;
     private final NicknameManager nicknameManager = new NicknameManager();
     private final ChannelManager channelManager = new ChannelManager();
     private final WarpManager warpManager = new WarpManager();
     private final TeleportManager teleportManager = new TeleportManager();
     private final InventoryManager inventoryManager = new InventoryManager();
-    private final VanishManager vanishManager = new VanishManager();
     private final AuthUtil authUtil = new AuthUtil();
 
     public DiscovSuite() {
@@ -81,38 +74,8 @@ public class DiscovSuite extends JavaPlugin {
             }
         });
 
-        // PlaceholderAPI
-        new DiscovSuiteExpansion().register();
-
         // Managers
         warpManager.load();
-
-        // Scoreboard
-        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            // Get visitor lines
-            HashMap<Integer, List<String>> visitorLines = new HashMap<>();
-            ConfigurationSection visitorContent = getConfig().getConfigurationSection("visitor-scoreboard");
-            assert visitorContent != null;
-            for (String key : visitorContent.getKeys(false)) {
-                visitorLines.put(Integer.parseInt(key), visitorContent.getStringList(key));
-            }
-
-            // Get staff lines
-            HashMap<Integer, List<String>> staffLines = new HashMap<>();
-            ConfigurationSection staffContent = getConfig().getConfigurationSection("staff-scoreboard");
-            assert staffContent != null;
-            for (String key : staffContent.getKeys(false)) {
-                staffLines.put(Integer.parseInt(key), staffContent.getStringList(key));
-            }
-
-            boardManager = new BoardManager(getConfig().getString("scoreboard-settings.title"), visitorLines, staffLines);
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                boardManager.init(player);
-            }
-            getLogger().info("Dependency PlaceholderAPI was found. Scoreboard enabled.");
-        } else {
-            getLogger().info("Dependency PlaceholderAPI was not found. Scoreboard disabled.");
-        }
 
         // LuckPerms listener
         if (getServer().getPluginManager().isPluginEnabled("LuckPerms")) {
@@ -122,9 +85,6 @@ public class DiscovSuite extends JavaPlugin {
         // Commands & Listeners
         getServer().getPluginManager().registerEvents(new EventListener(), this);
         getServer().getPluginManager().registerEvents(new ChatListener(), this);
-        Objects.requireNonNull(getCommand("fly")).setExecutor(new FlyCommand());
-        Objects.requireNonNull(getCommand("speed")).setExecutor(new SpeedCommand());
-        Objects.requireNonNull(getCommand("clearinventory")).setExecutor(new ClearInventoryCommand());
         Objects.requireNonNull(getCommand("staffchat")).setExecutor(new StaffChatCommand());
         Objects.requireNonNull(getCommand("managementchat")).setExecutor(new ManagementChatCommand());
         Objects.requireNonNull(getCommand("staffalert")).setExecutor(new StaffAlertCommand());
@@ -137,25 +97,13 @@ public class DiscovSuite extends JavaPlugin {
         Objects.requireNonNull(getCommand("nearby")).setExecutor(new NearbyCommand());
         Objects.requireNonNull(getCommand("warps")).setExecutor(new WarpsCommand());
         Objects.requireNonNull(getCommand("randomwarp")).setExecutor(new RandomWarpCommand());
-        Objects.requireNonNull(getCommand("wake")).setExecutor(new WakeCommand());
-        Objects.requireNonNull(getCommand("playertime")).setExecutor(new PlayerTimeCommand());
-        Objects.requireNonNull(getCommand("build")).setExecutor(new BuildCommand());
-        Objects.requireNonNull(getCommand("vanish")).setExecutor(new VanishCommand());
         getLogger().info("DiscovSuite is now enabled!");
     }
 
     @Override
     public void onDisable() {
         Bukkit.getScheduler().cancelTasks(this);
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            boardManager.remove(player);
-            vanishManager.showPlayer(player);
-        }
         getLogger().info("DiscovSuite is now disabled!");
-    }
-
-    public BoardManager getBoardManager() {
-        return boardManager;
     }
 
     public DatabaseUtil getDatabase() {
@@ -175,10 +123,6 @@ public class DiscovSuite extends JavaPlugin {
     public TeleportManager getTeleportManager() { return teleportManager; }
 
     public InventoryManager getInventoryManager() { return inventoryManager; }
-
-    public VanishManager getVanishManager() {
-        return vanishManager;
-    }
 
     public AuthUtil getAuthUtil() { return authUtil; }
 

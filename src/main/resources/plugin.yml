@@ -7,20 +7,6 @@ depend: [ParrotPluginManager]
 author: ParrotLync
 api-version: 1.15
 commands:
-  vanish:
-    usage: /vanish
-    description: Vanish
-    aliases: [v]
-  fly:
-    usage: /fly
-    description: Toggle flight
-  speed:
-    usage: /speed <speed>
-    description: Change flying/walking speed
-  clearinventory:
-    usage: /clearinventory
-    description: Clear your inventory
-    aliases: [ci]
   staffchat:
     usage: /staffchat [message]
     description: Send a message in Staff chat
@@ -67,13 +53,6 @@ commands:
   wake:
     usage: /wake <player>
     description: Wake someone up
-  playertime:
-    usage: /playertime <time>
-    description: Change your player time
-    aliases: [ptime]
-  build:
-    usage: /build
-    description: Toggle BuildMode
 permissions:
   discovsuite.command.clearinventory:
     default: op
