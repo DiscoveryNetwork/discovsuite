@@ -57,7 +57,7 @@
     <distributionManagement>
         <repository>
             <id>nexus-discov</id>
-            <url>https://nexus.discov.network/repository/maven-releases/</url>
+            <url>https://nexus.discov.network/repository/discov-plugins/</url>
         </repository>
     </distributionManagement>
 
