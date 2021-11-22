@@ -13,7 +13,9 @@ public class PlaceholderUtil {
         format = format.replaceAll("%SERVER%", Objects.requireNonNull(DiscovSuite.getInstance().getConfig().getString("server-name")));
         format = format.replaceAll("%DISPLAYNAME%", player.getDisplayName());
         format = format.replaceAll("%NAME%", player.getName());
-        return format.replaceAll("%SUFFIX%", getSuffix(player));
+        String suffix = getSuffix(player);
+        if (suffix == null) { suffix = ""; }
+        return format.replaceAll("%SUFFIX%", suffix);
     }
 
     public static String parseForSender(CommandSender sender, String format) {
